@@ -80,7 +80,6 @@ export default class GamePlay {
         }
 
         for (const positionedChar of positionedChars) {
-            console.log(positionedChar)
             const cellEl = this.boardEl.children[positionedChar.position];
             const charEl = document.createElement('div');
             cellEl.dataset.charData = JSON.stringify(positionedChar);

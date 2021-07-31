@@ -20,7 +20,7 @@ export default class GameController {
         this.gamePlay.addCellLeaveListener((index) => this.onCellLeave(index));
         this.gamePlay.addCellClickListener((index) => this.onCellClick(index));
 
-        
+
         // TODO: add event listeners to gamePlay events
         // TODO: load saved stated from stateService
     }
@@ -33,7 +33,6 @@ export default class GameController {
                 GamePlay.showCellTooltip(cell);
             } else {
                 const charData = JSON.parse(cell.dataset.charData);
-                console.log(charData);
                 const {
                     level, attack, defence, health,
                 } = charData;
@@ -58,9 +57,20 @@ export default class GameController {
 
         if (cell.firstElementChild) {
             const charData = JSON.parse(cell.dataset.charData);
+            const { turn, position } = charData;
 
-            console.log(charData);
+            if (turn === 'AI') {
+                GamePlay.showError('that is not character in your team');
+            }
+            const { activePosition } = GameState;
+
+            this.gamePlay.selectCell(index);
+            if (activePosition) {
+                this.gamePlay.deselectCell(activePosition);
+            }
+            GameState.activePosition = position;
         }
+
     }
 }
 // const charEl = document.createElement('div');
