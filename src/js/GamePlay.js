@@ -4,7 +4,7 @@ import { calcHealthLevel, calcTileType } from './utils';
 
 export default class GamePlay {
     constructor() {
-        this.boardSize = 8;
+        this.boardSize = 4;
         this.container = null;
         this.boardEl = null;
         this.cells = [];
@@ -55,6 +55,7 @@ export default class GamePlay {
         this.boardEl = this.container.querySelector('[data-id=board]');
 
         this.boardEl.classList.add(theme);
+        this.boardEl.style['grid-template-columns'] = `repeat(${this.boardSize}, 1fr)`;
         for (let i = 0; i < this.boardSize ** 2; i += 1) {
             const cellEl = document.createElement('div');
             cellEl.classList.add('cell', 'map-tile', `map-tile-${calcTileType(i, this.boardSize)}`);
