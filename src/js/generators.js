@@ -25,11 +25,11 @@ function* characterGenerator(allowedTypes, maxLevel) {
 function positionGenerator() {
     const positions = [];
 
-    return function localFunc(positionedChar) {
+    return function localFunc(character) {
         const getRandomPosition = () => {
             let column;
 
-            if (positionedChar.turn === 'AI') {
+            if (character.turn === 'AI') {
                 column = getRandomInt(this.boardSize - 2, this.boardSize);
             } else {
                 column = getRandomInt(0, 2);
@@ -39,15 +39,13 @@ function positionGenerator() {
             return row * this.boardSize + column;
         };
 
-        const { character } = positionedChar;
         let position = getRandomPosition();
-
         // eslint-disable-next-line no-loop-func
         while (positions.some((nextPos) => nextPos === position)) {
             position = getRandomPosition();
         }
         positions.push(position);
-        return { character, position };
+        return { ...character, position };
     };
 }
 
@@ -58,8 +56,7 @@ export default function generateTeam(maxLevel, characterCount, turn) {
 
     for (let i = 0; i < characterCount; i += 1) {
         const character = generator.next().value;
-
-        team.push({ character, turn });
+        team.push({ ...character, turn });
     }
 
     const generatePosition = positionGenerator();

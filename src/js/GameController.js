@@ -1,5 +1,6 @@
 import generateTeam from './generators';
 import GamePlay from './GamePlay';
+import GameState from './GameState';
 
 const teamPlayer = generateTeam(2, 2, 'player');
 const teamAI = generateTeam(2, 2, 'AI');
@@ -8,15 +9,18 @@ export default class GameController {
     constructor(gamePlay, stateService) {
         this.gamePlay = gamePlay;
         this.stateService = stateService;
-        this.g = 10;
     }
 
     init() {
+        GameState.from({ turn: 'player', level: 1 });
         this.gamePlay.drawUi('prairie');
         this.gamePlay.redrawPositions([...teamPlayer, ...teamAI]);
+
         this.gamePlay.addCellEnterListener((index) => this.onCellEnter(index));
         this.gamePlay.addCellLeaveListener((index) => this.onCellLeave(index));
+        this.gamePlay.addCellClickListener((index) => this.onCellClick(index));
 
+        
         // TODO: add event listeners to gamePlay events
         // TODO: load saved stated from stateService
     }
@@ -29,6 +33,7 @@ export default class GameController {
                 GamePlay.showCellTooltip(cell);
             } else {
                 const charData = JSON.parse(cell.dataset.charData);
+                console.log(charData);
                 const {
                     level, attack, defence, health,
                 } = charData;
@@ -49,7 +54,13 @@ export default class GameController {
     }
 
     onCellClick(index) {
-        this.index = 1;
+        const cell = this.gamePlay.cells[index];
+
+        if (cell.firstElementChild) {
+            const charData = JSON.parse(cell.dataset.charData);
+
+            console.log(charData);
+        }
     }
 }
 // const charEl = document.createElement('div');

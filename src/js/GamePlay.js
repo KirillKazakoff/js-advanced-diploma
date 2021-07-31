@@ -80,17 +80,18 @@ export default class GamePlay {
         }
 
         for (const positionedChar of positionedChars) {
+            console.log(positionedChar)
             const cellEl = this.boardEl.children[positionedChar.position];
             const charEl = document.createElement('div');
-            cellEl.dataset.charData = JSON.stringify(positionedChar.character);
-            charEl.classList.add('character', positionedChar.character.type);
+            cellEl.dataset.charData = JSON.stringify(positionedChar);
+            charEl.classList.add('character', positionedChar.type);
 
             const healthEl = document.createElement('div');
             healthEl.classList.add('health-level');
 
             const healthIndicatorEl = document.createElement('div');
-            healthIndicatorEl.classList.add('health-level-indicator', `health-level-indicator-${calcHealthLevel(positionedChar.character.health)}`);
-            healthIndicatorEl.style.width = `${positionedChar.character.health}%`;
+            healthIndicatorEl.classList.add('health-level-indicator', `health-level-indicator-${calcHealthLevel(positionedChar.health)}`);
+            healthIndicatorEl.style.width = `${positionedChar.health}%`;
             healthEl.appendChild(healthIndicatorEl);
 
             charEl.appendChild(healthEl);
@@ -98,55 +99,27 @@ export default class GamePlay {
         }
     }
 
-    /**
-   * Add listener to mouse enter for cell
-   *
-   * @param callback
-   */
 
-    /**
-   * Add listener to mouse leave for cell
-   *
-   * @param callback
-   */
-    addCellLeaveListener(callback) {
-        this.cellLeaveListeners.push(callback);
-    }
 
-    /**
-   * Add listener to mouse click for cell
-   *
-   * @param callback
-   */
-    addCellClickListener(callback) {
-        this.cellClickListeners.push(callback);
-    }
 
-    /**
-   * Add listener to "New Game" button click
-   *
-   * @param callback
-   */
     addNewGameListener(callback) {
         this.newGameListeners.push(callback);
     }
 
-    /**
-   * Add listener to "Save Game" button click
-   *
-   * @param callback
-   */
     addSaveGameListener(callback) {
         this.saveGameListeners.push(callback);
     }
 
-    /**
-   * Add listener to "Load Game" button click
-   *
-   * @param callback
-   */
     addLoadGameListener(callback) {
         this.loadGameListeners.push(callback);
+    }
+
+    addCellLeaveListener(callback) {
+        this.cellLeaveListeners.push(callback);
+    }
+
+    addCellClickListener(callback) {
+        this.cellClickListeners.push(callback);
     }
 
     addCellEnterListener(callback) {
