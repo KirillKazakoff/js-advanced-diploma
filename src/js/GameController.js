@@ -1,9 +1,6 @@
-import generateTeam from './generators';
+import Team from './Team';
 import GamePlay from './GamePlay';
-import GameState from './GameState';
-
-const teamPlayer = generateTeam(2, 2, 'player');
-const teamAI = generateTeam(2, 2, 'AI');
+import gameState from './gameState';
 
 export default class GameController {
     constructor(gamePlay, stateService) {
@@ -12,9 +9,9 @@ export default class GameController {
     }
 
     init() {
-        GameState.from({ turn: 'player', level: 1 });
+        gameState.from({ turn: 'player', level: 2 });
         this.gamePlay.drawUi('prairie');
-        this.gamePlay.redrawPositions([...teamPlayer, ...teamAI]);
+        this.gamePlay.redrawPositions(Team.teams);
 
         this.gamePlay.addCellEnterListener((index) => this.onCellEnter(index));
         this.gamePlay.addCellLeaveListener((index) => this.onCellLeave(index));
@@ -54,6 +51,18 @@ export default class GameController {
 
     onCellClick(index) {
         const cell = this.gamePlay.cells[index];
+        let { activePos } = gameState;
+
+        if (!cell.firstElementChild && gameState.activePos) {
+            const activeCell = this.gamePlay.cells[activePos];
+            const charData = JSON.parse(activeCell.dataset.charData);
+
+            charData.position = index;   
+            activeCell.dataset.charData = null;
+            cell.dataset.charData = charData;
+
+            this.gamePlay.redrawPositions(teams)
+        }
 
         if (cell.firstElementChild) {
             const charData = JSON.parse(cell.dataset.charData);
@@ -61,15 +70,22 @@ export default class GameController {
 
             if (turn === 'AI') {
                 GamePlay.showError('that is not character in your team');
+                return;
             }
-            const { activePosition } = GameState;
 
             this.gamePlay.selectCell(index);
-            if (activePosition) {
-                this.gamePlay.deselectCell(activePosition);
+            if (typeof activePos === 'number') {
+                this.gamePlay.deselectCell(activePos);
             }
-            GameState.activePosition = position;
+            if (activePos === position) {
+                activePos = null;
+            } else {
+                activePos = position;
+            }
+            gameState.activePos = activePos;
+            console.log(gameState)
         }
+        
 
     }
 }

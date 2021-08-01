@@ -1,4 +1,4 @@
-import generateTeam from '../js/generators';
+import generateTeam from '../generators';
 
 test('generators test', () => {
     const expected = 5;
