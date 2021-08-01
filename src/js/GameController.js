@@ -54,14 +54,8 @@ export default class GameController {
         let { activePos } = gameState;
 
         if (!cell.firstElementChild && gameState.activePos) {
-            const activeCell = this.gamePlay.cells[activePos];
-            const charData = JSON.parse(activeCell.dataset.charData);
-
-            charData.position = index;   
-            activeCell.dataset.charData = null;
-            cell.dataset.charData = charData;
-
-            this.gamePlay.redrawPositions(teams)
+            Team.moveActiveChar(index);
+            this.gamePlay.redrawPositions(Team.teams);
         }
 
         if (cell.firstElementChild) {
