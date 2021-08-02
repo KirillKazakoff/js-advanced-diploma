@@ -25,8 +25,8 @@ export default class GameController {
     onCellEnter(index) {
         const cell = this.gamePlay.cells[index];
 
-        if (cell.firstElementChild) {
-            if (cell.title) {
+        if (cell.lastElementChild) {
+            if (cell.lastElementChild.className === 'tooltip') {
                 GamePlay.showCellTooltip(cell);
             } else {
                 const charData = JSON.parse(cell.dataset.charData);
@@ -49,16 +49,24 @@ export default class GameController {
         }
     }
 
+    clearActiveDataset() {
+        const activeCell = this.gamePlay.cells[gameState.activePos];
+        delete activeCell.dataset.charData;
+        activeCell.title = '';
+        console.log('hello');
+    }
+
     onCellClick(index) {
         const cell = this.gamePlay.cells[index];
         let { activePos } = gameState;
-
-        if (!cell.firstElementChild && gameState.activePos) {
+        
+        if (!cell.lastElementChild && typeof activePos === 'number') {
+            this.clearActiveDataset();
             Team.moveActiveChar(index);
             this.gamePlay.redrawPositions(Team.teams);
         }
-
-        if (cell.firstElementChild) {
+        
+        if (cell.lastElementChild) {
             const charData = JSON.parse(cell.dataset.charData);
             const { turn, position } = charData;
 
@@ -77,7 +85,6 @@ export default class GameController {
                 activePos = position;
             }
             gameState.activePos = activePos;
-            console.log(gameState)
         }
         
 
