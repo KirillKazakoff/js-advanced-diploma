@@ -5,5 +5,7 @@ export default class Magician extends Character {
         super(name, 'magician');
         this.defence = 40;
         this.attack = 40;
+        this.moveRange = 1;
+        this.attackRange = 4;
     }
 }

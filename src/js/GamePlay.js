@@ -1,6 +1,7 @@
 /* eslint-disable no-restricted-globals */
 /* eslint-disable no-restricted-syntax */
 import { calcHealthLevel, calcTileType } from './utils';
+import gameState from './gameState';
 
 export default class GamePlay {
     constructor() {
@@ -250,4 +251,5 @@ export default class GamePlay {
             throw new Error('GamePlay not bind to DOM');
         }
     }
+
 }

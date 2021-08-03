@@ -1,53 +1,70 @@
-// /**
-//  * Entry point of app: don't change this
-//  */
-// import GamePlay from './GamePlay';
-// import GameController from './GameController';
-// import GameStateService from './GameStateService';
+// // function calcPossiblePositions(cellAmount) {
+// //     const { activePos } = gameState;
+// //     const posArray = new Set();
 
-// const gamePlay = new GamePlay();
-// gamePlay.bindToDOM(document.querySelector('#game-container'));
+// //     for (let i = 0; i < cellAmount + 1; i += 1) {
+// //         const cell = this.getCell(activePos + i);
 
-// const stateService = new GameStateService(localStorage);
+// //         posArray.add(activePos + i);
+// //         if (cell.className.includes('right')) {
+// //             break;
+// //         }
+// //     }
 
-// const gameCtrl = new GameController(gamePlay, stateService);
-// gameCtrl.init();
+// //     for (let i = 0; i < cellAmount + 1; i += 1) {
+// //         const cell = this.getCell(activePos + i);
 
-// // don't write your code here
-// // import Character from './classes/main';
-// let caller = {
-//     callbacks: [],
-//     pushCallback(callback) {
-//         this.callbacks.push(callback);
-//     }
-// }
+// //         posArray.add(activePos - i);
+// //         if (cell.className.includes('left')) {
+// //             break;
+// //         }
+// //     }
 
-// let worker = {
-//     a: 10,
+// //     // for (let i = 0; i < cellAmount + 1; i += 1) {
+// //     //     const cell = this.getCell(activePos);
 
-//     sendCallback() {
-//         caller.pushCallback(() => this.log());
-//     },
+// //     //     posArray.add(activePos);
+// //     // }
 
-//     log() {
-//         console.log("Called with " + this.a);
-//     },
+// //     return posArray;
+// // }
 
-//     log2() {
-//         return () => this.log();
-//     }
-// };
 
-// // worker.sendCallback();
-// // const a = caller.callbacks[0];
-// // console.log(a()); // return called with 10
 
-// let bworker = {
-//     a: 20,
-//     log: worker.log,
-//     thisLog: worker.log2,
-//     workerLog: worker.log2(),
-// }
 
-// bworker.workerLog();
-// bworker.thisLog()();
+
+
+
+// import gameState from "./js/gameState";
+
+    // funcGen(cellAmount) {
+    //     const { activePos } = gameState;
+    //     const posArray = new Set();
+    
+    //     return (callback) => {
+    //         if (this.cells[activePos].className.includes('center')) {
+    //             for (let i = 1; i < cellAmount + 1; i += 1) {
+    //                 const calcExp = callback.call(this);
+    //                 const cell = this.cells[calcExp];
+    
+    //                 posArray.add(calcExp);
+    //                 if (!cell.className.includes('center')) {
+    //                     return posArray
+    //                 }
+    //             }
+    //         }
+    //     }
+    // }
+    // // const { boardSize } = this;
+
+    // calcPossiblePositions(cellAmount) {
+    //     const generator = this.funcGen(cellAmount);
+    //     const { activePos } = gameState;
+
+    //     const calcToRight = generator(() => activePos + i);
+    //     console.log(calcToRight);
+
+    // }
+
+
+

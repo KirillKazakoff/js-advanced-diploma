@@ -1,6 +1,7 @@
 import Team from './Team';
 import GamePlay from './GamePlay';
 import gameState from './gameState';
+import { calcPossiblePositions } from './utils';
 
 export default class GameController {
     constructor(gamePlay, stateService) {
@@ -23,13 +24,13 @@ export default class GameController {
     }
 
     onCellEnter(index) {
-        const cell = this.gamePlay.cells[index];
+        const cell = this.getCell(index)
 
         if (cell.lastElementChild) {
             if (cell.lastElementChild.className === 'tooltip') {
                 GamePlay.showCellTooltip(cell);
             } else {
-                const charData = JSON.parse(cell.dataset.charData);
+                const charData = this.getChar(cell);
                 const {
                     level, attack, defence, health,
                 } = charData;
@@ -42,7 +43,7 @@ export default class GameController {
     }
 
     onCellLeave(index) {
-        const cell = this.gamePlay.cells[index];
+        const cell = this.getCell(index);
 
         if (cell.title) {
             GamePlay.hideCellTooltip(cell);
@@ -50,45 +51,100 @@ export default class GameController {
     }
 
     clearActiveDataset() {
-        const activeCell = this.gamePlay.cells[gameState.activePos];
+        const activeCell = this.getCell(gameState.activePos);
         delete activeCell.dataset.charData;
         activeCell.title = '';
-        console.log('hello');
+    }
+
+    onCharClick(index) {
+        const cell = this.getCell(index)
+        const charData = this.getChar(cell);
+        const { turn, position } = charData;
+        let { activePos } = gameState;
+
+        if (turn === 'AI') {
+            GamePlay.showError('that is not character in your team');
+            return;
+        }
+
+        this.gamePlay.selectCell(index);
+        if (typeof activePos === 'number') {
+            this.gamePlay.deselectCell(activePos);
+        }
+        if (activePos === position) {
+            activePos = null;
+        } else {
+            activePos = position;
+        }
+        gameState.activePos = activePos;
     }
 
     onCellClick(index) {
-        const cell = this.gamePlay.cells[index];
-        let { activePos } = gameState;
-        
+        let { activePos, turn } = gameState;
+        const activeCell = this.getCell(activePos);
+        const cell = this.getCell(index);
+
         if (!cell.lastElementChild && typeof activePos === 'number') {
+            const charData = this.getChar(activeCell);
             this.clearActiveDataset();
+            console.log(calcPossiblePositions.call(this, charData.moveRange));
+
             Team.moveActiveChar(index);
             this.gamePlay.redrawPositions(Team.teams);
+            gameState.turn = turn === 'player' ? 'AI' : 'player';
         }
-        
+
         if (cell.lastElementChild) {
-            const charData = JSON.parse(cell.dataset.charData);
-            const { turn, position } = charData;
-
-            if (turn === 'AI') {
-                GamePlay.showError('that is not character in your team');
-                return;
-            }
-
-            this.gamePlay.selectCell(index);
-            if (typeof activePos === 'number') {
-                this.gamePlay.deselectCell(activePos);
-            }
-            if (activePos === position) {
-                activePos = null;
-            } else {
-                activePos = position;
-            }
-            gameState.activePos = activePos;
+            this.onCharClick(index);
         }
-        
 
     }
+
+    getCell(index) {
+        return this.gamePlay.cells[index];
+    }
+
+    getChar(cell) {
+        return JSON.parse(cell.dataset.charData);
+    }
 }
-// const charEl = document.createElement('div');
-// charEl.addEventListener('mouseenter');
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// function calcPossiblePositions(cellAmount) {
+//     const { activePos } = gameState;
+//     const posArray = new Set();
+
+//     for (let i = 0; i < cellAmount + 1; i += 1) {
+//         const cell = this.getCell(activePos + i);
+
+//         posArray.add(activePos + i);
+//         if (cell.className.includes('right')) {
+//             break;
+//         }
+//     }
+
+//     for (let i = 0; i < cellAmount + 1; i += 1) {
+//         const cell = this.getCell(activePos + i);
+
+//         posArray.add(activePos - i);
+//         if (cell.className.includes('left')) {
+//             break;
+//         }
+//     }
+
+//     return posArray;
+// }
