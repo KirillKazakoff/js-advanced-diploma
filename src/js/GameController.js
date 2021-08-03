@@ -1,6 +1,7 @@
 import Team from './Team';
 import GamePlay from './GamePlay';
 import gameState from './gameState';
+import cursors from './cursors';
 import { calcPossiblePositions } from './utils';
 
 export default class GameController {
@@ -24,21 +25,44 @@ export default class GameController {
     }
 
     onCellEnter(index) {
-        const cell = this.getCell(index)
+        const cell = this.getCell(index);
+        const charData = this.getChar(cell);
 
-        if (cell.lastElementChild) {
+        this.gamePlay.setCursor(cursors.pointer);
+
+        if (charData) {
             if (cell.lastElementChild.className === 'tooltip') {
                 GamePlay.showCellTooltip(cell);
             } else {
-                const charData = this.getChar(cell);
-                const {
-                    level, attack, defence, health,
-                } = charData;
+                const { level, attack, defence, health } = charData;
                 const codes = ['0x1f396', '0x2694', '0x1f6e1', '0x2764'].map((code) => String.fromCodePoint(code));
                 const [lPic, aPic, dPic, hPic] = codes;
 
                 GamePlay.createToolTip(`${lPic} ${level} ${aPic} ${attack} ${dPic} ${defence} ${hPic} ${health}`, cell);
             }
+        }
+
+        if (!charData && typeof gameState.activePos === 'number') {
+            const positions = this.getActiveCharPositions('moveRange');
+
+            if (positions.some((position) => position === index)) {
+                this.gamePlay.selectCell(index, 'green');
+            }
+        }
+
+        if (charData.turn === 'AI' && typeof gameState.activePos === 'number') {
+            const positions = this.getActiveCharPositions('attackRange');
+
+            if (positions.some((position) => position === index)) {
+                this.gamePlay.setCursor(cursors.crosshair);
+                this.gamePlay.selectCell(index, 'red');
+                return;
+            }
+            this.gamePlay.setCursor(cursors.notallowed);
+        }
+
+        if (charData.turn === 'AI' && typeof gameState.activePos !== 'number') {
+            this.gamePlay.setCursor(cursors.notallowed);
         }
     }
 
@@ -48,6 +72,37 @@ export default class GameController {
         if (cell.title) {
             GamePlay.hideCellTooltip(cell);
         }
+        if (cell.className.includes('green') || cell.className.includes('red')) {
+            this.gamePlay.deselectCell(index);
+        }
+    }
+
+    onCellClick(index) {
+        let { activePos, turn } = gameState;
+        const cell = this.getCell(index);
+
+        if (!cell.lastElementChild && typeof activePos === 'number') {
+            const positions = this.getActiveCharPositions('moveRange');
+
+            if (positions.some((position) => position === index)) {
+                this.clearActiveDataset();
+                Team.moveActiveChar(index);
+                this.gamePlay.redrawPositions(Team.teams);
+                this.gamePlay.deselectCell(index);
+                gameState.turn = turn === 'player' ? 'AI' : 'player';
+            }
+        }
+
+        if (cell.lastElementChild) {
+            this.onCharClick(index);
+        }
+    }
+
+    getActiveCharPositions(rangeParam) {
+        const activeCell = this.getCell(gameState.activePos);
+        const charData = this.getChar(activeCell);
+
+        return [...calcPossiblePositions.call(this, charData[rangeParam])];
     }
 
     clearActiveDataset() {
@@ -79,33 +134,17 @@ export default class GameController {
         gameState.activePos = activePos;
     }
 
-    onCellClick(index) {
-        let { activePos, turn } = gameState;
-        const activeCell = this.getCell(activePos);
-        const cell = this.getCell(index);
-
-        if (!cell.lastElementChild && typeof activePos === 'number') {
-            const charData = this.getChar(activeCell);
-            this.clearActiveDataset();
-            console.log(calcPossiblePositions.call(this, charData.moveRange));
-
-            Team.moveActiveChar(index);
-            this.gamePlay.redrawPositions(Team.teams);
-            gameState.turn = turn === 'player' ? 'AI' : 'player';
-        }
-
-        if (cell.lastElementChild) {
-            this.onCharClick(index);
-        }
-
-    }
-
     getCell(index) {
         return this.gamePlay.cells[index];
     }
 
     getChar(cell) {
-        return JSON.parse(cell.dataset.charData);
+        try {
+            return JSON.parse(cell.dataset.charData);
+        }
+        catch {
+            return false;
+        }
     }
 }
 
