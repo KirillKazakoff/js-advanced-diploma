@@ -7,11 +7,32 @@ const teams = [...teamPlayer, ...teamAI];
 
 export default {
     teams,
+
     moveActiveChar(position) {
-        const activeIndex = teams.findIndex((character) => character.position === gameState.activePos);
-        const activeChar = teams.splice(activeIndex, 1)[0];
+        const activeChar = this.getTeamChar(gameState.activePos);
+        this.deleteChar(activeChar);
 
         activeChar.position = position;
         teams.push(activeChar);
+    },
+
+    attackChar(position) {
+        const attacker = this.getTeamChar(gameState.activePos);
+        const target = this.getTeamChar(position);
+
+        target.health -= Math.max(attacker.attack - target.defence, attacker.attack * 0.1);
+        if (target.health < 0) {
+            this.deleteChar(target); 
+            return 'killed';
+        }
+    },
+
+    getTeamChar(position) {
+        return teams.find((character) => character.position === position);
+    },
+
+    deleteChar(delChar) {
+        const index = teams.findIndex((character) => character.position === delChar.position);
+        teams.splice(index, 1);
     }
-}
+ }

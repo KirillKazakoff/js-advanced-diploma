@@ -66,6 +66,7 @@ export default class GameController {
         }
     }
 
+
     onCellLeave(index) {
         const cell = this.getCell(index);
 
@@ -77,6 +78,7 @@ export default class GameController {
         }
     }
 
+    
     onCellClick(index) {
         let { activePos, turn } = gameState;
         const cell = this.getCell(index);
@@ -86,7 +88,7 @@ export default class GameController {
             const positions = this.getActiveCharPositions('moveRange');
 
             if (positions.some((position) => position === index)) {
-                this.clearActiveDataset();
+                this.clearDataset(activePos);
                 Team.moveActiveChar(index);
                 this.gamePlay.redrawPositions(Team.teams);
 
@@ -97,27 +99,33 @@ export default class GameController {
                 gameState.activePos = index;
                 gameState.turn = turn === 'player' ? 'AI' : 'player';
             }
+            return;
+        }
+
+        if (charData.turn === 'AI' && typeof gameState.activePos === 'number') {
+            const positions = this.getActiveCharPositions('attackRange');
+            const activeChar = this.getChar(this.getCell(activePos));
+
+            if (positions.some((position) => position === index)) {
+                this.gamePlay.showDamage(index, activeChar.attack).then(() => {
+                    const result = Team.attackChar(index);
+                    if (result === 'killed') {
+                        this.clearDataset(index);
+                        this.gamePlay.deselectCell(index);
+                    }
+                    this.gamePlay.redrawPositions(Team.teams);
+                });
+                return;
+            }
         }
 
         if (charData) {
-            this.onCharClick(index);
+            this.onPlayerCharClick(index);
+            return;
         }
     }
 
-    getActiveCharPositions(rangeParam) {
-        const activeCell = this.getCell(gameState.activePos);
-        const charData = this.getChar(activeCell);
-
-        return [...calcPossiblePositions.call(this, charData[rangeParam])];
-    }
-
-    clearActiveDataset() {
-        const activeCell = this.getCell(gameState.activePos);
-        delete activeCell.dataset.charData;
-        activeCell.title = '';
-    }
-
-    onCharClick(index) {
+    onPlayerCharClick(index) {
         const cell = this.getCell(index)
         const charData = this.getChar(cell);
         const { turn, position } = charData;
@@ -138,6 +146,21 @@ export default class GameController {
             activePos = position;
         }
         gameState.activePos = activePos;
+    }
+
+
+    
+    getActiveCharPositions(rangeParam) {
+        const activeCell = this.getCell(gameState.activePos);
+        const charData = this.getChar(activeCell);
+
+        return [...calcPossiblePositions.call(this, charData[rangeParam])];
+    }
+
+    clearDataset(position) {
+        const cell = this.getCell(position);
+        delete cell.dataset.charData;
+        cell.title = '';
     }
 
     getCell(index) {
