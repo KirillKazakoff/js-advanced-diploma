@@ -14,17 +14,8 @@ const gameCtrl = new GameController(gamePlay, stateService);
 gameCtrl.init();
 
 // don't write your code here
-// import Character from './classes/main';
-// import closure from '../examples';
+import Team from "./Team";
+import TeamSeparate from "./TeamSeparate";
 
-// const myClosure = closure;
 
-// const sub = closure();
-// const plus = closure();
-
-// sub('-');
-// sub('-');
-// sub('-');
-// console.log(plus('+'));
-// console.log(sub('-'));
 

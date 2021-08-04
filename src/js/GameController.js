@@ -19,9 +19,6 @@ export default class GameController {
         this.gamePlay.addCellLeaveListener((index) => this.onCellLeave(index));
         this.gamePlay.addCellClickListener((index) => this.onCellClick(index));
 
-
-        // TODO: add event listeners to gamePlay events
-        // TODO: load saved stated from stateService
     }
 
     onCellEnter(index) {
@@ -43,17 +40,18 @@ export default class GameController {
         }
 
         if (!charData && typeof gameState.activePos === 'number') {
-            const positions = this.getActiveCharPositions('moveRange');
+            const posObj = this.getActiveCharPositions('moveRange');
+            console.log(posObj.toMainDb);
 
-            if (positions.some((position) => position === index)) {
+            if (posObj.positions.some((position) => position === index)) {
                 this.gamePlay.selectCell(index, 'green');
             }
         }
 
         if (charData.turn === 'AI' && typeof gameState.activePos === 'number') {
-            const positions = this.getActiveCharPositions('attackRange');
+            const posObj = this.getActiveCharPositions('attackRange');
 
-            if (positions.some((position) => position === index)) {
+            if (posObj.positions.some((position) => position === index)) {
                 this.gamePlay.setCursor(cursors.crosshair);
                 this.gamePlay.selectCell(index, 'red');
                 return;
@@ -85,9 +83,9 @@ export default class GameController {
         const charData = this.getChar(cell);
 
         if (!charData && typeof activePos === 'number') {
-            const positions = this.getActiveCharPositions('moveRange');
+            const posObj = this.getActiveCharPositions('moveRange');
 
-            if (positions.some((position) => position === index)) {
+            if (posObj.positions.some((position) => position === index)) {
                 this.clearDataset(activePos);
                 Team.moveActiveChar(index);
                 this.gamePlay.redrawPositions(Team.teams);
@@ -102,11 +100,11 @@ export default class GameController {
             return;
         }
 
-        if (charData.turn === 'AI' && typeof gameState.activePos === 'number') {
-            const positions = this.getActiveCharPositions('attackRange');
+        if (charData.turn !== turn && typeof activePos === 'number') {
+            const posObj = this.getActiveCharPositions('attackRange');
             const activeChar = this.getChar(this.getCell(activePos));
 
-            if (positions.some((position) => position === index)) {
+            if (posObj.positions.some((position) => position === index)) {
                 this.gamePlay.showDamage(index, activeChar.attack).then(() => {
                     const result = Team.attackChar(index);
                     if (result === 'killed') {
@@ -154,7 +152,7 @@ export default class GameController {
         const activeCell = this.getCell(gameState.activePos);
         const charData = this.getChar(activeCell);
 
-        return [...calcPossiblePositions.call(this, charData[rangeParam])];
+        return calcPossiblePositions.call(this, charData[rangeParam]);
     }
 
     clearDataset(position) {
@@ -182,37 +180,3 @@ export default class GameController {
 
 
 
-
-
-
-
-
-
-
-
-
-
-// function calcPossiblePositions(cellAmount) {
-//     const { activePos } = gameState;
-//     const posArray = new Set();
-
-//     for (let i = 0; i < cellAmount + 1; i += 1) {
-//         const cell = this.getCell(activePos + i);
-
-//         posArray.add(activePos + i);
-//         if (cell.className.includes('right')) {
-//             break;
-//         }
-//     }
-
-//     for (let i = 0; i < cellAmount + 1; i += 1) {
-//         const cell = this.getCell(activePos + i);
-
-//         posArray.add(activePos - i);
-//         if (cell.className.includes('left')) {
-//             break;
-//         }
-//     }
-
-//     return posArray;
-// }

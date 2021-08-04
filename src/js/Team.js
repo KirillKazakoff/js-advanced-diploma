@@ -1,12 +1,12 @@
 import generateTeam from "./generators";
 import gameState from "./gameState";
 
-const teamPlayer = generateTeam(2, 2, 'player');
-const teamAI = generateTeam(2, 2, 'AI');
+const teamPlayer = generateTeam(2, 3, 'player');
+const teamAI = generateTeam(2, 3, 'AI');
 const teams = [...teamPlayer, ...teamAI];
 
 export default {
-    teams,
+    teams, 
 
     moveActiveChar(position) {
         const activeChar = this.getTeamChar(gameState.activePos);
@@ -34,5 +34,9 @@ export default {
     deleteChar(delChar) {
         const index = teams.findIndex((character) => character.position === delChar.position);
         teams.splice(index, 1);
+    },
+
+    findTeam(turn) {
+        return teams.filter((character) => character.turn === turn);
     }
  }

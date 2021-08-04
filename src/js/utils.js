@@ -1,5 +1,4 @@
 import gameState from "./gameState";
-import GamePlay from "./GamePlay";
 
 export function calcTileType(index, boardSize) {
     const allCells = boardSize ** 2;
@@ -52,16 +51,25 @@ export function getRandomInt(min, max) {
 
 export function calcPossiblePositions(cellAmount) {
     const { activePos } = gameState;
-    const posArray = new Set();
     const { boardSize } = this.gamePlay;
 
+    const positions = new Set();
+    const toRight = []; 
+    const toLeft = []; 
+    const toTop = []; 
+    const toBottom = []; 
+    const toMainDb = []; 
+    const toMainDt = []; 
+    const toAuxDb = []; 
+    const toAuxDt = []; 
 
     const calcToRight = () => {
         for (let i = 0; i < cellAmount + 1; i += 1) {
             const calcExp = activePos + i;
             const cell = this.getCell(calcExp);
 
-            posArray.add(calcExp);
+            positions.add(calcExp);
+            toRight.push(calcExp);
             if (cell.className.includes('right')) {
                 return;
             }
@@ -73,7 +81,8 @@ export function calcPossiblePositions(cellAmount) {
             const calcExp = activePos - i;
             const cell = this.getCell(calcExp);
 
-            posArray.add(calcExp);
+            positions.add(calcExp);
+            toLeft.push(calcExp);
             if (cell.className.includes('left')) {
                 return;
             }
@@ -85,7 +94,8 @@ export function calcPossiblePositions(cellAmount) {
             const calcExp = activePos - i * boardSize;
             const cell = this.getCell(calcExp);
 
-            posArray.add(calcExp);
+            positions.add(calcExp);
+            toTop.push(calcExp);
             if (cell.className.includes('top')) {
                 return;
             }
@@ -97,7 +107,8 @@ export function calcPossiblePositions(cellAmount) {
             const calcExp = activePos + i * boardSize;
             const cell = this.getCell(calcExp);
 
-            posArray.add(calcExp);
+            positions.add(calcExp);
+            toBottom.push(calcExp);
             if (cell.className.includes('bottom')) {
                 return;
             }
@@ -116,7 +127,8 @@ export function calcPossiblePositions(cellAmount) {
             }
 
             const cell = this.getCell(calcExp);
-            posArray.add(calcExp);
+            positions.add(calcExp);
+            toMainDt.push(calcExp);
             if (!cell.className.includes('center')) {
                 return;
             }
@@ -136,7 +148,8 @@ export function calcPossiblePositions(cellAmount) {
             }
 
             const cell = this.getCell(calcExp);
-            posArray.add(calcExp);
+            positions.add(calcExp);
+            toMainDb.push(calcExp);
             if (!cell.className.includes('center')) {
                 return;
             }
@@ -157,7 +170,8 @@ export function calcPossiblePositions(cellAmount) {
 
             const cell = this.getCell(calcExp);
             
-            posArray.add(calcExp);
+            positions.add(calcExp);
+            toAuxDt.push(calcExp);
             if (!cell.className.includes('center')) {
                 return;
             }
@@ -177,7 +191,8 @@ export function calcPossiblePositions(cellAmount) {
             }
 
             const cell = this.getCell(calcExp);
-            posArray.add(calcExp);
+            positions.add(calcExp);
+            toAuxDb.push(calcExp);
             if (!cell.className.includes('center')) {
                 return;
             }
@@ -194,6 +209,10 @@ export function calcPossiblePositions(cellAmount) {
     calcToAuxDiagTop();
     calcToAuxDiagBottom();
 
-    return posArray;
+    return {
+        positions: [...positions],
+        toRight, toLeft, toBottom, toTop,
+        toMainDb, toMainDt, toAuxDb, toAuxDt,
+    };
 }
 
