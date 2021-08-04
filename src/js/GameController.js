@@ -80,20 +80,26 @@ export default class GameController {
     onCellClick(index) {
         let { activePos, turn } = gameState;
         const cell = this.getCell(index);
+        const charData = this.getChar(cell);
 
-        if (!cell.lastElementChild && typeof activePos === 'number') {
+        if (!charData && typeof activePos === 'number') {
             const positions = this.getActiveCharPositions('moveRange');
 
             if (positions.some((position) => position === index)) {
                 this.clearActiveDataset();
                 Team.moveActiveChar(index);
                 this.gamePlay.redrawPositions(Team.teams);
+
                 this.gamePlay.deselectCell(index);
+                this.gamePlay.selectCell(index, 'yellow');
+                this.gamePlay.deselectCell(activePos);
+
+                gameState.activePos = index;
                 gameState.turn = turn === 'player' ? 'AI' : 'player';
             }
         }
 
-        if (cell.lastElementChild) {
+        if (charData) {
             this.onCharClick(index);
         }
     }
