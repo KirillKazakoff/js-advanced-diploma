@@ -1,13 +1,5 @@
-/**
- * Generates random characters
- *
- * @param allowedTypes iterable of classes
- * @param maxLevel max character level
- * @returns Character type children (ex. Magician, Bowman, etc)
- */
-
 import GamePlay from './GamePlay';
-import { getRandomInt } from './utils';
+import { getRandomInt } from './utilsSec';
 import {
     Bowman, Swordsman, Magician, Daemon, Vampire, Undead,
 } from './classes/importAll';

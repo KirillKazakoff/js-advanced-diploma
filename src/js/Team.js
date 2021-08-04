@@ -36,7 +36,7 @@ export default {
         teams.splice(index, 1);
     },
 
-    findTeam(turn) {
+    getTeam(turn) {
         return teams.filter((character) => character.turn === turn);
     }
  }

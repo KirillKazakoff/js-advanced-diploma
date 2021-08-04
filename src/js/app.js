@@ -14,8 +14,6 @@ const gameCtrl = new GameController(gamePlay, stateService);
 gameCtrl.init();
 
 // don't write your code here
-import Team from "./Team";
-import TeamSeparate from "./TeamSeparate";
+import defenceChar from './logicAI';
 
-
-
+defenceChar.call(gameCtrl);

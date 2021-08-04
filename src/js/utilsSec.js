@@ -1,4 +1,3 @@
-import gameState from "./gameState";
 
 export function calcTileType(index, boardSize) {
     const allCells = boardSize ** 2;
@@ -49,9 +48,26 @@ export function getRandomInt(min, max) {
     return Math.floor(Math.random() * (maxInt - minInt)) + minInt;
 }
 
-export function calcPossiblePositions(cellAmount) {
-    const { activePos } = gameState;
-    const { boardSize } = this.gamePlay;
+export function getCellCoords(cell) {
+    const coords = cell.getBoundingClientRect();
+
+    let {
+        top, bottom, left, right,
+    } = coords;
+
+    top += pageYOffset;
+    bottom += pageYOffset;
+    left += pageXOffset;
+    right += pageXOffset;
+
+    const cellObj = {
+        top, bottom, left, right,
+    };
+    return cellObj;
+}
+
+export function calcPossiblePositions(cellAmount, start) {
+    const { boardSize } = this;
 
     const positions = new Set();
     const toRight = []; 
@@ -65,8 +81,8 @@ export function calcPossiblePositions(cellAmount) {
 
     const calcToRight = () => {
         for (let i = 0; i < cellAmount + 1; i += 1) {
-            const calcExp = activePos + i;
-            const cell = this.getCell(calcExp);
+            const calcExp = start + i;
+            const cell = this.cells[calcExp];
 
             positions.add(calcExp);
             toRight.push(calcExp);
@@ -78,8 +94,8 @@ export function calcPossiblePositions(cellAmount) {
 
     const calcToLeft = () => {
         for (let i = 0; i < cellAmount + 1; i += 1) {
-            const calcExp = activePos - i;
-            const cell = this.getCell(calcExp);
+            const calcExp = start - i;
+            const cell = this.cells[calcExp];
 
             positions.add(calcExp);
             toLeft.push(calcExp);
@@ -91,8 +107,8 @@ export function calcPossiblePositions(cellAmount) {
 
     const calcToTop = () => {
         for (let i = 0; i < cellAmount + 1; i += 1) {
-            const calcExp = activePos - i * boardSize;
-            const cell = this.getCell(calcExp);
+            const calcExp = start - i * boardSize;
+            const cell = this.cells[calcExp];
 
             positions.add(calcExp);
             toTop.push(calcExp);
@@ -104,8 +120,8 @@ export function calcPossiblePositions(cellAmount) {
 
     const calcToBottom = () => {
         for (let i = 0; i < cellAmount + 1; i += 1) {
-            const calcExp = activePos + i * boardSize;
-            const cell = this.getCell(calcExp);
+            const calcExp = start + i * boardSize;
+            const cell = this.cells[calcExp];
 
             positions.add(calcExp);
             toBottom.push(calcExp);
@@ -116,17 +132,17 @@ export function calcPossiblePositions(cellAmount) {
     }
 
     const calcToMainDiagTop = () => {
-        if (this.getCell(activePos).className.includes('right')) {
+        if (this.cells[start].className.includes('right')) {
             return;
         }
 
         for (let i = 1; i < cellAmount + 1; i += 1) {
-            const calcExp = activePos - i * (boardSize - 1);
+            const calcExp = start - i * (boardSize - 1);
             if (calcExp < 0) {
                 return;
             }
 
-            const cell = this.getCell(calcExp);
+            const cell = this.cells[calcExp];
             positions.add(calcExp);
             toMainDt.push(calcExp);
             if (!cell.className.includes('center')) {
@@ -137,17 +153,17 @@ export function calcPossiblePositions(cellAmount) {
     }
 
     const calcToMainDiagBottom = () => {
-        if (this.getCell(activePos).className.includes('left')) {
+        if (this.cells[start].className.includes('left')) {
             return;
         }
         
         for (let i = 1; i < cellAmount + 1; i += 1) {
-            const calcExp = activePos + i * (boardSize - 1);
+            const calcExp = start + i * (boardSize - 1);
             if (calcExp >= boardSize ** 2) {
                 return;
             }
 
-            const cell = this.getCell(calcExp);
+            const cell = this.cells[calcExp];
             positions.add(calcExp);
             toMainDb.push(calcExp);
             if (!cell.className.includes('center')) {
@@ -158,18 +174,17 @@ export function calcPossiblePositions(cellAmount) {
     }
 
     const calcToAuxDiagTop = () => {
-        if (this.getCell(activePos).className.includes('left')) {
+        if (this.cells[start].className.includes('left')) {
             return;
         }
 
         for (let i = 1; i < cellAmount + 1; i += 1) {
-            const calcExp = activePos - i * (boardSize + 1);
+            const calcExp = start - i * (boardSize + 1);
             if (calcExp < 0) {
                 return;
             }
 
-            const cell = this.getCell(calcExp);
-            
+            const cell = this.cells[calcExp];            
             positions.add(calcExp);
             toAuxDt.push(calcExp);
             if (!cell.className.includes('center')) {
@@ -180,17 +195,17 @@ export function calcPossiblePositions(cellAmount) {
     }
 
     const calcToAuxDiagBottom = () => {
-        if (this.getCell(activePos).className.includes('right')) {
+        if (this.cells[start].className.includes('right')) {
             return;
         }
 
         for (let i = 1; i < cellAmount + 1; i += 1) {
-            const calcExp = activePos + i * (boardSize + 1);
+            const calcExp = start + i * (boardSize + 1);
             if (calcExp >= boardSize ** 2) {
                 return;
             }
 
-            const cell = this.getCell(calcExp);
+            const cell = this.cells[calcExp];
             positions.add(calcExp);
             toAuxDb.push(calcExp);
             if (!cell.className.includes('center')) {
@@ -215,4 +230,3 @@ export function calcPossiblePositions(cellAmount) {
         toMainDb, toMainDt, toAuxDb, toAuxDt,
     };
 }
-

@@ -2,7 +2,7 @@ import Team from './Team';
 import GamePlay from './GamePlay';
 import gameState from './gameState';
 import cursors from './cursors';
-import { calcPossiblePositions } from './utils';
+
 
 export default class GameController {
     constructor(gamePlay, stateService) {
@@ -24,6 +24,7 @@ export default class GameController {
     onCellEnter(index) {
         const cell = this.getCell(index);
         const charData = this.getChar(cell);
+        const { activePos } = gameState;
 
         this.gamePlay.setCursor(cursors.pointer);
 
@@ -39,8 +40,8 @@ export default class GameController {
             }
         }
 
-        if (!charData && typeof gameState.activePos === 'number') {
-            const posObj = this.getActiveCharPositions('moveRange');
+        if (!charData && typeof activePos === 'number') {
+            const posObj = this.gamePlay.getPositions('moveRange', activePos);
             console.log(posObj.toMainDb);
 
             if (posObj.positions.some((position) => position === index)) {
@@ -48,8 +49,8 @@ export default class GameController {
             }
         }
 
-        if (charData.turn === 'AI' && typeof gameState.activePos === 'number') {
-            const posObj = this.getActiveCharPositions('attackRange');
+        if (charData.turn === 'AI' && typeof activePos === 'number') {
+            const posObj = this.gamePlay.getPositions('attackRange', activePos);
 
             if (posObj.positions.some((position) => position === index)) {
                 this.gamePlay.setCursor(cursors.crosshair);
@@ -59,7 +60,7 @@ export default class GameController {
             this.gamePlay.setCursor(cursors.notallowed);
         }
 
-        if (charData.turn === 'AI' && typeof gameState.activePos !== 'number') {
+        if (charData.turn === 'AI' && typeof activePos !== 'number') {
             this.gamePlay.setCursor(cursors.notallowed);
         }
     }
@@ -83,7 +84,7 @@ export default class GameController {
         const charData = this.getChar(cell);
 
         if (!charData && typeof activePos === 'number') {
-            const posObj = this.getActiveCharPositions('moveRange');
+            const posObj = this.gamePlay.getPositions('moveRange', activePos);
 
             if (posObj.positions.some((position) => position === index)) {
                 this.clearDataset(activePos);
@@ -100,8 +101,8 @@ export default class GameController {
             return;
         }
 
-        if (charData.turn !== turn && typeof activePos === 'number') {
-            const posObj = this.getActiveCharPositions('attackRange');
+        if (charData.turn !== "player" && typeof activePos === 'number') {
+            const posObj = this.gamePlay.getPositions('attackRange', activePos);
             const activeChar = this.getChar(this.getCell(activePos));
 
             if (posObj.positions.some((position) => position === index)) {
@@ -128,9 +129,9 @@ export default class GameController {
         const charData = this.getChar(cell);
         const { turn, position } = charData;
         let { activePos } = gameState;
-
+        
         if (turn === 'AI') {
-            GamePlay.showError('that is not character in your team');
+            alert('that is not character in your team');
             return;
         }
 
@@ -146,14 +147,9 @@ export default class GameController {
         gameState.activePos = activePos;
     }
 
-
-    
-    getActiveCharPositions(rangeParam) {
-        const activeCell = this.getCell(gameState.activePos);
-        const charData = this.getChar(activeCell);
-
-        return calcPossiblePositions.call(this, charData[rangeParam]);
-    }
+    // initAI() {
+    //     SayHello.call(this);
+    // }
 
     clearDataset(position) {
         const cell = this.getCell(position);
