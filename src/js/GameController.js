@@ -1,8 +1,6 @@
 import Team from './Team';
-import GamePlay from './GamePlay';
 import gameState from './gameState';
 import cursors from './cursors';
-
 
 export default class GameController {
     constructor(gamePlay, stateService) {
@@ -30,19 +28,18 @@ export default class GameController {
 
         if (charData) {
             if (cell.lastElementChild.className === 'tooltip') {
-                GamePlay.showCellTooltip(cell);
+                this.gamePlay.showCellTooltip(cell);
             } else {
                 const { level, attack, defence, health } = charData;
                 const codes = ['0x1f396', '0x2694', '0x1f6e1', '0x2764'].map((code) => String.fromCodePoint(code));
                 const [lPic, aPic, dPic, hPic] = codes;
 
-                GamePlay.createToolTip(`${lPic} ${level} ${aPic} ${attack} ${dPic} ${defence} ${hPic} ${health}`, cell);
+                this.gamePlay.createToolTip(`${lPic} ${level} ${aPic} ${attack} ${dPic} ${defence} ${hPic} ${health}`, cell);
             }
         }
 
         if (!charData && typeof activePos === 'number') {
             const posObj = this.gamePlay.getPositions('moveRange', activePos);
-            console.log(posObj.toMainDb);
 
             if (posObj.positions.some((position) => position === index)) {
                 this.gamePlay.selectCell(index, 'green');
@@ -52,6 +49,7 @@ export default class GameController {
         if (charData.turn === 'AI' && typeof activePos === 'number') {
             const posObj = this.gamePlay.getPositions('attackRange', activePos);
 
+            console.log(posObj.positions);
             if (posObj.positions.some((position) => position === index)) {
                 this.gamePlay.setCursor(cursors.crosshair);
                 this.gamePlay.selectCell(index, 'red');
@@ -70,7 +68,7 @@ export default class GameController {
         const cell = this.getCell(index);
 
         if (cell.title) {
-            GamePlay.hideCellTooltip(cell);
+            this.gamePlay.hideCellTooltip(cell);
         }
         if (cell.className.includes('green') || cell.className.includes('red')) {
             this.gamePlay.deselectCell(index);

@@ -1,11 +1,10 @@
 /**
  * Entry point of app: don't change this
  */
-import GamePlay from './GamePlay';
+import gamePlay from './gamePlay';
 import GameController from './GameController';
 import GameStateService from './GameStateService';
 
-const gamePlay = new GamePlay();
 gamePlay.bindToDOM(document.querySelector('#game-container'));
 
 const stateService = new GameStateService(localStorage);
@@ -17,3 +16,4 @@ gameCtrl.init();
 import defenceChar from './logicAI';
 
 defenceChar.call(gameCtrl);
+

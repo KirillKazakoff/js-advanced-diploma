@@ -1,4 +1,5 @@
-import GamePlay from './GamePlay';
+import gamePlay from './gamePlay';
+
 import { getRandomInt } from './utilsSec';
 import {
     Bowman, Swordsman, Magician, Daemon, Vampire, Undead,
@@ -52,7 +53,6 @@ export default function generateTeam(maxLevel, characterCount, turn) {
     }
 
     const generatePosition = positionGenerator();
-    const gameplay = new GamePlay();
-    const positionedChars = team.map((character) => generatePosition.bind(gameplay)(character));
+    const positionedChars = team.map((character) => generatePosition.bind(gamePlay)(character));
     return positionedChars;
 }

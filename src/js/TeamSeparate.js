@@ -1,3 +1,5 @@
+import gamePlay from "./gamePlay";
+
 export default class TeamSeparate {
     constructor(team) {
         this.team = team;
@@ -17,5 +19,10 @@ export default class TeamSeparate {
         return this.team.map((char) => char.position);
     }
       
-
+    getAttackPositions() {
+        return this.getCharPositions().reduce((total, position) => {
+            total.push(gamePlay.getPositions('attackRange', position).positions);
+            return total;
+        }, []);
+    }
 }
