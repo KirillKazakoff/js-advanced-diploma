@@ -13,7 +13,8 @@ const gameCtrl = new GameController(gamePlay, stateService);
 gameCtrl.init();
 
 // don't write your code here
-import defenceChar from './logicAI';
+import turnAI from './logicAI';
 
-defenceChar.call(gameCtrl);
+turnAI();
+
 

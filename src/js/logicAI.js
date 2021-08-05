@@ -1,21 +1,21 @@
-import gamePlay from "./gamePlay";
 import Team from "./Team";
 import TeamSeparate from "./TeamSeparate";
 
 const teamAI = new TeamSeparate(Team.getTeam('AI'));
 const teamPlayer = new TeamSeparate(Team.getTeam('player'));
 
-const defender = teamAI.getHighestPropChar('defence');
-const attacker = teamAI.getHighestPropChar('attack');
-const target = teamPlayer.getLowestPropChar('defence');
+// const defender = getHighestPropChar('defence', teamAI);
+// const attacker = getHighestPropChar('attack', teamAI);
+// const target = getLowestPropChar('defence', teamPlayer);
 
-export default function defenceChar() {
-    const { positions: movePositions } = this.gamePlay.getPositions('moveRange', defender.position);
-    const { positions: attackPositions } = this.gamePlay.getPositions('attackRange', defender.position);
-    console.log(movePositions, attackPositions);
-    console.log(teamPlayer.getAttackPositions());
+export default function turnAI() {
+    
 }
 
-// export default function test() {
-//     console.log(gamePlay)
-// }
+
+
+function chooseAttackPos() {
+    const possiblePos = teamAI.calcPossibleAttackPos(teamPlayer);
+    
+}
+
