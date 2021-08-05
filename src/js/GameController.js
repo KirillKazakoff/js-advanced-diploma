@@ -1,5 +1,7 @@
-import Team from './Team';
+import TeamCommon from './TeamCommon';
 import gameState from './gameState';
+import generateTeam from './generators';
+
 import cursors from './cursors';
 
 export default class GameController {
@@ -11,7 +13,9 @@ export default class GameController {
     init() {
         gameState.from({ turn: 'player', level: 2 });
         this.gamePlay.drawUi('prairie');
-        this.gamePlay.redrawPositions(Team.teams);
+
+        this.initTeams();
+        this.gamePlay.redrawPositions(this.gamePlay.teams.characters);
 
         this.gamePlay.addCellEnterListener((index) => this.onCellEnter(index));
         this.gamePlay.addCellLeaveListener((index) => this.onCellLeave(index));
@@ -80,14 +84,15 @@ export default class GameController {
         let { activePos, turn } = gameState;
         const cell = this.getCell(index);
         const charData = this.getChar(cell);
+        const { teams } = this.gamePlay
 
         if (!charData && typeof activePos === 'number') {
             const posObj = this.gamePlay.getPositions('moveRange', activePos);
 
             if (posObj.positions.some((position) => position === index)) {
                 this.clearDataset(activePos);
-                Team.moveActiveChar(index);
-                this.gamePlay.redrawPositions(Team.teams);
+                teams.moveActiveChar(index);
+                this.gamePlay.redrawPositions(teams.characters);
 
                 this.gamePlay.deselectCell(index);
                 this.gamePlay.selectCell(index, 'yellow');
@@ -105,12 +110,12 @@ export default class GameController {
 
             if (posObj.positions.some((position) => position === index)) {
                 this.gamePlay.showDamage(index, activeChar.attack).then(() => {
-                    const result = Team.attackChar(index);
+                    const result = teams.attackChar(index);
                     if (result === 'killed') {
                         this.clearDataset(index);
                         this.gamePlay.deselectCell(index);
                     }
-                    this.gamePlay.redrawPositions(Team.teams);
+                    this.gamePlay.redrawPositions(teams.characters);
                 });
                 return;
             }
@@ -145,9 +150,9 @@ export default class GameController {
         gameState.activePos = activePos;
     }
 
-    // initAI() {
-    //     SayHello.call(this);
-    // }
+    initTeams() {
+        this.gamePlay.teams = new TeamCommon(generateTeam(2, 3, 'player'), generateTeam(2, 3, 'AI'));
+    }
 
     clearDataset(position) {
         const cell = this.getCell(position);

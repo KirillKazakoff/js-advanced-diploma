@@ -3,13 +3,16 @@
 import { calcHealthLevel, calcTileType, calcPossiblePositions, getCellCoords } from './utilsSec';
 
 export default {
-    boardSize: 4,
+    boardSize: 5,
     container: null,
     boardEl: null,
     cells: [],
+    teams: [],
+
     cellClickListeners: [],
     cellEnterListeners: [],
     cellLeaveListeners: [],
+
     newGameListeners: [],
     saveGameListeners: [],
     loadGameListeners: [],
@@ -174,7 +177,6 @@ export default {
     hideCellTooltip(cell) {
         cell.lastElementChild.classList.remove('tooltip-active');
     },
-    
 
     showDamage(index, damage) {
         return new Promise((resolve) => {
@@ -208,6 +210,10 @@ export default {
         catch {
             return false;
         }
+    },
+
+    getTeam(turn) {
+        return this.teams.characters.filter((character) => character.turn === turn);
     },
 
     getPositions(rangeParam, startPos) {

@@ -1,42 +1,43 @@
-import generateTeam from "./generators";
-import gameState from "./gameState";
+import gamePlay from "./gamePlay";
+import TeamCommon from "./TeamCommon";
 
-const teamPlayer = generateTeam(2, 3, 'player');
-const teamAI = generateTeam(2, 3, 'AI');
-const teams = [...teamPlayer, ...teamAI];
-
-export default {
-    teams, 
-
-    moveActiveChar(position) {
-        const activeChar = this.getTeamChar(gameState.activePos);
-        this.deleteChar(activeChar);
-
-        activeChar.position = position;
-        teams.push(activeChar);
-    },
-
-    attackChar(position) {
-        const attacker = this.getTeamChar(gameState.activePos);
-        const target = this.getTeamChar(position);
-
-        target.health -= Math.max(attacker.attack - target.defence, attacker.attack * 0.1);
-        if (target.health < 0) {
-            this.deleteChar(target); 
-            return 'killed';
-        }
-    },
-
-    getTeamChar(position) {
-        return teams.find((character) => character.position === position);
-    },
-
-    deleteChar(delChar) {
-        const index = teams.findIndex((character) => character.position === delChar.position);
-        teams.splice(index, 1);
-    },
-
-    getTeam(turn) {
-        return teams.filter((character) => character.turn === turn);
+export default class Team extends TeamCommon {
+    getCharPositions() {
+        return this.characters.map((char) => char.position);
     }
- }
+
+    getAttackPositions() {
+        return this.getCharPositions().reduce((total, position) => {
+            total.push(gamePlay.getPositions('attackRange', position).positions);
+            return total;
+        }, []);
+    }
+
+    calcPossibleAttackPos(enemy) {
+        const attackPositions = this.getAttackPositions();
+        const defencePositions = enemy.getCharPositions();
+    
+        return defencePositions.reduce((total, defPosition) => {
+            attackPositions.forEach((attackArr) => {
+                if (attackArr.some((atPosition) => atPosition === defPosition)) {
+                    total.push([attackArr[0], defPosition]);
+                }    
+            })
+            return total;
+        }, []);
+    }
+
+    getPossibleAttackPos(enemy) {
+        const allPositions = this.calcPossibleAttackPos(enemy);
+        const enemyPositions = allPositions.map((posArray) => posArray[1]);
+        return enemyPositions;
+    }
+
+    getChars(positions) {
+        return positions.reduce((total, position) => {
+            const char = this.getTeamChar(position);
+            total.push(char);
+            return total;
+        }, [])
+    }
+}

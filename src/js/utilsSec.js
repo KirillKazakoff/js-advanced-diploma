@@ -230,3 +230,6 @@ export function calcPossiblePositions(cellAmount, start) {
         toMainDb, toMainDt, toAuxDb, toAuxDt,
     };
 }
+
+
+
