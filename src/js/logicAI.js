@@ -11,25 +11,28 @@ export default function turnAI() {
     teamAI = new Team(gamePlay.getTeam('AI'));
     teamPl = new Team(gamePlay.getTeam('player'));
 
-    const weakestPl = getWeakestCharInWarZone('player');
-    const weakestAI = getWeakestCharInWarZone('AI');
-
-    console.log(weakestAI);
-    console.log(weakestPl);
-    console.log(teamAI.calcPossibleAttackPos(teamPl));
+    const decision = teamAI.decide(teamPl);
+    console.log(decision);
+    
+    
 }
 
-function getWeakestCharInWarZone(turn) {
-    defineTeams(turn);
-    const possiblePos = attackTeam.getPossibleAttackPos(defenceTeam);
-    const possibleChars = defenceTeam.getChars(possiblePos);
 
-    return getLowestPropChar('defence', possibleChars);
+function weakestStrategy() {
+    const weakestPl = teamAI.getBestVictim(teamPl);
+    const attacker = teamAI.getBestAttacker(weakestPl, teamPl);
+
+    console.log(weakestPl);
+    console.log(attacker);
+}
+
+function moveStrategy() {
+    // find the most defended and move to fight with him
 }
 
 function isInAffectedArea(char, turn) {
     defineTeams(turn);
-    const possiblePos = attackTeam.getPossibleAttackPos(defenceTeam);
+    const possiblePos = attackTeam.getAttackPos(defenceTeam);
 
     if (possiblePos.some((position) => position === char.position)) {
         return true;
@@ -42,13 +45,5 @@ function defineTeams(turn) {
     attackTeam = turn === "player" ? teamAI : teamPl;
 }
 
-function getHighestPropChar(prop, arr) {
-    arr.sort((a, b) => b[prop] - a[prop]);
-    return arr[0];
-}
 
-function getLowestPropChar(prop, arr) {
-    arr.sort((a, b) => a[prop] - b[prop]);
-    return arr[0];
-}
 
