@@ -11,9 +11,8 @@ export default function turnAI() {
     teamAI = new Team(gamePlay.getTeam('AI'));
     teamPl = new Team(gamePlay.getTeam('player'));
 
-    const decision = teamAI.decide(teamPl);
-    console.log(decision);
-    
+    teamAI.decide(teamPl);
+    // console.log(gamePlay.teams.characters);
     
 }
 
@@ -24,6 +23,7 @@ function weakestStrategy() {
 
     console.log(weakestPl);
     console.log(attacker);
+
 }
 
 function moveStrategy() {

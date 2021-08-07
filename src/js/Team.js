@@ -1,4 +1,5 @@
 import gamePlay from "./gamePlay";
+import gameState from "./gameState";
 import TeamCommon from "./TeamCommon";
 import { getMoveRange, getHighestPropChar, getLowestPropChar, setify } from "./auxTeam";
 
@@ -29,56 +30,6 @@ export default class Team extends TeamCommon {
 
 
 
-    getClearZone(movePos, dangerousPos) {
-        const friendChars = this.getCharsPositions();
-
-        const clearPos = movePos.reduce((total, mPosition) => {
-            if (!dangerousPos.some((dPosition) => dPosition === mPosition)) {
-                total.push(mPosition);
-            }
-            return setify(total);
-        }, [])
-
-        return clearPos.reduce((total, pos) => {
-            if (!friendChars.some((friendPos) => friendPos === pos)) {
-                total.push(pos);
-            }
-            return total;
-        }, []);
-    }
-
-    moveOnBestPos(clearPos, charPos, enemy) {
-        if (clearPos[0]) {
-            let prevPos = charPos;
-            const victimsArr = [];
-
-            clearPos.forEach((position) => {
-                this.setTeamCharPos(prevPos, position);
-                victimsArr.push(this.getBestVictim(enemy));
-                prevPos = position;
-            });
-            this.setTeamCharPos(prevPos, charPos);
-            console.log(victimsArr);
-        }
-    }
-
-    decide(enemy) {
-        const dangerousPos = enemy.getAttackRange();
-
-        const charsInWarZone = enemy.getAttackPos(this);
-        console.log(charsInWarZone);
-        // charsInWarZone - forEach ...
-        if (charsInWarZone.length === 1) {
-            const charPos = charsInWarZone[0];
-            const movePos = getMoveRange(charPos);
-            const clearPos = this.getClearZone(movePos, dangerousPos);
-            console.log(clearPos);
-            this.moveOnBestPos(clearPos, charPos, enemy);
-        }
-        else return 'should do something else';
-    }
-
-
 
 
     getAttackPairs() {
@@ -105,10 +56,8 @@ export default class Team extends TeamCommon {
     getAttackPos(enemy) {
         const allPositions = this.getPairsInWarZone(enemy);
         const enemyPositions = allPositions.map((posArray) => posArray[1]);
-        const myPositions = allPositions.map((posArray) => posArray[0]);    
-        
-        console.log(myPositions);
-        if (!enemyPositions[0]) {
+
+        if (typeof enemyPositions[0] !== 'number') {
             return 0;
         }
 
@@ -130,7 +79,7 @@ export default class Team extends TeamCommon {
             return getLowestPropChar('defence', victims);
         }
         catch {
-            return
+            return 0;
         }
     }
 
@@ -153,7 +102,6 @@ export default class Team extends TeamCommon {
         return getHighestPropChar('attack', attackerChars);
     }
 
-
     getChars(positions) {
         return positions.reduce((total, position) => {
             const char = this.getTeamChar(position);
@@ -163,4 +111,107 @@ export default class Team extends TeamCommon {
     }
 
 
+
+
+
+
+    getClearZone(position, enemy) {
+        const friendChars = this.getCharsPositions();
+        const dangerousPos = enemy.getAttackRange();
+        const movePos = getMoveRange(position);
+
+        const clearPos = movePos.reduce((total, mPosition) => {
+            if (!dangerousPos.some((dPosition) => dPosition === mPosition)) {
+                total.push(mPosition);
+            }
+            return setify(total);
+        }, [])
+
+        return clearPos.reduce((total, pos) => {
+            if (!friendChars.some((friendPos) => friendPos === pos)) {
+                total.push(pos);
+            }
+            return total;
+        }, []);
+    }
+
+    giveControlAI(callback) {
+        const playerState = gameState.activePos;
+
+        callback();
+        gameState.activePos = playerState;
+    }
+
+    checkBestPos(clearPos, charPos, enemy) {
+        if (clearPos[0]) {
+            let prevPos = charPos;
+            const victimsArr = [];
+
+            clearPos.forEach((position) => {
+                gameState.activePos = prevPos;
+                this.moveActiveChar(position);
+                const victim = this.getBestVictim(enemy);
+
+                if (victim) {
+                    const victimInfo = {
+                        ...victim,
+                        attacker: position,
+                    }
+                    victimsArr.push(victimInfo);
+                }
+                prevPos = position;
+            });
+            gameState.activePos = prevPos;
+            this.moveActiveChar(charPos);
+
+            const result = getLowestPropChar('defence', victimsArr);
+            console.log(result);
+        }
+    }
+
+    check(position, enemy) {
+        const clearPos = this.getClearZone(position, enemy);
+
+        return this.checkBestPos(clearPos, position, enemy);
+    }
+
+    decide(enemy) {
+        const charsInWz = enemy.getAttackPos(this);
+        const enemiesInWz = this.getAttackPos(enemy);
+        
+        console.log(charsInWz);
+        this.giveControlAI(() => {
+
+            if (charsInWz.length === 1) {
+                this.check(charsInWz[0], enemy);
+                return;
+            }
+            if (enemiesInWz) {
+                const victim = this.getBestVictim(enemy);
+                const attacker = this.getBestAttacker(victim, enemy);
+                gameState.activePos = attacker.position;
+                gamePlay.teams.attackChar(victim.position);
+                return;
+            }
+            if (!charsInWz) {
+                const attacker = getHighestPropChar('attack', this.characters);
+                this.check(attacker.position, enemy);
+            }
+            if (charsInWz && !enemiesInWz) {
+                const chars = this.getChars(charsInWz);
+                const weakestPos = getLowestPropChar('defence', chars).position;
+                const clearPos = this.getClearZone(weakestPos, enemy);
+
+                if (clearPos.length > 0) {
+                    gameState.activePos = weakestPos;
+                    this.moveActiveChar(clearPos[0]);
+                }
+            }
+            else return 'should do something else';
+        })
+
+    }
+
 }
+
+

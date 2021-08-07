@@ -223,4 +223,10 @@ export default {
         return calcPossiblePositions.call(this, charData[rangeParam], startPos);
     },
 
+    clearDataset(position) {
+        const cell = this.cells[position];
+        delete cell.dataset.charData;
+        cell.title = '';
+    },
+
 }

@@ -1,4 +1,5 @@
 import gameState from "./gameState";
+import gamePlay from "./gamePlay";
 
 export default class TeamCommon {
     constructor(...teams) {
@@ -9,11 +10,13 @@ export default class TeamCommon {
     }
 
     moveActiveChar(position) {
+        gamePlay.clearDataset(gameState.activePos);
         const activeChar = this.getTeamChar(gameState.activePos);
         this.deleteChar(activeChar);
 
         activeChar.position = position;
         this.characters.push(activeChar);
+        gamePlay.redrawPositions(gamePlay.teams.characters);
     }
 
     attackChar(position) {
@@ -23,8 +26,10 @@ export default class TeamCommon {
         target.health -= Math.max(attacker.attack - target.defence, attacker.attack * 0.1);
         if (target.health < 0) {
             this.deleteChar(target); 
-            return 'killed';
+            gamePlay.clearDataset(position);
+            gamePlay.deselectCell(position);
         }
+        gamePlay.redrawPositions(gamePlay.teams.characters);
     }
 
     getTeamChar(position) {
