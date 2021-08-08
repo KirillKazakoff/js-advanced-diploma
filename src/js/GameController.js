@@ -4,7 +4,7 @@ import generateTeam from './generators';
 
 import cursors from './cursors';
 import testData from './classes/testData';
-import turnToAI from './logicAI';
+import TeamLogicAI from './TeamLogicAI';
 
 export default class GameController {
     constructor(gamePlay, stateService) {
@@ -80,9 +80,9 @@ export default class GameController {
         }
     }
 
-    
+
     onCellClick(index) {
-        let { activePos, turn } = gameState;
+        let { activePos } = gameState;
         const cell = this.getCell(index);
         const charData = this.getChar(cell);
         const { teams } = this.gamePlay
@@ -99,21 +99,18 @@ export default class GameController {
                 this.gamePlay.deselectCell(activePos);
 
                 gameState.activePos = index;
-                turnToAI();
+                this.turnAI();
             }
             return;
         }
 
         if (charData.turn !== "player" && typeof activePos === 'number') {
             const posObj = this.gamePlay.getPositions('attackRange', activePos);
-            const activeChar = this.getChar(this.getCell(activePos));
 
             if (posObj.positions.some((position) => position === index)) {
-                this.gamePlay.showDamage(index, activeChar.attack)
-                    .then(() => teams.attackChar(index));
-
-                turnToAI();
-                return;
+                if (posObj.positions.some((position) => position === index)) {
+                    return teams.attackChar(index).then(() => this.turnAI());
+                }
             }
         }
 
@@ -128,7 +125,7 @@ export default class GameController {
         const charData = this.getChar(cell);
         const { turn, position } = charData;
         let { activePos } = gameState;
-        
+
         if (turn === 'AI') {
             alert('that is not character in your team');
             return;
@@ -150,8 +147,11 @@ export default class GameController {
         this.gamePlay.teams = new TeamCommon(generateTeam(2, 3, 'player'), generateTeam(2, 3, 'AI'));
     }
 
-    initTest() {
-        this.gamePlay.teams = new TeamCommon(testData);
+    turnAI() {
+        const teamAI = new TeamLogicAI(this.gamePlay.getTeam('AI'));
+        const teamPl = new TeamLogicAI(this.gamePlay.getTeam('player'));
+
+        teamAI.makeDecisionAI(teamPl);
     }
 
     clearDataset(position) {
@@ -171,5 +171,9 @@ export default class GameController {
         catch {
             return false;
         }
+    }
+
+    initTest() {
+        this.gamePlay.teams = new TeamCommon(testData);
     }
 }

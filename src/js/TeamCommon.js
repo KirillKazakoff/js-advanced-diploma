@@ -19,10 +19,11 @@ export default class TeamCommon {
         gamePlay.redrawPositions(gamePlay.teams.characters);
     }
 
-    attackChar(position) {
+    async attackChar(position) {
         const attacker = this.getTeamChar(gameState.activePos);
-        const target = this.getTeamChar(position);
+        await gamePlay.showDamage(position, attacker.attack);
 
+        const target = this.getTeamChar(position);
         target.health -= Math.max(attacker.attack - target.defence, attacker.attack * 0.1);
         if (target.health < 0) {
             this.deleteChar(target); 
@@ -30,6 +31,7 @@ export default class TeamCommon {
             gamePlay.deselectCell(position);
         }
         gamePlay.redrawPositions(gamePlay.teams.characters);
+        return;
     }
 
     getTeamChar(position) {

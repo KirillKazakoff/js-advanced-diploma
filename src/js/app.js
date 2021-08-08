@@ -13,8 +13,5 @@ const gameCtrl = new GameController(gamePlay, stateService);
 gameCtrl.init();
 
 // don't write your code here
-import turnAI from './logicAI';
-
-turnAI();
 
 
