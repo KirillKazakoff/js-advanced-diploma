@@ -1,14 +1,3 @@
-// export default class GameState {
-//     static from(object) {
-//         this.turn = object.turn;
-//         this.level = object.level;
-//         return null;
-//     }
-//     static setActive(position) {
-//         this.activePos = position
-//     }
-// }
-
 export default {
     turn: 'player',
     level: 1,

@@ -2,7 +2,7 @@ import gamePlay from "./gamePlay";
 import gameState from "./gameState";
 
 export function getMoveRange(position) {
-    return gamePlay.getPositions('moveRange', position);
+    return gamePlay.getPositions('moveRange', position).positions;
 }
 
 export function getHighestPropChar(prop, arr) {

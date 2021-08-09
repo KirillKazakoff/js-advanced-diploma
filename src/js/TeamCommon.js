@@ -12,7 +12,7 @@ export default class TeamCommon {
     getCharsPositions() {
         return this.characters.map((char) => char.position);
     }
-    
+
     moveActiveChar(position) {
         gamePlay.clearDataset(gameState.activePos);
         const activeChar = this.getTeamChar(gameState.activePos);
@@ -45,6 +45,7 @@ export default class TeamCommon {
     deleteChar(delChar) {
         const index = this.characters.findIndex((character) => character.position === delChar.position);
         this.characters.splice(index, 1);
+        gameState.activePos = null;
     }
 
     getTeam(turn) {

@@ -214,11 +214,11 @@ export default class GameController {
 
 
     getMoveRange(index) {
-        return this.gamePlay.getPositions('moveRange', index);
+        return this.gamePlay.getPositions('moveRange', index).positions;
     }
 
     getAttackRange(index) {
-        return this.gamePlay.getPositions('attackRange', index);
+        return this.gamePlay.getPositions('attackRange', index).positions;
     }
 
     clearDataset(index) {
