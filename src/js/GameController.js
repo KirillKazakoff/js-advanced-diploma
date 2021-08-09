@@ -19,11 +19,11 @@ export default class GameController {
         this.initTest();
         this.gamePlay.redrawPositions(this.gamePlay.teams.characters);
 
+        this.gamePlay.addCellUpListener(() => this.onCellUp());
+        this.gamePlay.addCellDownListener((index) => this.onCellDown(index));
         this.gamePlay.addCellEnterListener((index) => this.onCellEnter(index));
         this.gamePlay.addCellLeaveListener((index) => this.onCellLeave(index));
         this.gamePlay.addCellClickListener((index) => this.onCellClick(index));
-        this.gamePlay.addCellDownListener((index) => this.onCellDown(index));
-        this.gamePlay.addCellUpListener((index) => this.onCellUp(index));
     }
 
     onCellEnter(index) {
@@ -43,22 +43,20 @@ export default class GameController {
 
                 this.gamePlay.createToolTip(`${lPic} ${level} ${aPic} ${attack} ${dPic} ${defence} ${hPic} ${health}`, cell);
             }
-            this.highlightAttackRange(index);
-            gameState.isCellHovered = true;
         }
 
         if (!charData && typeof activePos === 'number') {
-            const posObj = this.gamePlay.getPositions('moveRange', activePos);
+            const positions = this.getMoveRange(activePos);
 
-            if (posObj.positions.some((position) => position === index)) {
+            if (positions.some((position) => position === index)) {
                 this.gamePlay.selectCell(index, 'green');
             }
         }
 
         if (charData.turn === 'AI' && typeof activePos === 'number') {
-            const posObj = this.gamePlay.getPositions('attackRange', activePos);
+            const positions = this.getAttackRange(activePos);
 
-            if (posObj.positions.some((position) => position === index)) {
+            if (positions.some((position) => position === index)) {
                 this.gamePlay.setCursor(cursors.crosshair);
                 this.gamePlay.selectCell(index, 'red');
                 return;
@@ -81,9 +79,8 @@ export default class GameController {
         if (cell.className.includes('green') || cell.className.includes('red')) {
             this.gamePlay.deselectCell(index);
         }
-        if (gameState.isCellHovered) {
-            console.log(gameState.isCellHovered);
-            const moveRange = this.gamePlay.getPositions('moveRange', index).positions;
+        if (gameState.isCellHolded) {
+            const moveRange = this.getMoveRange(index);
             moveRange.forEach((position) => this.gamePlay.deselectCell(position));
         }
     }
@@ -97,9 +94,9 @@ export default class GameController {
         const { teams } = this.gamePlay;
 
         if (!charData && typeof activePos === 'number') {
-            const posObj = this.gamePlay.getPositions('moveRange', activePos);
+            const positions = this.getMoveRange(activePos);
 
-            if (posObj.positions.some((position) => position === index)) {
+            if (positions.some((position) => position === index)) {
                 teams.moveActiveChar(index);
                 this.gamePlay.redrawPositions(teams.characters);
 
@@ -114,12 +111,10 @@ export default class GameController {
         }
 
         if (charData.turn !== "player" && typeof activePos === 'number') {
-            const posObj = this.gamePlay.getPositions('attackRange', activePos);
+            const positions = this.getAttackRange(activePos);
 
-            if (posObj.positions.some((position) => position === index)) {
-                if (posObj.positions.some((position) => position === index)) {
-                    return teams.attackChar(index).then(() => this.turnAI());
-                }
+            if (positions.some((position) => position === index)) {
+                return teams.attackChar(index).then(() => this.turnAI());
             }
         }
 
@@ -130,31 +125,58 @@ export default class GameController {
     }
 
     onCellDown(index) {
-        const chardata = this.gamePlay.getChar(this.getCell(index));
-        gameState.isCellHovered = true;
+        const chardata = this.getChar(this.getCell(index));
+        const { isRangeButton } = this.gamePlay;
+
         if (chardata) {
-            const moveRange = this.gamePlay.getPositions('moveRange', index).positions;
-            moveRange.forEach((position) => this.gamePlay.selectCell(position, 'green'));
+            this.highlightAttackRange(index, isRangeButton);
+            this.highlightMoveRange(index, isRangeButton);
+            gameState.isCellHolded = true;
         }
     }
 
-    onCellUp(index) {
-        const moveRange = this.gamePlay.getPositions('moveRange', index).positions;
-        moveRange.forEach((position) => this.gamePlay.deselectCell(position));
+    onCellUp() {
+        for (let i = 0; i < this.gamePlay.boardSize ** 2; i += 1) {
+            this.gamePlay.deselectCell(i);             
+        }
+        if (typeof gameState.activePos === 'number') {
+            this.gamePlay.selectCell(gameState.activePos, 'yellow');
+            gameState.isCellHolded = false;
+        }
     }
 
-    highlightAttackRange(index) {
-        if (this.gamePlay.getChar(this.getCell(index))) {
-            const attackRange = this.gamePlay.getPositions('attackRange', index).positions;
-            attackRange.forEach((position) => this.gamePlay.selectCell(position, 'red'));
+    highlightAttackRange(index, toggled) {
+        if (toggled) {
+            const attackRange = this.getAttackRange(index);
+            const resultRange = this.exceptChars(attackRange, index);
+
+            resultRange.forEach((position) => this.gamePlay.selectCell(position, 'red'));
         }
+    }
+
+    highlightMoveRange(index, toggled) {
+        if (!toggled) {
+            const moveRange = this.getMoveRange(index);
+            const resultRange = this.exceptChars(moveRange, index);
+
+            resultRange.forEach((position) => this.gamePlay.selectCell(position, 'green'));
+        }
+    }
+
+    exceptChars(range, index) {
+        return range.reduce((total, position) => {
+            if (position !== index) {
+                total.push(position);
+            }
+            return total;
+        }, []);
     }
 
     onPlayerCharClick(index) {
         const cell = this.getCell(index)
         const charData = this.getChar(cell);
         const { turn, position } = charData;
-        let { activePos, isCellHovered: isCellHolded } = gameState;
+        let { activePos, isCellHolded } = gameState;
 
         if (turn === 'AI') {
             return;
@@ -173,14 +195,9 @@ export default class GameController {
         if (isCellHolded) {
             this.gamePlay.selectCell(index, 'yellow');
             activePos = position;
-            gameState.isCellHovered = false;
+            gameState.isCellHolded = false;
         }
         gameState.activePos = activePos;
-    }
-
-
-    initTeams() {
-        this.gamePlay.teams = new TeamCommon(generateTeam(2, 3, 'player'), generateTeam(2, 3, 'AI'));
     }
 
     turnAI() {
@@ -190,10 +207,22 @@ export default class GameController {
         teamAI.makeDecisionAI(teamPl);
     }
 
-    clearDataset(position) {
-        const cell = this.getCell(position);
-        delete cell.dataset.charData;
-        cell.title = '';
+    initTeams() {
+        this.gamePlay.teams = new TeamCommon(generateTeam(2, 3, 'player'), generateTeam(2, 3, 'AI'));
+    }
+
+
+
+    getMoveRange(index) {
+        return this.gamePlay.getPositions('moveRange', index);
+    }
+
+    getAttackRange(index) {
+        return this.gamePlay.getPositions('attackRange', index);
+    }
+
+    clearDataset(index) {
+        this.gamePlay.clearDataset(index);
     }
 
     getCell(index) {
@@ -201,12 +230,7 @@ export default class GameController {
     }
 
     getChar(cell) {
-        try {
-            return JSON.parse(cell.dataset.charData);
-        }
-        catch {
-            return false;
-        }
+        return this.gamePlay.getChar(cell);
     }
 
     initTest() {

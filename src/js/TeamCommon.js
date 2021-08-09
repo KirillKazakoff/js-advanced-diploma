@@ -9,6 +9,10 @@ export default class TeamCommon {
         })
     }
 
+    getCharsPositions() {
+        return this.characters.map((char) => char.position);
+    }
+    
     moveActiveChar(position) {
         gamePlay.clearDataset(gameState.activePos);
         const activeChar = this.getTeamChar(gameState.activePos);

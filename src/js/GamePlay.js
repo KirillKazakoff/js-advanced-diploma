@@ -8,6 +8,7 @@ export default {
     boardEl: null,
     cells: [],
     teams: [],
+    isRangeButton: false,
 
     cellClickListeners: [],
     cellUpListeners: [],
@@ -44,10 +45,10 @@ export default {
         this.saveGameEl = this.container.querySelector('[data-id=action-save]');
         this.loadGameEl = this.container.querySelector('[data-id=action-load]');
 
+        document.addEventListener('keydown', (event) => this.onRangeSwitch(event));
         this.newGameEl.addEventListener('click', (event) => this.onNewGameClick(event));
         this.saveGameEl.addEventListener('click', (event) => this.onSaveGameClick(event));
         this.loadGameEl.addEventListener('click', (event) => this.onLoadGameClick(event));
-
         this.boardEl = this.container.querySelector('[data-id=board]');
 
         this.boardEl.classList.add(theme);
@@ -156,6 +157,12 @@ export default {
         });
     },
 
+
+    onRangeSwitch(event) {
+        if (event.key === 'r') {
+            this.isRangeButton = this.isRangeButton ? false : true;
+        }
+    },
 
     onNewGameClick(event) {
         event.preventDefault();

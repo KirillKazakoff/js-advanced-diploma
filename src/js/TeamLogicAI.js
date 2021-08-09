@@ -4,35 +4,17 @@ import TeamCommon from "./TeamCommon";
 import { getMoveRange, getHighestPropChar, getLowestPropChar, setify, attackFinally } from "./auxTeam";
 
 export default class TeamLogicAI extends TeamCommon {
-    setTeamCharPos(prevPos, nextPos) {
-        const index = this.characters.findIndex((character) => character.position === prevPos);
-        this.characters[index].position = nextPos;
-    }
-
-    getCharsPositions() {
-        return this.characters.map((char) => char.position);
-    }
-
-    getMoveObjs() {
+    getMoveRange() {
         return this.getCharsPositions().reduce((total, position) => {
-            total.push(gamePlay.getPositions('moveRange', position));
+            const positions = gamePlay.getPositions('moveRange', position);
+            total.push(...positions);
             return total;
         }, []);
     }
 
-    getMoveRange() {
-        return this.getMoveObjs().reduce((total, posObj) => {
-            const { positions } = posObj;
-            positions.forEach((position) => total.push(position));
-            return total;
-        }, [])
-    }
-
-
-
     getAttackPairs() {
         return this.getCharsPositions().reduce((total, position) => {
-            total.push(gamePlay.getPositions('attackRange', position).positions);
+            total.push(gamePlay.getPositions('attackRange', position));
             return total;
         }, []);
     }
@@ -64,7 +46,7 @@ export default class TeamLogicAI extends TeamCommon {
 
     getAttackRange() {
         return this.getCharsPositions().reduce((total, position) => {
-            const positions = gamePlay.getPositions('attackRange', position).positions;
+            const positions = gamePlay.getPositions('attackRange', position);
             total.push(...positions);
             return total;
         }, []);
@@ -222,7 +204,10 @@ export default class TeamLogicAI extends TeamCommon {
     }
 
 
-    
+
+
+
+
     makeDecisionAI(enemy) {
         const charsInWz = enemy.getAttackPos(this);
         const enemiesInWz = this.getAttackPos(enemy);
