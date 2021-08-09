@@ -22,7 +22,8 @@ export default class GameController {
         this.gamePlay.addCellEnterListener((index) => this.onCellEnter(index));
         this.gamePlay.addCellLeaveListener((index) => this.onCellLeave(index));
         this.gamePlay.addCellClickListener((index) => this.onCellClick(index));
-
+        this.gamePlay.addCellDownListener((index) => this.onCellDown(index));
+        this.gamePlay.addCellUpListener((index) => this.onCellUp(index));
     }
 
     onCellEnter(index) {
@@ -42,6 +43,8 @@ export default class GameController {
 
                 this.gamePlay.createToolTip(`${lPic} ${level} ${aPic} ${attack} ${dPic} ${defence} ${hPic} ${health}`, cell);
             }
+            this.highlightAttackRange(index);
+            gameState.isCellHovered = true;
         }
 
         if (!charData && typeof activePos === 'number') {
@@ -78,14 +81,20 @@ export default class GameController {
         if (cell.className.includes('green') || cell.className.includes('red')) {
             this.gamePlay.deselectCell(index);
         }
+        if (gameState.isCellHovered) {
+            console.log(gameState.isCellHovered);
+            const moveRange = this.gamePlay.getPositions('moveRange', index).positions;
+            moveRange.forEach((position) => this.gamePlay.deselectCell(position));
+        }
     }
+
 
 
     onCellClick(index) {
         let { activePos } = gameState;
         const cell = this.getCell(index);
         const charData = this.getChar(cell);
-        const { teams } = this.gamePlay
+        const { teams } = this.gamePlay;
 
         if (!charData && typeof activePos === 'number') {
             const posObj = this.gamePlay.getPositions('moveRange', activePos);
@@ -120,14 +129,34 @@ export default class GameController {
         }
     }
 
+    onCellDown(index) {
+        const chardata = this.gamePlay.getChar(this.getCell(index));
+        gameState.isCellHovered = true;
+        if (chardata) {
+            const moveRange = this.gamePlay.getPositions('moveRange', index).positions;
+            moveRange.forEach((position) => this.gamePlay.selectCell(position, 'green'));
+        }
+    }
+
+    onCellUp(index) {
+        const moveRange = this.gamePlay.getPositions('moveRange', index).positions;
+        moveRange.forEach((position) => this.gamePlay.deselectCell(position));
+    }
+
+    highlightAttackRange(index) {
+        if (this.gamePlay.getChar(this.getCell(index))) {
+            const attackRange = this.gamePlay.getPositions('attackRange', index).positions;
+            attackRange.forEach((position) => this.gamePlay.selectCell(position, 'red'));
+        }
+    }
+
     onPlayerCharClick(index) {
         const cell = this.getCell(index)
         const charData = this.getChar(cell);
         const { turn, position } = charData;
-        let { activePos } = gameState;
+        let { activePos, isCellHovered: isCellHolded } = gameState;
 
         if (turn === 'AI') {
-            alert('that is not character in your team');
             return;
         }
 
@@ -140,8 +169,15 @@ export default class GameController {
         } else {
             activePos = position;
         }
+
+        if (isCellHolded) {
+            this.gamePlay.selectCell(index, 'yellow');
+            activePos = position;
+            gameState.isCellHovered = false;
+        }
         gameState.activePos = activePos;
     }
+
 
     initTeams() {
         this.gamePlay.teams = new TeamCommon(generateTeam(2, 3, 'player'), generateTeam(2, 3, 'AI'));

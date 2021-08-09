@@ -10,6 +10,8 @@ export default {
     teams: [],
 
     cellClickListeners: [],
+    cellUpListeners: [],
+    cellDownListeners: [],
     cellEnterListeners: [],
     cellLeaveListeners: [],
 
@@ -56,6 +58,9 @@ export default {
             cellEl.addEventListener('mouseenter', (event) => this.onCellEnter(event));
             cellEl.addEventListener('mouseleave', (event) => this.onCellLeave(event));
             cellEl.addEventListener('click', (event) => this.onCellClick(event));
+
+            cellEl.addEventListener('mousedown', (event) => this.onCellDown(event));
+            cellEl.addEventListener('mouseup', (event) => this.onCellUp(event));
             this.boardEl.appendChild(cellEl);
         }
 
@@ -106,10 +111,19 @@ export default {
         this.cellClickListeners.push(callback);
     },
 
+    addCellDownListener(callback) {
+        this.cellDownListeners.push(callback);
+    },
+
+    addCellUpListener(callback) {
+        this.cellUpListeners.push(callback);
+    },
+
     addCellEnterListener(callback) {
         this.cellEnterListeners.push(callback);
     },
 
+    
     onCellEnter(event) {
         event.preventDefault();
         const index = this.cells.indexOf(event.currentTarget);
@@ -119,13 +133,29 @@ export default {
     onCellLeave(event) {
         event.preventDefault();
         const index = this.cells.indexOf(event.currentTarget);
-        this.cellLeaveListeners.forEach((o) => o.call(null, index));
+        this.cellLeaveListeners.forEach((listener) => listener(index));
     },
 
     onCellClick(event) {
         const index = this.cells.indexOf(event.currentTarget);
-        this.cellClickListeners.forEach((o) => o.call(null, index));
+        this.cellClickListeners.forEach((listener) => listener(index));
     },
+
+    onCellDown(event) {
+        const index = this.cells.indexOf(event.currentTarget);
+        this.cellDownListeners.forEach((listener) => {
+            this.timer = setTimeout(() => listener(index), 500);
+        });
+    },
+
+    onCellUp(event) {
+        const index = this.cells.indexOf(event.currentTarget);
+        this.cellUpListeners.forEach((listener) => {
+            clearTimeout(this.timer);
+            listener(index);
+        });
+    },
+
 
     onNewGameClick(event) {
         event.preventDefault();

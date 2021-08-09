@@ -1,6 +1,3 @@
-/**
- * Entry point of app: don't change this
- */
 import gamePlay from './gamePlay';
 import GameController from './GameController';
 import GameStateService from './GameStateService';
