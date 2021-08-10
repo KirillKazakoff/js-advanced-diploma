@@ -1,190 +1,23 @@
-import gamePlay from "../gamePlay";
 import TeamCommon from '../TeamCommon';
-import { Swordsman, Magician, Bowman, Vampire, Undead, Daemon } from '../classes/importAll';
+import { Magician, Vampire, Daemon, Bowman } from './importAll';
 
-gamePlay.boardSize = 7;
+const bowman1 = new Bowman(3);
+const magician1 = new Magician(3);
+const vampire1 = new Vampire(3);
+const daemon1 = new Daemon(3);
+
+bowman1.position = 0;
+magician1.position = 7;
+vampire1.position = 6;
+daemon1.position = 13;
+
+bowman1.turn = 'player';
+magician1.turn = 'player';
+vampire1.turn = 'AI';
+daemon1.turn = 'AI';
+
 const data1 = new TeamCommon([
-    {
-        attack: 40,
-        attackRange: 1,
-        defence: 10,
-        health: 50,
-        level: 1,
-        moveRange: 4,
-        position: 0,
-        turn: 'player',
-        type: 'swordsman',
-    },
-    {
-        attack: 10,
-        attackRange: 4,
-        defence: 40,
-        health: 50,
-        level: 2,
-        moveRange: 1,
-        position: 11,
-        turn: 'player',
-        type: 'magician',
-    },
-    {
-        attack: 40,
-        attackRange: 1,
-        defence: 10,
-        health: 50,
-        level: 2,
-        moveRange: 4,
-        position: 22,
-        turn: 'player',
-        type: 'swordsman',
-    },
-    {
-        attack: 25,
-        attackRange: 2,
-        defence: 25,
-        health: 50,
-        level: 2,
-        moveRange: 2,
-        position: 3,
-        turn: 'AI',
-        type: 'vampire',
-    },
-    {
-        attack: 25,
-        attackRange: 2,
-        defence: 40,
-        health: 50,
-        level: 2,
-        moveRange: 2,
-        position: 13,
-        turn: 'AI',
-        type: 'vampire',
-    }
-]).characters;
+    bowman1, magician1, vampire1, daemon1,
+]);
 
-const data2 = new TeamCommon([
-    {
-        attack: 40,
-        attackRange: 1,
-        defence: 10,
-        health: 50,
-        level: 1,
-        moveRange: 4,
-        position: 0,
-        turn: 'player',
-        type: 'swordsman',
-    },
-    {
-        attack: 10,
-        attackRange: 4,
-        defence: 40,
-        health: 50,
-        level: 2,
-        moveRange: 1,
-        position: 4,
-        turn: 'player',
-        type: 'magician',
-    },
-    {
-        attack: 40,
-        attackRange: 1,
-        defence: 10,
-        health: 50,
-        level: 2,
-        moveRange: 4,
-        position: 22,
-        turn: 'player',
-        type: 'swordsman',
-    },
-    {
-        attack: 25,
-        attackRange: 2,
-        defence: 25,
-        health: 50,
-        level: 2,
-        moveRange: 2,
-        position: 10,
-        turn: 'AI',
-        type: 'vampire',
-    },
-    {
-        attack: 25,
-        attackRange: 2,
-        defence: 40,
-        health: 50,
-        level: 2,
-        moveRange: 2,
-        position: 13,
-        turn: 'AI',
-        type: 'vampire',
-    }
-]).characters;
-
-const data3 = new TeamCommon([
-    {
-        attack: 25,
-        attackRange: 2,
-        defence: 12,
-        health: 50,
-        level: 1,
-        moveRange: 2,
-        position: 0,
-        turn: 'player',
-        type: 'bowman',
-    },
-    {
-        attack: 10,
-        attackRange: 4,
-        defence: 20,
-        health: 50,
-        level: 2,
-        moveRange: 1,
-        position: 7,
-        turn: 'player',
-        type: 'magician',
-    },
-    {
-        attack: 25,
-        attackRange: 2,
-        defence: 12,
-        health: 50,
-        level: 2,
-        moveRange: 2,
-        position: 22,
-        turn: 'player',
-        type: 'bowman',
-    },
-    {
-        attack: 25,
-        attackRange: 2,
-        defence: 12,
-        health: 50,
-        level: 2,
-        moveRange: 2,
-        position: 6,
-        turn: 'AI',
-        type: 'vampire',
-    },
-    {
-        attack: 25,
-        attackRange: 2,
-        defence: 12,
-        health: 50,
-        level: 2,
-        moveRange: 2,
-        position: 20,
-        turn: 'AI',
-        type: 'vampire',
-    },
-    {
-        attack: 10,
-        attackRange: 4,
-        defence: 20,
-        health: 50,
-        level: 2,
-        moveRange: 1,
-        position: 13,
-        turn: 'AI',
-        type: 'daemon',
-    },
-]).characters;
-export default data3;
+export default data1;

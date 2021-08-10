@@ -4,23 +4,6 @@ import TeamCommon from "./TeamCommon";
 import { getMoveRange, getHighestPropChar, getLowestPropChar, setify, attackFinally } from "./auxTeam";
 
 export default class TeamLogicAI extends TeamCommon {
-    getMoveObjs() {
-        return this.getCharsPositions().reduce((total, position) => {
-            total.push(gamePlay.getPositions('moveRange', position));
-            return total;
-        }, []);
-    }
-
-    getMoveRange() {
-        return this.getMoveObjs().reduce((total, posObj) => {
-            const { positions } = posObj;
-            positions.forEach((position) => total.push(position));
-            return total;
-        }, [])
-    }
-
-
-
     getAttackPairs() {
         return this.getCharsPositions().reduce((total, position) => {
             total.push(gamePlay.getPositions('attackRange', position).positions);
@@ -91,18 +74,23 @@ export default class TeamLogicAI extends TeamCommon {
         return getHighestPropChar('attack', attackerChars);
     }
 
-    getChars(positions) {
-        return positions.reduce((total, position) => {
-            const char = this.getTeamChar(position);
-            total.push(char);
-            return total;
-        }, [])
+
+
+
+    getAcceptableZone(enemy, position) {
+        const moveRange = getMoveRange(position);
+        const friendChars = this.getCharsPositions();
+        const enemyChars = enemy.getCharsPositions();   
+
+        const acceptablePos = moveRange.filter((movePos) => {
+            const friendCheck = friendChars.every((friendPos) => friendPos !== movePos);
+            const enemyCheck = enemyChars.every((enemyPos) => enemyPos !== movePos);
+
+            return friendCheck && enemyCheck;
+        });
+
+        return acceptablePos;
     }
-
-
-
-
-
 
     getClearZone(position, enemy) {
         const acceptablePos = this.getAcceptableZone(enemy, position);
@@ -171,19 +159,17 @@ export default class TeamLogicAI extends TeamCommon {
         return this.checkBestPos(acceptablePos, charPos, enemy);
     }
 
-    moveToFight(victim) {
-        if (victim) {
-            const { attackerFuture, attackerNow } = victim;
-
-            gameState.activePos = attackerNow;
-            this.moveActiveChar(attackerFuture);
-            return victim;
-        }
-    }
-
     runTo(from, to) {
         gameState.activePos = from;
         this.moveActiveChar(to);
+    }
+
+    moveToFight(victim) {
+        if (victim) {
+            const { attackerFuture, attackerNow } = victim;
+            this.runTo(attackerNow, attackerFuture);
+            return victim;
+        }
     }
 
     explore(enemy, callback) {
@@ -233,11 +219,12 @@ export default class TeamLogicAI extends TeamCommon {
                     this.moveToFight(weakest);
                     return;
                 }
-                attackFinally(charPos, victim.position);
-                return;
             }
 
             if (enemiesInWz) {
+                if (this.explore(enemy, this.safeCheck)) {
+                    return;
+                };
                 if (this.explore(enemy, this.dangerCheck)) {
                     return;
                 };
@@ -282,21 +269,4 @@ export default class TeamLogicAI extends TeamCommon {
         })
 
     }
-
-    getAcceptableZone(enemy, position) {
-        const moveRange = getMoveRange(position);
-        const friendChars = this.getCharsPositions();
-        const enemyChars = enemy.getCharsPositions();   
-
-        const acceptablePos = moveRange.filter((movePos) => {
-            const friendCheck = friendChars.every((friendPos) => friendPos !== movePos);
-            const enemyCheck = enemyChars.every((enemyPos) => enemyPos !== movePos);
-
-            return friendCheck && enemyCheck;
-        });
-
-        return acceptablePos;
-    }
 }
-
-

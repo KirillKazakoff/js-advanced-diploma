@@ -1,10 +1,6 @@
-import TeamCommon from './TeamCommon';
 import gameState from './gameState';
-import generateTeam from './generators';
-
-import cursors from './cursors';
+import { turnAI, initTeams } from './auxController';
 import testData from './classes/testData';
-import TeamLogicAI from './TeamLogicAI';
 
 export default class GameController {
     constructor(gamePlay, stateService) {
@@ -13,10 +9,11 @@ export default class GameController {
     }
 
     init() {
-        gameState.from({ turn: 'player', level: 2 });
-        this.gamePlay.drawUi('prairie');
+        gameState.toNextLevel();
+        this.gamePlay.drawUi(gameState.theme);
 
-        this.initTest();
+        // this.initTest();
+        initTeams();
         this.gamePlay.redrawPositions(this.gamePlay.teams.characters);
 
         this.gamePlay.addCellUpListener(() => this.onCellUp());
@@ -31,7 +28,7 @@ export default class GameController {
         const charData = this.getChar(cell);
         const { activePos } = gameState;
 
-        this.gamePlay.setCursor(cursors.pointer);
+        this.gamePlay.setCursor('pointer');
 
         if (charData) {
             if (cell.lastElementChild.className === 'tooltip') {
@@ -57,15 +54,15 @@ export default class GameController {
             const positions = this.getAttackRange(activePos);
 
             if (positions.some((position) => position === index)) {
-                this.gamePlay.setCursor(cursors.crosshair);
+                this.gamePlay.setCursor('crosshair');
                 this.gamePlay.selectCell(index, 'red');
                 return;
             }
-            this.gamePlay.setCursor(cursors.notallowed);
+            this.gamePlay.setCursor('not-allowed');
         }
 
         if (charData.turn === 'AI' && typeof activePos !== 'number') {
-            this.gamePlay.setCursor(cursors.notallowed);
+            this.gamePlay.setCursor('not-allowed');
         }
     }
 
@@ -105,7 +102,8 @@ export default class GameController {
                 this.gamePlay.deselectCell(activePos);
 
                 gameState.activePos = index;
-                this.turnAI();
+                // this.turnAI();
+                turnAI();
             }
             return;
         }
@@ -114,7 +112,7 @@ export default class GameController {
             const positions = this.getAttackRange(activePos);
 
             if (positions.some((position) => position === index)) {
-                return teams.attackChar(index).then(() => this.turnAI());
+                return teams.attackChar(index).then(() => turnAI());
             }
         }
 
@@ -200,16 +198,6 @@ export default class GameController {
         gameState.activePos = activePos;
     }
 
-    turnAI() {
-        const teamAI = new TeamLogicAI(this.gamePlay.getTeam('AI'));
-        const teamPl = new TeamLogicAI(this.gamePlay.getTeam('player'));
-
-        teamAI.makeDecisionAI(teamPl);
-    }
-
-    initTeams() {
-        this.gamePlay.teams = new TeamCommon(generateTeam(2, 3, 'player'), generateTeam(2, 3, 'AI'));
-    }
 
 
 
@@ -234,6 +222,6 @@ export default class GameController {
     }
 
     initTest() {
-        this.gamePlay.teams = new TeamCommon(testData);
+        this.gamePlay.teams = testData;
     }
 }

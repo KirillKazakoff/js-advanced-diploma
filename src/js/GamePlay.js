@@ -3,7 +3,7 @@
 import { calcHealthLevel, calcTileType, calcPossiblePositions, getCellCoords } from './utilsSec';
 
 export default {
-    boardSize: 5,
+    boardSize: 7,
     container: null,
     boardEl: null,
     cells: [],
@@ -190,7 +190,6 @@ export default {
             .filter((o) => o.startsWith('selected')));
     },
 
-
     createToolTip(message, cell) {
         const tip = document.createElement('div');
         const thisCell = cell;
@@ -264,6 +263,14 @@ export default {
         const cell = this.cells[position];
         delete cell.dataset.charData;
         cell.title = '';
+    },
+
+    clearAllDataset() {
+        for (let i = 0; i < this.boardSize ** 2; i += 1) {
+            this.clearDataset(i);
+            this.deselectCell(i);
+        }
+        this.activePos = null;
     },
 
 }

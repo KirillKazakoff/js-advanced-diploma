@@ -1,4 +1,3 @@
-
 export function calcTileType(index, boardSize) {
     const allCells = boardSize ** 2;
 

@@ -1,4 +1,5 @@
 import gamePlay from './gamePlay';
+import gameState from './gameState';
 
 import { getRandomInt } from './utilsSec';
 import {
@@ -17,19 +18,20 @@ function* characterGenerator(allowedTypes, maxLevel) {
 
 function positionGenerator() {
     const positions = [];
+    const { boardSize } = gamePlay;
 
     return function localFunc(character) {
         const getRandomPosition = () => {
             let column;
 
             if (character.turn === 'AI') {
-                column = getRandomInt(this.boardSize - 2, this.boardSize);
+                column = getRandomInt(boardSize - 2, boardSize);
             } else {
                 column = getRandomInt(0, 2);
             }
-            const row = getRandomInt(0, this.boardSize);
+            const row = getRandomInt(0, boardSize);
 
-            return row * this.boardSize + column;
+            return row * boardSize + column;
         };
 
         let position = getRandomPosition();
@@ -38,21 +40,52 @@ function positionGenerator() {
             position = getRandomPosition();
         }
         positions.push(position);
-        return { ...character, position };
+        character.position = position;
+        return character;
     };
 }
 
-export default function generateTeam(maxLevel, characterCount, turn) {
+export function getPositionedChars(characters) {
+    const generatePosition = positionGenerator();
+    const positionedChars = characters.map((character) => generatePosition(character));
+    return positionedChars;
+}
+
+export function generateChars(maxLevel, characterCount, turn) {
     const allowedTypes = turn === 'AI' ? [Daemon, Vampire, Undead] : [Bowman, Swordsman, Magician];
     const generator = characterGenerator(allowedTypes, maxLevel);
     const team = [];
 
     for (let i = 0; i < characterCount; i += 1) {
         const character = generator.next().value;
-        team.push({ ...character, turn });
+        character.turn = turn;
+        team.push(character);
     }
 
-    const generatePosition = positionGenerator();
-    const positionedChars = team.map((character) => generatePosition.bind(gamePlay)(character));
-    return positionedChars;
+    return getPositionedChars(team);
+}
+
+
+export function genPlayerReinforceProps() {
+    const { theme } = gameState;
+    let amount = null;
+    let level = null;
+
+    switch (theme) {
+        case 'prairie':
+            break;
+        case 'desert':
+            level = 1;
+            amount = 1;
+            break;
+        case 'arctic':
+            level = 2;
+            amount = 2;
+            break;
+        case 'mountain':
+            level = 3;
+            amount = 2;
+            break;
+    }
+    return { amount, level };
 }
