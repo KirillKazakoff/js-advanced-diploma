@@ -31,6 +31,7 @@ function refreshTeams() {
 
 function toNextLevel() {
     gameState.toNextLevel();
+    gamePlay.boardEl.classList.add(gameState.theme);
     teamPl.levelUp();
     
     const { amount, level } = genPlayerReinforceProps();
