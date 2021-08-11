@@ -16,8 +16,8 @@ export default class GameController {
         initTeams();
         this.gamePlay.redrawPositions(this.gamePlay.teams.characters);
 
-        this.gamePlay.addCellUpListener(() => this.onCellUp());
-        this.gamePlay.addCellDownListener((index) => this.onCellDown(index));
+        // this.gamePlay.addCellUpListener(() => this.onCellUp());
+        // this.gamePlay.addCellDownListener((index) => this.onCellDown(index));
         this.gamePlay.addCellEnterListener((index) => this.onCellEnter(index));
         this.gamePlay.addCellLeaveListener((index) => this.onCellLeave(index));
         this.gamePlay.addCellClickListener((index) => this.onCellClick(index));
@@ -87,12 +87,12 @@ export default class GameController {
 
 
     onCellClick(index) {
-        const { activePos } = gameState;
+        const { activePos, underControl } = gameState;
         const cell = this.getCell(index);
         const charData = this.getChar(cell);
         const { teams } = this.gamePlay;
 
-        if (!charData && typeof activePos === 'number') {
+        if (!charData && typeof activePos === 'number' && underControl) {
             const positions = this.getMoveRange(activePos);
 
             if (positions.some((position) => position === index)) {
@@ -104,7 +104,6 @@ export default class GameController {
                 this.gamePlay.deselectCell(activePos);
 
                 gameState.activePos = index;
-                // this.turnAI();
                 turnAI();
             }
             return;
@@ -113,8 +112,12 @@ export default class GameController {
         if (charData.turn !== 'player' && typeof activePos === 'number') {
             const positions = this.getAttackRange(activePos);
 
-            if (positions.some((position) => position === index)) {
-                teams.attackChar(index).then(() => turnAI());
+            console.log(underControl);
+            if (positions.some((position) => position === index) && underControl) {
+                gameState.underControl = false;
+                teams.attackChar(index).then(() => {
+                    turnAI();
+                });
             }
         }
 
@@ -123,53 +126,53 @@ export default class GameController {
         }
     }
 
-    onCellDown(index) {
-        const chardata = this.getChar(this.getCell(index));
-        const { isRangeButton } = this.gamePlay;
+    // onCellDown(index) {
+    //     const chardata = this.getChar(this.getCell(index));
+    //     const { isRangeButton } = this.gamePlay;
 
-        if (chardata) {
-            this.highlightAttackRange(index, isRangeButton);
-            this.highlightMoveRange(index, isRangeButton);
-            gameState.isCellHolded = true;
-        }
-    }
+    //     if (chardata) {
+    //         this.highlightAttackRange(index, isRangeButton);
+    //         this.highlightMoveRange(index, isRangeButton);
+    //         gameState.isCellHolded = true;
+    //     }
+    // }
 
-    onCellUp() {
-        for (let i = 0; i < this.gamePlay.boardSize ** 2; i += 1) {
-            this.gamePlay.deselectCell(i);
-        }
-        if (typeof gameState.activePos === 'number') {
-            this.gamePlay.selectCell(gameState.activePos, 'yellow');
-            gameState.isCellHolded = false;
-        }
-    }
+    // onCellUp() {
+    //     for (let i = 0; i < this.gamePlay.boardSize ** 2; i += 1) {
+    //         this.gamePlay.deselectCell(i);
+    //     }
+    //     if (typeof gameState.activePos === 'number') {
+    //         this.gamePlay.selectCell(gameState.activePos, 'yellow');
+    //         gameState.isCellHolded = false;
+    //     }
+    // }
 
-    highlightAttackRange(index, toggled) {
-        if (toggled) {
-            const attackRange = this.getAttackRange(index);
-            const resultRange = GameController.exceptChars(attackRange, index);
+    // highlightAttackRange(index, toggled) {
+    //     if (toggled) {
+    //         const attackRange = this.getAttackRange(index);
+    //         const resultRange = GameController.exceptChars(attackRange, index);
 
-            resultRange.forEach((position) => this.gamePlay.selectCell(position, 'red'));
-        }
-    }
+    //         resultRange.forEach((position) => this.gamePlay.selectCell(position, 'red'));
+    //     }
+    // }
 
-    highlightMoveRange(index, toggled) {
-        if (!toggled) {
-            const moveRange = this.getMoveRange(index);
-            const resultRange = GameController.exceptChars(moveRange, index);
+    // highlightMoveRange(index, toggled) {
+    //     if (!toggled) {
+    //         const moveRange = this.getMoveRange(index);
+    //         const resultRange = GameController.exceptChars(moveRange, index);
 
-            resultRange.forEach((position) => this.gamePlay.selectCell(position, 'green'));
-        }
-    }
+    //         resultRange.forEach((position) => this.gamePlay.selectCell(position, 'green'));
+    //     }
+    // }
 
-    static exceptChars(range, index) {
-        return range.reduce((total, position) => {
-            if (position !== index) {
-                total.push(position);
-            }
-            return total;
-        }, []);
-    }
+    // static exceptChars(range, index) {
+    //     return range.reduce((total, position) => {
+    //         if (position !== index) {
+    //             total.push(position);
+    //         }
+    //         return total;
+    //     }, []);
+    // }
 
     onPlayerCharClick(index) {
         const cell = this.getCell(index);
@@ -191,11 +194,11 @@ export default class GameController {
             activePos = position;
         }
 
-        if (gameState.isCellHolded) {
-            this.gamePlay.selectCell(index, 'yellow');
-            activePos = position;
-            gameState.isCellHolded = false;
-        }
+        // if (gameState.isCellHolded) {
+        //     this.gamePlay.selectCell(index, 'yellow');
+        //     activePos = position;
+        //     gameState.isCellHolded = false;
+        // }
         gameState.activePos = activePos;
     }
 

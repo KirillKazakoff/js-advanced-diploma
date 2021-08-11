@@ -36,7 +36,10 @@ export default class TeamCommon {
             gamePlay.deselectCell(position);
         }
         gamePlay.redrawPositions(gamePlay.teams.characters);
+
+        return true;
     }
+
 
     getTeamChar(position) {
         return this.characters.find((character) => character.position === position);

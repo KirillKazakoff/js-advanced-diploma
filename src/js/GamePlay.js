@@ -6,7 +6,7 @@ import {
 } from './utilsSec';
 
 export default {
-    boardSize: 7,
+    boardSize: 5,
     container: null,
     boardEl: null,
     cells: [],
@@ -181,16 +181,6 @@ export default {
         this.loadGameListeners.forEach((o) => o.call(null));
     },
 
-    selectCell(index, color = 'yellow') {
-        this.cells[index].classList.add('selected', `selected-${color}`);
-    },
-
-    deselectCell(index) {
-        const cell = this.cells[index];
-        cell.classList.remove(...Array.from(cell.classList)
-            .filter((o) => o.startsWith('selected')));
-    },
-
     createToolTip(message, cell) {
         const tip = document.createElement('div');
         const thisCell = cell;
@@ -213,6 +203,24 @@ export default {
 
     hideCellTooltip(cell) {
         cell.lastElementChild.classList.remove('tooltip-active');
+    },
+
+
+
+    selectCell(index, color = 'yellow') {
+        this.cells[index].classList.add('selected', `selected-${color}`);
+    },
+
+    deselectCell(index) {
+        const cell = this.cells[index];
+        cell.classList.remove(...Array.from(cell.classList)
+            .filter((o) => o.startsWith('selected')));
+    },
+
+    deselectAllCells() {
+        for (let i = 0; i < this.boardSize ** 2; i += 1) {
+            this.deselectCell(i);
+        }
     },
 
     showDamage(index, damage) {

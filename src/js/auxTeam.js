@@ -25,7 +25,12 @@ export function setify(iterable) {
     return [...new Set(iterable)];
 }
 
-export function attackFinally(attackerPos, victimPos) {
+export async function attackFinally(attackerPos, victimPos) {
     gameState.activePos = attackerPos;
-    gamePlay.teams.attackChar(victimPos);
+    return await gamePlay.teams.attackChar(victimPos);
+}
+
+export function runTo(from, to) {
+    gameState.activePos = from;
+    gamePlay.teams.moveActiveChar(to);
 }

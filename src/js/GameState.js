@@ -15,16 +15,16 @@ function* levelGen() {
 const generator = levelGen();
 
 const gameState = {
-    level: 0,
     theme: null,
     gamePoints: 0,
+    maxGamePoints: 0,
 
     activePos: null,
     isCellHolded: null,
+    underControl: true,
 
     toNextLevel() {
         this.theme = generator.next().value;
-        this.level += 1;
     },
 };
 

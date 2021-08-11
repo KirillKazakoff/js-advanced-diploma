@@ -29,19 +29,33 @@ function toNextLevel() {
     gamePlay.redrawPositions(gamePlay.teams.characters);
 }
 
+function endGame() {
+    gamePlay.deselectAllCells();
+    const board = document.querySelector('.board');
+    board.innerHTML = board.innerHTML;
+}
+
 export function turnAI() {
+    gameState.underControl = false;
     refreshTeams();
 
     if (teamAI.amount) {
-        teamAI.makeDecisionAI(teamPl);
-        return;
+        return teamAI.makeDecisionAI(teamPl).then(() => {
+            gameState.underControl = true;
+            refreshTeams();
+            if (!teamPl.amount) {
+                endGame();
+            }
+            return;
+        });
+
     }
     toNextLevel();
 }
 
 export function initTeams() {
-    const charsPl = generateChars(1, 2, 'player');
-    const charsAI = generateChars(1, 2, 'AI');
+    const charsPl = generateChars(1, 1, 'player');
+    const charsAI = generateChars(1, 4, 'AI');
 
     gamePlay.teams = new TeamCommon(charsPl, charsAI);
     refreshTeams();
