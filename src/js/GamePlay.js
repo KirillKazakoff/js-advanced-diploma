@@ -1,6 +1,9 @@
 /* eslint-disable no-restricted-globals */
 /* eslint-disable no-restricted-syntax */
-import { calcHealthLevel, calcTileType, calcPossiblePositions, getCellCoords } from './utilsSec';
+
+import {
+    calcHealthLevel, calcTileType, calcPossiblePositions, getCellCoords,
+} from './utilsSec';
 
 export default {
     boardSize: 7,
@@ -124,7 +127,6 @@ export default {
         this.cellEnterListeners.push(callback);
     },
 
-    
     onCellEnter(event) {
         event.preventDefault();
         const index = this.cells.indexOf(event.currentTarget);
@@ -157,10 +159,10 @@ export default {
         });
     },
 
-
     onRangeSwitch(event) {
+        // this.isRangeButton = !event.key === 'r';
         if (event.key === 'r') {
-            this.isRangeButton = this.isRangeButton ? false : true;
+            this.isRangeButton = !this.isRangeButton;
         }
     },
 
@@ -178,7 +180,6 @@ export default {
         event.preventDefault();
         this.loadGameListeners.forEach((o) => o.call(null));
     },
-
 
     selectCell(index, color = 'yellow') {
         this.cells[index].classList.add('selected', `selected-${color}`);
@@ -242,8 +243,7 @@ export default {
     getChar(cell) {
         try {
             return JSON.parse(cell.dataset.charData);
-        }
-        catch {
+        } catch {
             return false;
         }
     },
@@ -272,5 +272,4 @@ export default {
         }
         this.activePos = null;
     },
-
-}
+};

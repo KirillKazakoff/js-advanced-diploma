@@ -40,8 +40,10 @@ function positionGenerator() {
             position = getRandomPosition();
         }
         positions.push(position);
-        character.position = position;
-        return character;
+
+        const positionedChar = character;
+        positionedChar.position = position;
+        return positionedChar;
     };
 }
 
@@ -72,20 +74,22 @@ export function genPlayerReinforceProps() {
     let level = null;
 
     switch (theme) {
-        case 'prairie':
-            break;
-        case 'desert':
-            level = 1;
-            amount = 1;
-            break;
-        case 'arctic':
-            level = 2;
-            amount = 2;
-            break;
-        case 'mountain':
-            level = 3;
-            amount = 2;
-            break;
+    case 'prairie':
+        break;
+    case 'desert':
+        level = 1;
+        amount = 1;
+        break;
+    case 'arctic':
+        level = 2;
+        amount = 2;
+        break;
+    case 'mountain':
+        level = 3;
+        amount = 2;
+        break;
+    default:
+        break;
     }
     return { amount, level };
 }

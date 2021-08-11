@@ -1,5 +1,5 @@
-import gamePlay from "./gamePlay";
-import gameState from "./gameState";
+import gamePlay from './gamePlay';
+import gameState from './gameState';
 
 export function getMoveRange(position) {
     return gamePlay.getPositions('moveRange', position).positions;

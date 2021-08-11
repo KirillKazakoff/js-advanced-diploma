@@ -1,3 +1,4 @@
+/* eslint-disable no-restricted-globals */
 export function calcTileType(index, boardSize) {
     const allCells = boardSize ** 2;
 
@@ -69,14 +70,14 @@ export function calcPossiblePositions(cellAmount, start) {
     const { boardSize } = this;
 
     const positions = new Set();
-    const toRight = []; 
-    const toLeft = []; 
-    const toTop = []; 
-    const toBottom = []; 
-    const toMainDb = []; 
-    const toMainDt = []; 
-    const toAuxDb = []; 
-    const toAuxDt = []; 
+    const toRight = [];
+    const toLeft = [];
+    const toTop = [];
+    const toBottom = [];
+    const toMainDb = [];
+    const toMainDt = [];
+    const toAuxDb = [];
+    const toAuxDt = [];
 
     const calcToRight = () => {
         for (let i = 0; i < cellAmount + 1; i += 1) {
@@ -89,7 +90,7 @@ export function calcPossiblePositions(cellAmount, start) {
                 return;
             }
         }
-    }
+    };
 
     const calcToLeft = () => {
         for (let i = 0; i < cellAmount + 1; i += 1) {
@@ -102,7 +103,7 @@ export function calcPossiblePositions(cellAmount, start) {
                 return;
             }
         }
-    }
+    };
 
     const calcToTop = () => {
         for (let i = 0; i < cellAmount + 1; i += 1) {
@@ -115,7 +116,7 @@ export function calcPossiblePositions(cellAmount, start) {
                 return;
             }
         }
-    }
+    };
 
     const calcToBottom = () => {
         for (let i = 0; i < cellAmount + 1; i += 1) {
@@ -128,7 +129,7 @@ export function calcPossiblePositions(cellAmount, start) {
                 return;
             }
         }
-    }
+    };
 
     const calcToMainDiagTop = () => {
         if (this.cells[start].className.includes('right')) {
@@ -148,14 +149,13 @@ export function calcPossiblePositions(cellAmount, start) {
                 return;
             }
         }
-
-    }
+    };
 
     const calcToMainDiagBottom = () => {
         if (this.cells[start].className.includes('left')) {
             return;
         }
-        
+
         for (let i = 1; i < cellAmount + 1; i += 1) {
             const calcExp = start + i * (boardSize - 1);
             if (calcExp >= boardSize ** 2) {
@@ -169,8 +169,7 @@ export function calcPossiblePositions(cellAmount, start) {
                 return;
             }
         }
-
-    }
+    };
 
     const calcToAuxDiagTop = () => {
         if (this.cells[start].className.includes('left')) {
@@ -183,15 +182,14 @@ export function calcPossiblePositions(cellAmount, start) {
                 return;
             }
 
-            const cell = this.cells[calcExp];            
+            const cell = this.cells[calcExp];
             positions.add(calcExp);
             toAuxDt.push(calcExp);
             if (!cell.className.includes('center')) {
                 return;
             }
         }
-
-    }
+    };
 
     const calcToAuxDiagBottom = () => {
         if (this.cells[start].className.includes('right')) {
@@ -211,8 +209,7 @@ export function calcPossiblePositions(cellAmount, start) {
                 return;
             }
         }
-
-    }
+    };
 
     calcToRight();
     calcToLeft();
@@ -225,10 +222,13 @@ export function calcPossiblePositions(cellAmount, start) {
 
     return {
         positions: [...positions],
-        toRight, toLeft, toBottom, toTop,
-        toMainDb, toMainDt, toAuxDb, toAuxDt,
+        toRight,
+        toLeft,
+        toBottom,
+        toTop,
+        toMainDb,
+        toMainDt,
+        toAuxDb,
+        toAuxDt,
     };
 }
-
-
-

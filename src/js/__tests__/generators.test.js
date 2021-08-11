@@ -1,8 +1,8 @@
-import generateTeam from '../generators';
+import { generateChars } from '../generators';
 
 test('generators test', () => {
     const expected = 5;
-    const result = generateTeam(4, 5, 'player');
+    const result = generateChars(4, 5, 'player');
 
     expect(result.length).toBe(expected);
 });

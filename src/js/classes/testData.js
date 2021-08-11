@@ -1,5 +1,7 @@
 import TeamCommon from '../TeamCommon';
-import { Magician, Vampire, Daemon, Bowman } from './importAll';
+import {
+    Magician, Vampire, Daemon, Bowman,
+} from './importAll';
 
 const bowman1 = new Bowman(3);
 const magician1 = new Magician(3);

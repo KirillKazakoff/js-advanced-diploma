@@ -8,8 +8,8 @@ export default class Character {
         this.health = 50;
         this.type = type;
 
-        this.turn;
-        this.position;
+        this.turn = null;
+        this.position = null;
     }
 
     levelUp() {
@@ -20,16 +20,16 @@ export default class Character {
 
         this.level += 1;
         this.health += 80;
-        
+
         if (this.health > 100) {
             this.health = 100;
         }
     }
 
-    upFromScratch()  {
+    upFromScratch() {
         const levelNow = this.level;
         for (let i = 1; i < levelNow; i += 1) {
-            this.levelUp();    
+            this.levelUp();
         }
     }
 }

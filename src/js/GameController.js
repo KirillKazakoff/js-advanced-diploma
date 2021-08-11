@@ -34,7 +34,9 @@ export default class GameController {
             if (cell.lastElementChild.className === 'tooltip') {
                 this.gamePlay.showCellTooltip(cell);
             } else {
-                const { level, attack, defence, health } = charData;
+                const {
+                    level, attack, defence, health,
+                } = charData;
                 const codes = ['0x1f396', '0x2694', '0x1f6e1', '0x2764'].map((code) => String.fromCodePoint(code));
                 const [lPic, aPic, dPic, hPic] = codes;
 
@@ -85,7 +87,7 @@ export default class GameController {
 
 
     onCellClick(index) {
-        let { activePos } = gameState;
+        const { activePos } = gameState;
         const cell = this.getCell(index);
         const charData = this.getChar(cell);
         const { teams } = this.gamePlay;
@@ -108,17 +110,16 @@ export default class GameController {
             return;
         }
 
-        if (charData.turn !== "player" && typeof activePos === 'number') {
+        if (charData.turn !== 'player' && typeof activePos === 'number') {
             const positions = this.getAttackRange(activePos);
 
             if (positions.some((position) => position === index)) {
-                return teams.attackChar(index).then(() => turnAI());
+                teams.attackChar(index).then(() => turnAI());
             }
         }
 
         if (charData) {
             this.onPlayerCharClick(index);
-            return;
         }
     }
 
@@ -135,7 +136,7 @@ export default class GameController {
 
     onCellUp() {
         for (let i = 0; i < this.gamePlay.boardSize ** 2; i += 1) {
-            this.gamePlay.deselectCell(i);             
+            this.gamePlay.deselectCell(i);
         }
         if (typeof gameState.activePos === 'number') {
             this.gamePlay.selectCell(gameState.activePos, 'yellow');
@@ -146,7 +147,7 @@ export default class GameController {
     highlightAttackRange(index, toggled) {
         if (toggled) {
             const attackRange = this.getAttackRange(index);
-            const resultRange = this.exceptChars(attackRange, index);
+            const resultRange = GameController.exceptChars(attackRange, index);
 
             resultRange.forEach((position) => this.gamePlay.selectCell(position, 'red'));
         }
@@ -155,13 +156,13 @@ export default class GameController {
     highlightMoveRange(index, toggled) {
         if (!toggled) {
             const moveRange = this.getMoveRange(index);
-            const resultRange = this.exceptChars(moveRange, index);
+            const resultRange = GameController.exceptChars(moveRange, index);
 
             resultRange.forEach((position) => this.gamePlay.selectCell(position, 'green'));
         }
     }
 
-    exceptChars(range, index) {
+    static exceptChars(range, index) {
         return range.reduce((total, position) => {
             if (position !== index) {
                 total.push(position);
@@ -171,10 +172,10 @@ export default class GameController {
     }
 
     onPlayerCharClick(index) {
-        const cell = this.getCell(index)
+        const cell = this.getCell(index);
         const charData = this.getChar(cell);
         const { turn, position } = charData;
-        let { activePos, isCellHolded } = gameState;
+        let { activePos } = gameState;
 
         if (turn === 'AI') {
             return;
@@ -190,14 +191,13 @@ export default class GameController {
             activePos = position;
         }
 
-        if (isCellHolded) {
+        if (gameState.isCellHolded) {
             this.gamePlay.selectCell(index, 'yellow');
             activePos = position;
             gameState.isCellHolded = false;
         }
         gameState.activePos = activePos;
     }
-
 
 
 

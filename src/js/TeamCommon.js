@@ -1,10 +1,10 @@
-import gameState from "./gameState";
-import gamePlay from "./gamePlay";
+import gameState from './gameState';
+import gamePlay from './gamePlay';
 
 export default class TeamCommon {
     constructor(...teams) {
         this.characters = teams.reduce((total, team) => {
-            team.forEach((char) => total.push(char))
+            team.forEach((char) => total.push(char));
             return total;
         }, []);
         this.getAmount();
@@ -31,12 +31,11 @@ export default class TeamCommon {
         const target = this.getTeamChar(position);
         target.health -= Math.max(attacker.attack - target.defence, attacker.attack * 0.1);
         if (target.health < 0) {
-            this.deleteChar(target); 
+            this.deleteChar(target);
             gamePlay.clearDataset(position);
             gamePlay.deselectCell(position);
         }
         gamePlay.redrawPositions(gamePlay.teams.characters);
-        return;
     }
 
     getTeamChar(position) {
@@ -52,11 +51,13 @@ export default class TeamCommon {
             const char = this.getTeamChar(position);
             total.push(char);
             return total;
-        }, [])
+        }, []);
     }
 
     deleteChar(delChar) {
-        const index = this.characters.findIndex((character) => character.position === delChar.position);
+        const index = this.characters.findIndex(
+            (character) => character.position === delChar.position,
+        );
         this.characters.splice(index, 1);
 
         if (gameState.activePos === delChar.position) {
@@ -65,7 +66,11 @@ export default class TeamCommon {
     }
 
     getAmount() {
-        this.amount = this.characters.reduce((total) => total += 1, 0);
+        this.amount = this.characters.reduce((total) => {
+            let sum = total;
+            sum += 1;
+            return sum;
+        }, 0);
     }
 
     addChars(characters) {
@@ -74,6 +79,9 @@ export default class TeamCommon {
     }
 
     levelUp() {
-        this.characters.forEach((character) => character.levelUp());
+        this.characters.forEach((character) => {
+            gameState.gamePoints += +character.health.toFixed();
+            character.levelUp();
+        });
     }
- }
+}
