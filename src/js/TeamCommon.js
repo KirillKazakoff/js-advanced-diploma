@@ -30,14 +30,17 @@ export default class TeamCommon {
 
         const target = this.getTeamChar(position);
         target.health -= Math.max(attacker.attack - target.defence, attacker.attack * 0.1);
-        if (target.health < 0) {
+
+        let deletedPosition = null;
+        if (target.health <= 0) {
             this.deleteChar(target);
             gamePlay.clearDataset(position);
             gamePlay.deselectCell(position);
+            deletedPosition = position;
         }
         gamePlay.redrawPositions(gamePlay.teams.characters);
 
-        return true;
+        return deletedPosition;
     }
 
 

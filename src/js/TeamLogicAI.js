@@ -112,9 +112,12 @@ export default class TeamLogicAI extends TeamCommon {
 
     static async giveControlAI(callback) {
         const playerState = gameState.activePos;
-        
-        await callback();
+
+        const result = await callback(playerState);
         gameState.activePos = playerState;
+        if (result === playerState) {
+            gameState.activePos = null;
+        }
     }
 
     checkBestPos(positions, charPos, enemy) {
@@ -196,7 +199,7 @@ export default class TeamLogicAI extends TeamCommon {
         const enemiesInWz = this.getAttackPos(enemy);
         const victim = this.getBestVictim(enemy);
         const attacker = this.getBestAttacker(victim, enemy);
-        
+
         return TeamLogicAI.giveControlAI(() => {
             if (charsInWz.length === 1) {
                 const charPos = charsInWz[0];

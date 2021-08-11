@@ -43,19 +43,19 @@ export function turnAI() {
         return teamAI.makeDecisionAI(teamPl).then(() => {
             gameState.underControl = true;
             refreshTeams();
+
             if (!teamPl.amount) {
                 endGame();
             }
             return;
         });
-
     }
     toNextLevel();
 }
 
 export function initTeams() {
-    const charsPl = generateChars(1, 1, 'player');
-    const charsAI = generateChars(1, 4, 'AI');
+    const charsPl = generateChars(1, 2, 'player');
+    const charsAI = generateChars(1, 2, 'AI');
 
     gamePlay.teams = new TeamCommon(charsPl, charsAI);
     refreshTeams();

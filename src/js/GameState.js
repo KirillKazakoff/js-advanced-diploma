@@ -25,7 +25,15 @@ const gameState = {
 
     toNextLevel() {
         this.theme = generator.next().value;
+        gameState.underControl = true;
+        gameState.activePos = null;
     },
+
+    // checkDeletedPosition(position) {
+    //     if (position === gameState.activePos) {
+    //         gameState.activePos = null;
+    //     }
+    // }
 };
 
 export default gameState;
