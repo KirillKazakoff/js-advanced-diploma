@@ -54,7 +54,7 @@ export default {
         this.loadGameEl.addEventListener('click', (event) => this.onLoadGameClick(event));
         this.boardEl = this.container.querySelector('[data-id=board]');
 
-        this.boardEl.classList.add(theme);
+        this.pickTheme(theme);
         this.boardEl.style['grid-template-columns'] = `repeat(${this.boardSize}, 1fr)`;
         for (let i = 0; i < this.boardSize ** 2; i += 1) {
             const cellEl = document.createElement('div');
@@ -69,6 +69,10 @@ export default {
         }
 
         this.cells = Array.from(this.boardEl.children);
+    },
+
+    pickTheme(theme) {
+        this.boardEl.className = `board ${theme}`;
     },
 
     redrawPositions(positionedChars) {
@@ -94,6 +98,7 @@ export default {
             cellEl.appendChild(charEl);
         }
     },
+
 
     addNewGameListener(callback) {
         this.newGameListeners.push(callback);
@@ -126,6 +131,7 @@ export default {
     addCellEnterListener(callback) {
         this.cellEnterListeners.push(callback);
     },
+
 
     onCellEnter(event) {
         event.preventDefault();
@@ -160,7 +166,6 @@ export default {
     },
 
     onRangeSwitch(event) {
-        // this.isRangeButton = !event.key === 'r';
         if (event.key === 'r') {
             this.isRangeButton = !this.isRangeButton;
         }
@@ -168,17 +173,17 @@ export default {
 
     onNewGameClick(event) {
         event.preventDefault();
-        this.newGameListeners.forEach((o) => o.call(null));
+        this.newGameListeners.forEach((listener) => listener());
     },
 
     onSaveGameClick(event) {
         event.preventDefault();
-        this.saveGameListeners.forEach((o) => o.call(null));
+        this.saveGameListeners.forEach((listener) => listener());
     },
 
     onLoadGameClick(event) {
         event.preventDefault();
-        this.loadGameListeners.forEach((o) => o.call(null));
+        this.loadGameListeners.forEach((listener) => listener());
     },
 
     createToolTip(message, cell) {
@@ -278,6 +283,5 @@ export default {
             this.clearDataset(i);
             this.deselectCell(i);
         }
-        this.activePos = null;
     },
 };

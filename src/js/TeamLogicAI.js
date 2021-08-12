@@ -112,8 +112,8 @@ export default class TeamLogicAI extends TeamCommon {
 
     static async giveControlAI(callback) {
         const playerState = gameState.activePos;
-
         const result = await callback(playerState);
+        
         gameState.activePos = playerState;
         if (result === playerState) {
             gameState.activePos = null;

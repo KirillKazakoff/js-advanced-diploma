@@ -12,7 +12,7 @@ function* levelGen() {
     }
 }
 
-const generator = levelGen();
+let generator = levelGen();
 
 const gameState = {
     theme: null,
@@ -29,11 +29,16 @@ const gameState = {
         gameState.activePos = null;
     },
 
-    // checkDeletedPosition(position) {
-    //     if (position === gameState.activePos) {
-    //         gameState.activePos = null;
-    //     }
-    // }
+    getMaxPoints() {
+        const { maxGamePoints, gamePoints } = this;
+        this.maxGamePoints = Math.max(maxGamePoints, gamePoints);
+    },
+
+    newGameStart() {
+        generator = levelGen();
+        this.toNextLevel();
+        this.getMaxPoints();
+    }
 };
 
 export default gameState;

@@ -14,7 +14,7 @@ function refreshTeams() {
 
 function toNextLevel() {
     gameState.toNextLevel();
-    gamePlay.boardEl.classList.add(gameState.theme);
+    gamePlay.pickTheme(gameState.theme);
     teamPl.levelUp();
 
     const { amount, level } = genPlayerReinforceProps();
@@ -30,8 +30,10 @@ function toNextLevel() {
 }
 
 function endGame() {
-    gamePlay.deselectAllCells();
     const board = document.querySelector('.board');
+
+    gameState.getMaxPoints();
+    gamePlay.deselectAllCells();
     board.innerHTML = board.innerHTML;
 }
 
@@ -58,5 +60,6 @@ export function initTeams() {
     const charsAI = generateChars(1, 2, 'AI');
 
     gamePlay.teams = new TeamCommon(charsPl, charsAI);
+    gamePlay.redrawPositions(gamePlay.teams.characters);
     refreshTeams();
 }

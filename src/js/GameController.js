@@ -12,15 +12,22 @@ export default class GameController {
         gameState.toNextLevel();
         this.gamePlay.drawUi(gameState.theme);
 
-        // this.initTest();
-        initTeams();
-        this.gamePlay.redrawPositions(this.gamePlay.teams.characters);
+        this.initTest();
+        // initTeams();
+
+        this.gamePlay.addNewGameListener(() => this.onNewGameClick());
 
         this.gamePlay.addCellDownListener((index) => this.onCellDown(index));
         this.gamePlay.addCellEnterListener((index) => this.onCellEnter(index));
         this.gamePlay.addCellLeaveListener((index) => this.onCellLeave(index));
         this.gamePlay.addCellClickListener((index) => this.onCellClick(index));
         this.gamePlay.addCellUpListener(() => this.onCellUp());
+    }
+
+    onNewGameClick() {
+        gameState.newGameStart();
+        this.gamePlay.drawUi(gameState.theme);
+        initTeams();
     }
 
     onCellEnter(index) {
@@ -223,5 +230,6 @@ export default class GameController {
 
     initTest() {
         this.gamePlay.teams = testData;
+        this.gamePlay.redrawPositions(this.gamePlay.teams.characters);
     }
 }
