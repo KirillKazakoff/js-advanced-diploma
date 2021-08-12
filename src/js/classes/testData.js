@@ -3,8 +3,8 @@ import {
     Magician, Vampire, Daemon, Bowman, Swordsman
 } from './importAll';
 
-const first = new Swordsman(1);
-const second = new Swordsman(1);
+const first = new Bowman(5);
+const second = new Bowman(5);
 const third = new Vampire(4);
 const fourth = new Vampire(4);
 
@@ -24,3 +24,4 @@ const data1 = new TeamCommon([
 ]);
 
 export default data1;
+

@@ -1,5 +1,6 @@
 import gameState from './gameState';
-import { turnAI, initTeams } from './auxController';
+import * as auxController from './auxController';
+// import { turnAI, initTeams, loadTeams } from './auxController';
 import testData from './classes/testData';
 
 export default class GameController {
@@ -9,13 +10,12 @@ export default class GameController {
     }
 
     init() {
-        gameState.toNextLevel();
-        this.gamePlay.drawUi(gameState.theme);
-
+        // auxController.onFirstInit();
         this.initTest();
-        // initTeams();
 
-        this.gamePlay.addNewGameListener(() => this.onNewGameClick());
+        this.gamePlay.addLoadGameListener(() => auxController.onLoadClick());
+        this.gamePlay.addSaveGameListener(() => auxController.onSaveGameClick());
+        this.gamePlay.addNewGameListener(() => auxController.onNewGameClick());
 
         this.gamePlay.addCellDownListener((index) => this.onCellDown(index));
         this.gamePlay.addCellEnterListener((index) => this.onCellEnter(index));
@@ -24,11 +24,6 @@ export default class GameController {
         this.gamePlay.addCellUpListener(() => this.onCellUp());
     }
 
-    onNewGameClick() {
-        gameState.newGameStart();
-        this.gamePlay.drawUi(gameState.theme);
-        initTeams();
-    }
 
     onCellEnter(index) {
         const cell = this.getCell(index);
@@ -93,7 +88,7 @@ export default class GameController {
                 this.gamePlay.deselectCell(activePos);
 
                 gameState.activePos = index;
-                turnAI();
+                auxController.turnAI();
             }
             return;
         }
@@ -104,7 +99,7 @@ export default class GameController {
             if (positions.some((position) => position === index) && underControl) {
                 gameState.underControl = false;
                 teams.attackChar(index).then(() => {
-                    turnAI();
+                    auxController.turnAI();
                 });
             }
         }
@@ -229,7 +224,10 @@ export default class GameController {
     }
 
     initTest() {
+        gameState.toNextLevel();
         this.gamePlay.teams = testData;
+        this.gamePlay.drawUi(gameState.theme);
+        
         this.gamePlay.redrawPositions(this.gamePlay.teams.characters);
     }
 }

@@ -93,3 +93,45 @@ export function genPlayerReinforceProps() {
     }
     return { amount, level };
 }
+
+export function recreateLoadedChars(chars) {
+    
+    return chars.map((char) => {
+        let classedChar;
+        const { level } = char;
+
+        switch (char.type) {
+            case 'vampire':
+                classedChar = new Vampire(level);
+                break;
+
+            case 'undead':
+                classedChar = new Undead(level);
+                break;
+
+            case 'daemon':
+                classedChar = new Daemon(level);
+                break;
+
+            case 'bowman':
+                classedChar = new Bowman(level);
+                break;
+
+            case 'magician':
+                classedChar = new Magician(level);
+                break;
+
+            case 'swordsman':
+                classedChar = new Swordsman(level);
+                break;
+
+            default:
+                break;
+        }
+
+        for (let prop in char) {
+            classedChar[prop] = char[prop];
+        }
+        return classedChar;
+    })
+}

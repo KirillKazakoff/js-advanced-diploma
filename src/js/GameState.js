@@ -1,3 +1,7 @@
+import GameStateService from "./GameStateService";
+
+const service = new GameStateService(localStorage);
+
 function* levelGen() {
     const themes = ['prairie', 'desert', 'arctic', 'mountain'];
     let index = 0;
@@ -18,8 +22,8 @@ const gameState = {
     theme: null,
     gamePoints: 0,
     maxGamePoints: 0,
-
     activePos: null,
+
     isCellHolded: null,
     underControl: true,
 
@@ -38,6 +42,28 @@ const gameState = {
         generator = levelGen();
         this.toNextLevel();
         this.getMaxPoints();
+    }, 
+
+    save(chars) {
+        const state = {
+            chars,
+            theme: this.theme,
+            gamePoints: this.gamePoints,
+            maxGamePoints: this.maxGamePoints,
+            activePos: this.activePos,
+        }
+        service.save(state);
+    },
+
+    load() {
+        const { theme, gamePoints, maxGamePoints, activePos, chars} = service.load();
+
+        gameState.theme = theme;
+        gameState.gamePoints = gamePoints;
+        gameState.maxGamePoints = maxGamePoints;
+        gameState.activePos = activePos;
+
+        return chars;
     }
 };
 
