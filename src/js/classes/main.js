@@ -1,3 +1,5 @@
+import createPicture from "../cards";
+
 export default class Character {
     constructor(level, type = 'generic') {
         if (new.target.name === 'Character') {
@@ -31,5 +33,9 @@ export default class Character {
         for (let i = 1; i < levelNow; i += 1) {
             this.levelUp();
         }
+    }
+
+    showCharacter() {
+        createPicture(this.turn, this.type);
     }
 }

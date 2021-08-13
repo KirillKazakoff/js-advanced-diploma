@@ -48,8 +48,8 @@ export function getRandomInt(min, max) {
     return Math.floor(Math.random() * (maxInt - minInt)) + minInt;
 }
 
-export function getCellCoords(cell) {
-    const coords = cell.getBoundingClientRect();
+export function getCoords(obj) {
+    const coords = obj.getBoundingClientRect();
 
     let {
         top, bottom, left, right,

@@ -1,6 +1,5 @@
 :root {
     --cell-size: 64px;
-    --skill-cell-size: 80px;
 }
 
 html, body {
@@ -37,7 +36,6 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    flex-wrap: wrap;
 }
 
 .board {
@@ -47,9 +45,40 @@ body {
     grid-row-gap: 2px;
 }
 
-/* .cell {
+
+
+
+
+
+
+.card {
     position: relative;
-} */
+    background: url('../img/characters/charTemplate.png');
+    width: 350px;
+    height: 500px;
+    background-position: center;
+    background-size: cover;
+}
+
+.player-card {
+    margin-right: 30px;
+}
+
+.AI-card {
+    margin-left: 30px;
+}
+
+.skill {
+    width: 75px;
+    height: 75px;
+    background-position: center;
+    background-size: cover;
+}
+
+.magician.fireshot {
+    background: url('../img/skills/fireShot.png');
+}
+
 
 .tooltip {
     display: none;
@@ -97,16 +126,7 @@ body {
     justify-content: center;
 }
 
-.skill {
-    width: 75px;
-    height: 75px;
-}
 
-.magician-first-skill {
-    background: url('../img/skills/fireShot.png');
-    background-position: center;
-    background-size: cover;
-}
 
 
 .board.prairie {

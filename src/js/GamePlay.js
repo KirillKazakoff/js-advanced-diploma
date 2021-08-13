@@ -2,7 +2,7 @@
 /* eslint-disable no-restricted-syntax */
 
 import {
-    calcHealthLevel, calcTileType, calcPossiblePositions, getCellCoords,
+    calcHealthLevel, calcTileType, calcPossiblePositions, getCoords,
 } from './utilsSec';
 
 export default {
@@ -40,11 +40,10 @@ export default {
             <button data-id="action-load" class="btn">Load Game</button>
         </div>
         <div class="board-container">
+            <div class="card player-card"></div>
             <div data-id="board" class="board"></div>
+            <div class="card ai-card"></div>
         </div>
-        <div class="skills">
-            <div class="skill magician-first-skill"></div>
-        </div>;
         `;
 
         this.newGameEl = this.container.querySelector('[data-id=action-restart]');
@@ -198,7 +197,7 @@ export default {
         tip.className = 'tooltip tooltip-active';
         thisCell.appendChild(tip);
 
-        const cellLocation = getCellCoords(cell);
+        const cellLocation = getCoords(cell);
         const { right, bottom } = cellLocation;
 
         tip.style.left = `${right - 10}px`;

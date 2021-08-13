@@ -94,8 +94,7 @@ export function genPlayerReinforceProps() {
     return { amount, level };
 }
 
-export function recreateLoadedChars(chars) {
-    
+export function recreateLoadedChars(chars) {  
     return chars.map((char) => {
         let classedChar;
         const { level } = char;
