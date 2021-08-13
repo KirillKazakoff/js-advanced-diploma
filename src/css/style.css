@@ -1,5 +1,6 @@
 :root {
     --cell-size: 64px;
+    --skill-cell-size: 80px;
 }
 
 html, body {
@@ -89,6 +90,24 @@ body {
     border-color: #f00;
     border-style: dashed;
 }
+
+.skills {
+    color: #f8f9fa;
+    display: flex;
+    justify-content: center;
+}
+
+.skill {
+    width: 75px;
+    height: 75px;
+}
+
+.magician-first-skill {
+    background: url('../img/skills/fireShot.png');
+    background-position: center;
+    background-size: cover;
+}
+
 
 .board.prairie {
     --map-tile-top-left-url: url('../img/prairie/map-tile-top-left.png');

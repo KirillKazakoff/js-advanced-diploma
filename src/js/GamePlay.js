@@ -42,6 +42,9 @@ export default {
         <div class="board-container">
             <div data-id="board" class="board"></div>
         </div>
+        <div class="skills">
+            <div class="skill magician-first-skill"></div>
+        </div>;
         `;
 
         this.newGameEl = this.container.querySelector('[data-id=action-restart]');
