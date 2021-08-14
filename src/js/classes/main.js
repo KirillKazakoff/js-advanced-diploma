@@ -1,5 +1,3 @@
-import createPicture from "../cards";
-
 export default class Character {
     constructor(level, type = 'generic') {
         if (new.target.name === 'Character') {
