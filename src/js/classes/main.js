@@ -1,4 +1,4 @@
-import createPicture from "../cards";
+import showFeatures from "../cards";
 
 export default class Character {
     constructor(level, type = 'generic') {
@@ -36,6 +36,6 @@ export default class Character {
     }
 
     showCharacter() {
-        createPicture(this.turn, this.type);
+        showFeatures(this);
     }
 }

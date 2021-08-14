@@ -45,7 +45,7 @@ const gamePlay = {
         <div class="board-container">
             <div class="card player-card"></div>
             <div data-id="board" class="board"></div>
-            <div class="card ai-card"></div>
+            <div class="card AI-card"></div>
         </div>
         `;
 

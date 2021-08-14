@@ -75,6 +75,7 @@ export default class GameController {
         const { teams } = this.gamePlay;
         const char = teams.getTeamChar(index);
 
+
         if (!char && typeof activePos === 'number' && underControl) {
             const positions = this.getMoveRange(activePos);
 
@@ -108,8 +109,35 @@ export default class GameController {
         }
     }
 
+    onPlayerCharClick(index) {
+        const { teams } = this.gamePlay;
+        const char = teams.getTeamChar(index);
+        const { turn, position } = char;
+        let { activePos } = gameState;
 
+        char.showCharacter();
+        if (turn === 'AI') {
+            return;
+        }
 
+        this.gamePlay.selectCell(index);
+        if (typeof activePos === 'number') {
+            this.gamePlay.deselectCell(activePos);
+        }
+        if (activePos === position) {
+            activePos = null;
+        } else {
+            activePos = position;
+        }
+
+        if (gameState.isCellHolded) {
+            this.gamePlay.selectCell(index, 'yellow');
+            activePos = position;
+            gameState.isCellHolded = false;
+        }
+
+        gameState.activePos = activePos;
+    }
 
     onCellLeave(index) {
         const cell = this.getCell(index);
@@ -171,35 +199,6 @@ export default class GameController {
             return total;
         }, []);
     }
-
-    onPlayerCharClick(index) {
-        const { teams } = this.gamePlay;
-        const char = teams.getTeamChar(index);
-        const { turn, position } = char;
-        let { activePos } = gameState;
-
-        if (turn === 'AI') {
-            return;
-        }
-
-        this.gamePlay.selectCell(index);
-        if (typeof activePos === 'number') {
-            this.gamePlay.deselectCell(activePos);
-        }
-        if (activePos === position) {
-            activePos = null;
-        } else {
-            activePos = position;
-        }
-
-        if (gameState.isCellHolded) {
-            this.gamePlay.selectCell(index, 'yellow');
-            activePos = position;
-            gameState.isCellHolded = false;
-        }
-        gameState.activePos = activePos;
-    }
-
 
 
     getMoveRange(index) {

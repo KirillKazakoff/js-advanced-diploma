@@ -2,6 +2,7 @@
     --cell-size: 64px;
 }
 
+
 html, body {
     height: 100%;
     margin: 0;
@@ -13,6 +14,7 @@ body {
 }
 
 .btn {
+    font-family: 'MyFont';
     display: inline-block;
     font-weight: 400;
     color: #212529;
@@ -52,7 +54,6 @@ body {
 
 
 .card {
-    position: relative;
     background: url('../img/characters/charTemplate.png');
     width: 350px;
     height: 500px;
@@ -97,7 +98,7 @@ body {
     content: '';
     display: block;
     border: 4px;
-    border-radius: 32px;
+    border-radius:32px;
     box-sizing: border-box;
     width: var(--cell-size);
     height: var(--cell-size);
@@ -125,8 +126,6 @@ body {
     display: flex;
     justify-content: center;
 }
-
-
 
 
 .board.prairie {
@@ -221,42 +220,56 @@ body {
 }
 
 .character {
+    display: block;
     width: var(--cell-size);
     height: var(--cell-size);
     position: absolute;
     z-index: 99;
+
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+}
+
+.bigger {
+    width: 150px;
+    height: 150px;
+}
+
+.hiddenChar {
+    display: none;
 }
 
 .character.generic {
-    background: url('../img/characters/generic.png');
+    background-image: url('../img/characters/generic.png');
 }
 
 .character.bowman {
-    background: url('../img/characters/bowman.png');
+    background-image: url('../img/characters/bowman.png');
 }
 
 .character.daemon {
-    background: url('../img/characters/daemon.png');
+    background-image: url('../img/characters/daemon.png');
 }
 
 .character.magician {
-    background: url('../img/characters/magician.png');
+    background-image: url('../img/characters/magician.png');
 }
 
 .character.swordsman {
-    background: url('../img/characters/swordsman.png');
+    background-image: url('../img/characters/swordsman.png');
 }
 
 .character.undead {
-    background: url('../img/characters/undead.png');
+    background-image: url('../img/characters/undead.png');
 }
 
 .character.vampire {
-    background: url('../img/characters/vampire.png');
+    background-image: url('../img/characters/vampire.png');
 }
 
 .character.zombie {
-    background: url('../img/characters/zombie.png');
+    background-image: url('../img/characters/zombie.png');
 }
 
 .health-level {
@@ -306,3 +319,4 @@ body {
         font-size: 1.5rem;
     }
 }
+

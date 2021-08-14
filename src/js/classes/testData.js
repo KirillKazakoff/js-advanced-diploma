@@ -4,9 +4,9 @@ import {
 } from './importAll';
 
 const first = new Bowman(5);
-const second = new Bowman(5);
+const second = new Swordsman(5);
 const third = new Vampire(4);
-const fourth = new Vampire(4);
+const fourth = new Daemon(4);
 
 
 first.position = 0;
