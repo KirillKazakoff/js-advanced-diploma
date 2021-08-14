@@ -15,7 +15,6 @@ module.exports = {
         contentBase: './',
         watchContentBase: true,
         publicPath: '/dist/',
-        clientLogLevel: 'silent',
     },
 
     devtool: 'source-map',

@@ -45,7 +45,8 @@ export default class TeamCommon {
 
 
     getTeamChar(position) {
-        return this.characters.find((character) => character.position === position);
+        const searchRes = this.characters.find((character) => character.position === position);
+        return searchRes ? searchRes : false;
     }
 
     getTeam(turn) {

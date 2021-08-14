@@ -1,11 +1,8 @@
 /* eslint-disable no-restricted-globals */
 /* eslint-disable no-restricted-syntax */
+import { calcHealthLevel, calcTileType, calcPossiblePositions, getCoords } from './utilsSec';
 
-import {
-    calcHealthLevel, calcTileType, calcPossiblePositions, getCoords,
-} from './utilsSec';
-
-export default {
+const gamePlay = {
     boardSize: 5,
     container: null,
     boardEl: null,
@@ -22,6 +19,12 @@ export default {
     newGameListeners: [],
     saveGameListeners: [],
     loadGameListeners: [],
+
+    checkBinding() {
+        if (this.container === null) {
+            throw new Error('GamePlay not bind to DOM');
+        }
+    },
 
     bindToDOM(container) {
         if (!(container instanceof HTMLElement)) {
@@ -102,6 +105,8 @@ export default {
     },
 
 
+
+
     addNewGameListener(callback) {
         this.newGameListeners.push(callback);
     },
@@ -135,6 +140,9 @@ export default {
     },
 
 
+
+
+    
     onCellEnter(event) {
         event.preventDefault();
         const index = this.cells.indexOf(event.currentTarget);
@@ -188,6 +196,10 @@ export default {
         this.loadGameListeners.forEach((listener) => listener());
     },
 
+
+
+
+
     createToolTip(message, cell) {
         const tip = document.createElement('div');
         const thisCell = cell;
@@ -211,6 +223,7 @@ export default {
     hideCellTooltip(cell) {
         cell.lastElementChild.classList.remove('tooltip-active');
     },
+
 
 
 
@@ -249,34 +262,22 @@ export default {
         this.boardEl.style.cursor = cursor;
     },
 
-    checkBinding() {
-        if (this.container === null) {
-            throw new Error('GamePlay not bind to DOM');
-        }
-    },
 
-    getChar(cell) {
-        try {
-            return JSON.parse(cell.dataset.charData);
-        } catch {
-            return false;
-        }
-    },
+
+
+
 
     getTeam(turn) {
         return this.teams.characters.filter((character) => character.turn === turn);
     },
 
     getPositions(rangeParam, startPos) {
-        const activeCell = this.cells[startPos];
-        const charData = this.getChar(activeCell);
-
-        return calcPossiblePositions.call(this, charData[rangeParam], startPos);
+        const char = this.teams.getTeamChar(startPos)
+        return calcPossiblePositions.call(this, char[rangeParam], startPos);
     },
 
     clearDataset(position) {
         const cell = this.cells[position];
-        delete cell.dataset.charData;
         cell.title = '';
     },
 
@@ -287,3 +288,5 @@ export default {
         }
     },
 };
+
+export default gamePlay;

@@ -175,7 +175,9 @@ body {
     --map-tile-left-url: url('../img/mountain/map-tile-left.png');
     --map-tile-right-url: url('../img/mountain/map-tile-right.png');
     --map-tile-center-url: url('../img/mountain/map-tile-center.png');
-}
+} 
+
+
 
 .map-tile {
     width: var(--cell-size);

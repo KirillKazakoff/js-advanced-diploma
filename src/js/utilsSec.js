@@ -66,6 +66,8 @@ export function getCoords(obj) {
     return cellObj;
 }
 
+
+
 export function calcPossiblePositions(cellAmount, start) {
     const { boardSize } = this;
 

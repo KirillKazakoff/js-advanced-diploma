@@ -1,6 +1,5 @@
 import gameState from './gameState';
 import * as auxController from './auxController';
-// import { turnAI, initTeams, loadTeams } from './auxController';
 import testData from './classes/testData';
 
 export default class GameController {
@@ -27,18 +26,19 @@ export default class GameController {
 
     onCellEnter(index) {
         const cell = this.getCell(index);
-        const charData = this.getChar(cell);
         const { activePos } = gameState;
+        const { teams } = this.gamePlay;
+        const char = teams.getTeamChar(index);
 
         this.gamePlay.setCursor('pointer');
 
-        if (charData) {
+        if (char) {
             if (cell.lastElementChild.className === 'tooltip') {
                 this.gamePlay.showCellTooltip(cell);
             } else {
                 const {
                     level, attack, defence, health,
-                } = charData;
+                } = char;
                 const codes = ['0x1f396', '0x2694', '0x1f6e1', '0x2764'].map((code) => String.fromCodePoint(code));
                 const [lPic, aPic, dPic, hPic] = codes;
 
@@ -46,7 +46,7 @@ export default class GameController {
             }
         }
 
-        if (!charData && typeof activePos === 'number') {
+        if (!char && typeof activePos === 'number') {
             const positions = this.getMoveRange(activePos);
 
             if (positions.some((position) => position === index)) {
@@ -54,7 +54,7 @@ export default class GameController {
             }
         }
 
-        if (charData.turn === 'AI' && typeof activePos === 'number') {
+        if (char.turn === 'AI' && typeof activePos === 'number') {
             const positions = this.getAttackRange(activePos);
 
             if (positions.some((position) => position === index)) {
@@ -65,18 +65,17 @@ export default class GameController {
             this.gamePlay.setCursor('not-allowed');
         }
 
-        if (charData.turn === 'AI' && typeof activePos !== 'number') {
+        if (char.turn === 'AI' && typeof activePos !== 'number') {
             this.gamePlay.setCursor('not-allowed');
         }
     }
 
     onCellClick(index) {
         const { activePos, underControl } = gameState;
-        const cell = this.getCell(index);
-        const charData = this.getChar(cell);
         const { teams } = this.gamePlay;
+        const char = teams.getTeamChar(index);
 
-        if (!charData && typeof activePos === 'number' && underControl) {
+        if (!char && typeof activePos === 'number' && underControl) {
             const positions = this.getMoveRange(activePos);
 
             if (positions.some((position) => position === index)) {
@@ -93,7 +92,7 @@ export default class GameController {
             return;
         }
 
-        if (charData.turn !== 'player' && typeof activePos === 'number') {
+        if (char.turn !== 'player' && typeof activePos === 'number') {
             const positions = this.getAttackRange(activePos);
 
             if (positions.some((position) => position === index) && underControl) {
@@ -104,7 +103,7 @@ export default class GameController {
             }
         }
 
-        if (charData) {
+        if (char) {
             this.onPlayerCharClick(index);
         }
     }
@@ -127,10 +126,10 @@ export default class GameController {
     }
 
     onCellDown(index) {
-        const chardata = this.getChar(this.getCell(index));
-        const { isRangeButton } = this.gamePlay;
+        const { isRangeButton, teams } = this.gamePlay;
+        const char = teams.getTeamChar(index);
 
-        if (chardata) {
+        if (char) {
             this.highlightAttackRange(index, isRangeButton);
             this.highlightMoveRange(index, isRangeButton);
             gameState.isCellHolded = true;
@@ -174,9 +173,9 @@ export default class GameController {
     }
 
     onPlayerCharClick(index) {
-        const cell = this.getCell(index);
-        const charData = this.getChar(cell);
-        const { turn, position } = charData;
+        const { teams } = this.gamePlay;
+        const char = teams.getTeamChar(index);
+        const { turn, position } = char;
         let { activePos } = gameState;
 
         if (turn === 'AI') {
@@ -211,23 +210,15 @@ export default class GameController {
         return this.gamePlay.getPositions('attackRange', index).positions;
     }
 
-    clearDataset(index) {
-        this.gamePlay.clearDataset(index);
-    }
-
     getCell(index) {
         return this.gamePlay.cells[index];
-    }
-
-    getChar(cell) {
-        return this.gamePlay.getChar(cell);
     }
 
     initTest() {
         gameState.toNextLevel();
         this.gamePlay.teams = testData;
         this.gamePlay.drawUi(gameState.theme);
-        
+
         this.gamePlay.redrawPositions(this.gamePlay.teams.characters);
     }
 }
