@@ -35,7 +35,4 @@ export default class Character {
         }
     }
 
-    showCharacter() {
-        createPicture(this.turn, this.type);
-    }
 }
