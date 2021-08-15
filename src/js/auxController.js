@@ -33,8 +33,8 @@ function endGame() {
 }
 
 function refreshTeams() {
-    teamAI = new TeamLogicAI(gamePlay.getTeam('AI'));
-    teamPl = new TeamLogicAI(gamePlay.getTeam('player'));
+    teamAI = new TeamLogicAI(gamePlay.teams.getTeam('AI'));
+    teamPl = new TeamLogicAI(gamePlay.teams.getTeam('player'));
 }
 
 function initTeams() {
@@ -72,6 +72,10 @@ export function onFirstInit() {
     initTeams();
 }
 
+
+
+
+
 export function onSaveGameClick() {
     const { characters } = gamePlay.teams;
     gameState.save(characters);
@@ -83,7 +87,7 @@ export function onNewGameClick() {
     initTeams();
 }
 
-export function onLoadClick() {
+export function onLoadGameClick() {
     const loadedChars = gameState.load();
     const classifiedChars = generators.recreateLoadedChars(loadedChars);
     console.log(classifiedChars);
@@ -99,3 +103,10 @@ export function onLoadClick() {
     refreshTeams();
 }
 
+export function onMenuClick(event) {
+    const { target } = event;
+    const menu = target.parentElement;
+    const btnList = menu.querySelector('.menu-buttons');
+
+    btnList.classList.toggle('buttons-active');
+}

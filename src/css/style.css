@@ -12,39 +12,98 @@ body {
     font-size: 16px;
 }
 
+
+
+.controls {
+    width: 200px;
+    margin-bottom: 30px;
+    display: inline-block;
+    vertical-align: top;
+}
+
+.menu {
+    display: flex;
+    width: 300px;
+}
+
+.menu-icon {
+    background: url('../img/characters/generic.png');
+    background-size: cover;
+    width: 100px;
+    height: 100px;
+    display: block;
+}
+
+.menu-buttons {
+    display: none;
+}
+
+.buttons-active {
+    display: flex;
+    flex-direction: column;
+    margin-left: 30px;
+    margin-top: 30px;
+}
+
 .btn {
     font-family: 'MyFont';
-    display: inline-block;
     font-weight: 400;
     color: #212529;
     background-color: #f8f9fa;
     text-align: center;
-    vertical-align: middle;
-    padding: .375rem .75rem;
-    font-size: 1rem;
-    line-height: 1.5;
-    border-radius: .25rem;
+    padding: 5px;
+    font-size: 25px;
+    border-radius: 2px;
     transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out;
     border: none;
 }
 
-.controls {
-    text-align: center;
-    margin: 50px 0;
+.btn:nth-child(n + 2) {
+    margin-top: 20px;
 }
 
+
+
+
+
 .board-container {
+    width: 100%;
+    position: relative;
     display: flex;
     align-items: center;
     justify-content: center;
+    flex-direction: column;
+    top: -200px;
 }
 
 .board {
     display: grid;
     grid-template-columns: repeat(8, 1fr);
-    grid-column-gap: 2px;
-    grid-row-gap: 2px;
+    /* column-gap: 1px;
+    row-gap: 1px; */
 }
+
+.card {
+    position: relative;
+    background: url('../img/characters/charTemplate.png');
+    width: 20%;
+    height: 500px;
+    background-position: right;
+    background-size: contain;
+    background-repeat: no-repeat;
+}
+
+.player-card {
+    margin-right: auto;
+    bottom: 400px;
+}
+
+.AI-card {
+    display: inline-block;
+    width: 88%;
+}
+
+
 
 .skill {
     width: 75px;
@@ -203,22 +262,12 @@ body {
     background-position: center;
 }
 
-.card {
-    position: relative;
-    background: url('../img/characters/charTemplate.png');
-    width: 350px;
-    height: 500px;
-    background-position: center;
-    background-size: cover;
-}
 
-.player-card {
-    margin-right: 30px;
-}
 
-.AI-card {
-    margin-left: 30px;
-}
+
+
+
+
 
 .char-in-card {
     width: 150px;
@@ -228,31 +277,49 @@ body {
 }
 
 .specials {
-    display: flex;
-    /* align-items: center; */
     width: 50px;
     height: 50px;
     text-align: center;
     position: absolute;
     color: white;
-    font-size: 20px;
+    font-size: 40px;
     display: block;
 }
 
 .mana {
-    top: 35px;
-    left: 45px;
+    top: 25px;
+    left: 30px;
 }
 
 .health {
-    bottom: 35px;
-    right: 15px;
+    bottom: 30px;
+    right: 10px;
 }
 
 .attack {
-    bottom: 35px;
-    left: 15px;
+    bottom: 30px;
+    left: 27px;
 }
+
+.charName {
+    bottom: 100px;
+    left: 50px;
+}
+
+.skillName {
+    bottom: 50px;
+    left: 50px;
+}
+
+.skillDesc {
+    bottom: 50px;
+    left: 50px;
+}
+
+
+
+
+
 
 .character.generic {
     background-image: url('../img/characters/generic.png');

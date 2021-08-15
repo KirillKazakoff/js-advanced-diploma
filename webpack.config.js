@@ -69,6 +69,11 @@ module.exports = {
             filename: './index.html',
         }),
 
+        new HtmlWebpackPlugin({
+            template: 'src/menu.html',
+            filename: 'menu.html',
+        }),
+
         new MiniCssExtractPlugin({
             filename: '[name].css',
         }),

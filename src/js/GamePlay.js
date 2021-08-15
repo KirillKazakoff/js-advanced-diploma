@@ -1,9 +1,9 @@
 /* eslint-disable no-restricted-globals */
 /* eslint-disable no-restricted-syntax */
-import { calcHealthLevel, calcTileType, calcPossiblePositions, getCoords } from './utilsSec';
+import { calcHealthLevel, calcTileType, calcPossiblePositions } from './utilsSec';
 
 const gamePlay = {
-    boardSize: 5,
+    boardSize: 8,
     container: null,
     boardEl: null,
     cells: [],
@@ -16,48 +16,27 @@ const gamePlay = {
     cellEnterListeners: [],
     cellLeaveListeners: [],
 
+    menuListeners: [],
     newGameListeners: [],
     saveGameListeners: [],
     loadGameListeners: [],
 
-    checkBinding() {
-        if (this.container === null) {
-            throw new Error('GamePlay not bind to DOM');
-        }
-    },
-
-    bindToDOM(container) {
-        if (!(container instanceof HTMLElement)) {
-            throw new Error('container is not HTMLElement');
-        }
-        this.container = container;
-    },
-
     drawUi(theme) {
-        this.checkBinding();
+        this.container = document.querySelector('#game-container');
 
-        this.container.innerHTML = `
-        <div class="controls">
-            <button data-id="action-restart" class="btn">New Game</button>
-            <button data-id="action-save" class="btn">Save Game</button>
-            <button data-id="action-load" class="btn">Load Game</button>
-        </div>
-        <div class="board-container">
-            <div class="card player-card"></div>
-            <div data-id="board" class="board"></div>
-            <div class="card AI-card"></div>
-        </div>
-        `;
-
+        this.menuGameEl = this.container.querySelector('.menu-icon');
         this.newGameEl = this.container.querySelector('[data-id=action-restart]');
         this.saveGameEl = this.container.querySelector('[data-id=action-save]');
         this.loadGameEl = this.container.querySelector('[data-id=action-load]');
 
+        this.boardEl = this.container.querySelector('[data-id=board]');
+        this.boardEl.innerHTML = '';
+
         document.addEventListener('keydown', (event) => this.onRangeSwitch(event));
+        this.menuGameEl.addEventListener('click', (event) => this.onMenuClick(event)); 
         this.newGameEl.addEventListener('click', (event) => this.onNewGameClick(event));
         this.saveGameEl.addEventListener('click', (event) => this.onSaveGameClick(event));
         this.loadGameEl.addEventListener('click', (event) => this.onLoadGameClick(event));
-        this.boardEl = this.container.querySelector('[data-id=board]');
 
         this.pickTheme(theme);
         this.boardEl.style['grid-template-columns'] = `repeat(${this.boardSize}, 1fr)`;
@@ -105,6 +84,9 @@ const gamePlay = {
 
 
 
+    addMenuListener(callback) {
+        this.menuListeners.push(callback);
+    },
 
     addNewGameListener(callback) {
         this.newGameListeners.push(callback);
@@ -181,6 +163,14 @@ const gamePlay = {
         }
     },
 
+
+
+
+    onMenuClick(event) {
+        event.preventDefault();
+        this.menuListeners.forEach((listener) => listener(event));
+    },
+
     onNewGameClick(event) {
         event.preventDefault();
         this.newGameListeners.forEach((listener) => listener());
@@ -245,10 +235,6 @@ const gamePlay = {
             this.clearDataset(i);
             this.deselectCell(i);
         }
-    },
-
-    getTeam(turn) {
-        return this.teams.characters.filter((character) => character.turn === turn);
     },
 
     getPositions(rangeParam, startPos) {

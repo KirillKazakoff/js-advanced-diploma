@@ -7,6 +7,22 @@
     <title>Retro Game</title>
 </head>
 <body>
-<div id="game-container"></div>
+    <div id="game-container">
+        <div class="controls">
+            <div class="menu">
+                <div class="menu-icon"></div>
+                <ul class="menu-buttons">
+                    <button data-id="action-restart" class="btn">New Game</button>
+                    <button data-id="action-save" class="btn">Save Game</button>
+                    <button data-id="action-load" class="btn">Load Game</button>
+                </ul>
+            </div>
+        </div>
+        <div class="card AI-card"></div>
+        <div class="board-container">
+            <div data-id="board" class="board"></div>
+        </div>
+        <div class="card player-card"></div>
+    </div>
 </body>
 </html>

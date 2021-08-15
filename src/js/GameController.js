@@ -12,7 +12,8 @@ export default class GameController {
         // auxController.onFirstInit();
         this.initTest();
 
-        this.gamePlay.addLoadGameListener(() => auxController.onLoadClick());
+        this.gamePlay.addMenuListener(auxController.onMenuClick);
+        this.gamePlay.addLoadGameListener(() => auxController.onLoadGameClick());
         this.gamePlay.addSaveGameListener(() => auxController.onSaveGameClick());
         this.gamePlay.addNewGameListener(() => auxController.onNewGameClick());
 
