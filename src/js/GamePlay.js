@@ -141,6 +141,7 @@ const gamePlay = {
 
 
 
+
     
     onCellEnter(event) {
         event.preventDefault();
@@ -199,49 +200,6 @@ const gamePlay = {
 
 
 
-    createToolTip(message, cell) {
-        const tip = document.createElement('div');
-        const thisCell = cell;
-
-        thisCell.title = message;
-        tip.textContent = cell.title;
-        tip.className = 'tooltip tooltip-active';
-        thisCell.appendChild(tip);
-
-        const cellLocation = getCoords(cell);
-        const { right, bottom } = cellLocation;
-
-        tip.style.left = `${right - 10}px`;
-        tip.style.top = `${bottom - 10}px`;
-    },
-
-    showCellTooltip(cell) {
-        cell.lastElementChild.classList.add('tooltip-active');
-    },
-
-    hideCellTooltip(cell) {
-        cell.lastElementChild.classList.remove('tooltip-active');
-    },
-
-
-
-
-    selectCell(index, color = 'yellow') {
-        this.cells[index].classList.add('selected', `selected-${color}`);
-    },
-
-    deselectCell(index) {
-        const cell = this.cells[index];
-        cell.classList.remove(...Array.from(cell.classList)
-            .filter((o) => o.startsWith('selected')));
-    },
-
-    deselectAllCells() {
-        for (let i = 0; i < this.boardSize ** 2; i += 1) {
-            this.deselectCell(i);
-        }
-    },
-
     showDamage(index, damage) {
         return new Promise((resolve) => {
             const cell = this.cells[index];
@@ -260,19 +218,21 @@ const gamePlay = {
     setCursor(cursor) {
         this.boardEl.style.cursor = cursor;
     },
-
-
-
-
-
-
-    getTeam(turn) {
-        return this.teams.characters.filter((character) => character.turn === turn);
+    
+    selectCell(index, color = 'yellow') {
+        this.cells[index].classList.add('selected', `selected-${color}`);
     },
 
-    getPositions(rangeParam, startPos) {
-        const char = this.teams.getTeamChar(startPos)
-        return calcPossiblePositions.call(this, char[rangeParam], startPos);
+    deselectCell(index) {
+        const cell = this.cells[index];
+        cell.classList.remove(...Array.from(cell.classList)
+            .filter((o) => o.startsWith('selected')));
+    },
+
+    deselectAllCells() {
+        for (let i = 0; i < this.boardSize ** 2; i += 1) {
+            this.deselectCell(i);
+        }
     },
 
     clearDataset(position) {
@@ -285,6 +245,15 @@ const gamePlay = {
             this.clearDataset(i);
             this.deselectCell(i);
         }
+    },
+
+    getTeam(turn) {
+        return this.teams.characters.filter((character) => character.turn === turn);
+    },
+
+    getPositions(rangeParam, startPos) {
+        const char = this.teams.getTeamChar(startPos)
+        return calcPossiblePositions.call(this, char[rangeParam], startPos);
     },
 };
 

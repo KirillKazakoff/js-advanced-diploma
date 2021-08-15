@@ -50,7 +50,7 @@ export default class TeamLogicAI extends TeamCommon {
         try {
             const victimsPos = this.getAttackPos(enemy);
             const victims = enemy.getChars(victimsPos);
-            return getLowestPropChar('defence', victims);
+            return getLowestPropChar('health', victims);
         } catch {
             return false;
         }
@@ -145,7 +145,7 @@ export default class TeamLogicAI extends TeamCommon {
                 prevPos = position;
             });
 
-            return getLowestPropChar('defence', victimsArr);
+            return getLowestPropChar('health', victimsArr);
         }
         return 0;
     }
@@ -184,8 +184,8 @@ export default class TeamLogicAI extends TeamCommon {
             return total;
         }, []);
 
-        const weakest = getLowestPropChar('defence', victims);
-        if ((weakest && !victimNow) || (weakest.defence < victimNow.defence)) {
+        const weakest = getLowestPropChar('health', victims);
+        if ((weakest && !victimNow) || (weakest.health < victimNow.health)) {
             this.moveToFight(weakest);
             return true;
         }
@@ -217,7 +217,7 @@ export default class TeamLogicAI extends TeamCommon {
                 }
 
                 const weakest = this.dangerCheck(charPos, enemy);
-                if (weakest.defence < victim.defence) {
+                if (weakest.health < victim.health) {
                     this.moveToFight(weakest);
                     return;
                 }
@@ -252,7 +252,7 @@ export default class TeamLogicAI extends TeamCommon {
 
             if (charsInWz && !enemiesInWz) {
                 const chars = this.getChars(charsInWz);
-                const weakestPos = getLowestPropChar('defence', chars).position;
+                const weakestPos = getLowestPropChar('health', chars).position;
                 const clearPos = this.getClearZone(weakestPos, enemy);
 
                 if (this.explore(enemy, this.dangerCheck)) {

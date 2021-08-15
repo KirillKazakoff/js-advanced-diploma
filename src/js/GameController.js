@@ -25,26 +25,12 @@ export default class GameController {
 
 
     onCellEnter(index) {
-        const cell = this.getCell(index);
         const { activePos } = gameState;
         const { teams } = this.gamePlay;
         const char = teams.getTeamChar(index);
 
         this.gamePlay.setCursor('pointer');
 
-        if (char) {
-            if (cell.lastElementChild.className === 'tooltip') {
-                this.gamePlay.showCellTooltip(cell);
-            } else {
-                const {
-                    level, attack, defence, health,
-                } = char;
-                const codes = ['0x1f396', '0x2694', '0x1f6e1', '0x2764'].map((code) => String.fromCodePoint(code));
-                const [lPic, aPic, dPic, hPic] = codes;
-
-                this.gamePlay.createToolTip(`${lPic} ${level} ${aPic} ${attack} ${dPic} ${defence} ${hPic} ${health}`, cell);
-            }
-        }
 
         if (!char && typeof activePos === 'number') {
             const positions = this.getMoveRange(activePos);
