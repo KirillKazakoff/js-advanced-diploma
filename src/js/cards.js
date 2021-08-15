@@ -1,37 +1,36 @@
-import { getCoords } from "./utilsSec";
-
-// charPic.classList.add(`character ${charType}`);
 export default function showFeatures(char) {
-    const {turn, type} = char;
+    const { turn, type, health, mana, attack } = char;
+    const imgClassName = `character ${type} char-in-card`;
 
-    showPicture(turn, type);
-    // showData();
-    // showSkills();
-}
-
-function showPicture(charTurn, charType) {
-    const card = document.querySelector(`.${charTurn}-card`);
-    const imgClassName = `character ${charType} bigger`;
+    const card = document.querySelector(`.${turn}-card`);
     const { firstElementChild } = card;
 
     if (firstElementChild) {
-        const charPic = card.querySelector(`.character`);;
-        charPic.className = imgClassName;
+        const charView = card.querySelector(`.character`);;
+        const manaView = card.querySelector('.mana');
+        const healthView = card.querySelector('.health');
+        const attackView = card.querySelector('.attack');
+
+        charView.className = imgClassName;
+        manaView.textContent = mana;
+        healthView.textContent = health;
+        attackView.textContent = attack;
         return;
     }
 
-    const charPic = document.createElement('div');
+    const charView = document.createElement('div');
+    const manaView = createFeature('mana', mana);
+    const healthView = createFeature('health', health);
+    const attackView = createFeature('attack', attack);
 
-    charPic.className = imgClassName;
-    card.appendChild(charPic);
-
-    const cardLocation = getCoords(card);
-    const { top, left } = cardLocation;
-
-    charPic.style.top = `${top + 90}px`;
-    charPic.style.left = `${left + 115}px`;
+    charView.className = imgClassName;
+    card.append(charView, manaView, healthView, attackView);
 }
 
-function showData() {
-    
+function createFeature(className, amount) {
+    const view = document.createElement('span');
+
+    view.className = `specials ${className}`;
+    view.textContent = amount;
+    return view;
 }

@@ -88,7 +88,6 @@ const gamePlay = {
         for (const positionedChar of positionedChars) {
             const cellEl = this.boardEl.children[positionedChar.position];
             const charEl = document.createElement('div');
-            cellEl.dataset.charData = JSON.stringify(positionedChar);
             charEl.classList.add('character', positionedChar.type);
 
             const healthEl = document.createElement('div');
@@ -96,7 +95,7 @@ const gamePlay = {
 
             const healthIndicatorEl = document.createElement('div');
             healthIndicatorEl.classList.add('health-level-indicator', `health-level-indicator-${calcHealthLevel(positionedChar.health)}`);
-            healthIndicatorEl.style.width = `${positionedChar.health}%`;
+            healthIndicatorEl.style.width = `${positionedChar.health * 10}%`;
             healthEl.appendChild(healthIndicatorEl);
 
             charEl.appendChild(healthEl);

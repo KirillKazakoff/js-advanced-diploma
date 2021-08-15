@@ -29,7 +29,7 @@ export default class TeamCommon {
         await gamePlay.showDamage(position, attacker.attack);
 
         const target = this.getTeamChar(position);
-        target.health -= Math.max(attacker.attack - target.defence, attacker.attack * 0.1);
+        target.health -= attacker.attack;
 
         let deletedPosition = null;
         if (target.health <= 0) {

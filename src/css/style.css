@@ -2,7 +2,6 @@
     --cell-size: 64px;
 }
 
-
 html, body {
     height: 100%;
     margin: 0;
@@ -47,28 +46,6 @@ body {
     grid-row-gap: 2px;
 }
 
-
-
-
-
-
-
-.card {
-    background: url('../img/characters/charTemplate.png');
-    width: 350px;
-    height: 500px;
-    background-position: center;
-    background-size: cover;
-}
-
-.player-card {
-    margin-right: 30px;
-}
-
-.AI-card {
-    margin-left: 30px;
-}
-
 .skill {
     width: 75px;
     height: 75px;
@@ -79,7 +56,6 @@ body {
 .magician.fireshot {
     background: url('../img/skills/fireShot.png');
 }
-
 
 .tooltip {
     display: none;
@@ -98,7 +74,7 @@ body {
     content: '';
     display: block;
     border: 4px;
-    border-radius:32px;
+    border-radius: 32px;
     box-sizing: border-box;
     width: var(--cell-size);
     height: var(--cell-size);
@@ -126,7 +102,6 @@ body {
     display: flex;
     justify-content: center;
 }
-
 
 .board.prairie {
     --map-tile-top-left-url: url('../img/prairie/map-tile-top-left.png');
@@ -174,9 +149,7 @@ body {
     --map-tile-left-url: url('../img/mountain/map-tile-left.png');
     --map-tile-right-url: url('../img/mountain/map-tile-right.png');
     --map-tile-center-url: url('../img/mountain/map-tile-center.png');
-} 
-
-
+}
 
 .map-tile {
     width: var(--cell-size);
@@ -225,19 +198,60 @@ body {
     height: var(--cell-size);
     position: absolute;
     z-index: 99;
-
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center;
 }
 
-.bigger {
-    width: 150px;
-    height: 150px;
+.card {
+    position: relative;
+    background: url('../img/characters/charTemplate.png');
+    width: 350px;
+    height: 500px;
+    background-position: center;
+    background-size: cover;
 }
 
-.hiddenChar {
-    display: none;
+.player-card {
+    margin-right: 30px;
+}
+
+.AI-card {
+    margin-left: 30px;
+}
+
+.char-in-card {
+    width: 150px;
+    height: 150px;
+    margin-left: 105px;
+    margin-top: 50px;
+}
+
+.specials {
+    display: flex;
+    /* align-items: center; */
+    width: 50px;
+    height: 50px;
+    text-align: center;
+    position: absolute;
+    color: white;
+    font-size: 20px;
+    display: block;
+}
+
+.mana {
+    top: 35px;
+    left: 45px;
+}
+
+.health {
+    bottom: 35px;
+    right: 15px;
+}
+
+.attack {
+    bottom: 35px;
+    left: 15px;
 }
 
 .character.generic {
@@ -319,4 +333,3 @@ body {
         font-size: 1.5rem;
     }
 }
-

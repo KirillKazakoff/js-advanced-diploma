@@ -32,10 +32,10 @@ export function calcTileType(index, boardSize) {
 }
 
 export function calcHealthLevel(health) {
-    if (health < 15) {
+    if (health < 2) {
         return 'critical';
     }
-    if (health < 50) {
+    if (health < 5) {
         return 'normal';
     }
 

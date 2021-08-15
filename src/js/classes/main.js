@@ -7,7 +7,7 @@ export default class Character {
         }
 
         this.level = level;
-        this.health = 50;
+        this.health = 5;
         this.type = type;
 
         this.turn = null;
@@ -15,16 +15,16 @@ export default class Character {
     }
 
     levelUp() {
-        if (this.health > 25) {
+        if (this.health > 2) {
             this.attack += this.attack * 0.3;
             this.defence += this.defence * 0.3;
         }
 
         this.level += 1;
-        this.health += 80;
+        this.health += 8;
 
-        if (this.health > 100) {
-            this.health = 100;
+        if (this.health > 10) {
+            this.health = 10;
         }
     }
 
