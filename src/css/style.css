@@ -104,9 +104,11 @@ body {
     width: 80%;
 } */
 
+
+
 .card {
     position: relative;
-    background: url('../img/characters/charTemplate.png');
+    background: url('../img/charTemplates/Hearthstone_Custom.png');
     width: 350px;
     height: 500px;
     background-position: right;
@@ -180,6 +182,7 @@ body {
     border-color: #f00;
     border-style: dashed;
 }
+
 
 
 .board.prairie {
@@ -293,32 +296,35 @@ body {
     width: 150px;
     height: 150px;
     margin-left: 105px;
-    margin-top: 50px;
+    margin-top: 80px;
 }
 
 .specials {
+    -webkit-text-stroke: 2.5px #000;
     width: 50px;
-    height: 50px;
+
     text-align: center;
     position: absolute;
     color: white;
-    font-size: 40px;
+    font-size: 45px;
     display: block;
 }
 
+
+  
 .mana {
-    top: 25px;
+    top: 45px;
     left: 30px;
 }
 
 .health {
-    bottom: 30px;
-    right: 10px;
+    bottom: 20px;
+    right: 18px;
 }
 
 .attack {
-    bottom: 30px;
-    left: 27px;
+    bottom: 22px;
+    left: 34px;
 }
 
 .charName {

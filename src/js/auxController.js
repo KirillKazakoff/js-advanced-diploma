@@ -110,3 +110,4 @@ export function onMenuClick(event) {
 
     btnList.classList.toggle('buttons-active');
 }
+

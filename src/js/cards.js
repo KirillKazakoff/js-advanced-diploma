@@ -1,11 +1,19 @@
 export default function showFeatures(char) {
-    const { turn, type, health, mana, attack } = char;
-    const imgClassName = `character ${type} char-in-card`;
+    let { turn, type, health, mana, attack } = char;
+    let imgClassName = `character ${type} char-in-card`;
 
     const card = document.querySelector(`.${turn}-card`);
-    const { firstElementChild } = card;
+    const genericView = card.querySelector('.generic');
+    // const { firstElementChild } = card;
 
-    if (firstElementChild) {
+    if (health <= 0) {
+        imgClassName = 'character generic char-in-card';
+        mana = '';
+        health = '';
+        attack = '';
+    }
+
+    if (!genericView) {
         const charView = card.querySelector(`.character`);;
         const manaView = card.querySelector('.mana');
         const healthView = card.querySelector('.health');
@@ -18,13 +26,13 @@ export default function showFeatures(char) {
         return;
     }
 
-    const charView = document.createElement('div');
+    // const charView = document.createElement('div');
     const manaView = createFeature('mana', mana);
     const healthView = createFeature('health', health);
     const attackView = createFeature('attack', attack);
 
-    charView.className = imgClassName;
-    card.append(charView, manaView, healthView, attackView);
+    genericView.className = imgClassName;
+    card.append(manaView, healthView, attackView);
 }
 
 function createFeature(className, amount) {
