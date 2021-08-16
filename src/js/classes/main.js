@@ -38,4 +38,15 @@ export default class Character {
     showCharacter() {
         showFeatures(this);
     }
+
+    hideCharacter() {
+        const templateObj = {
+            turn: 'player',
+            type: 'generic',
+            health: '',
+            mana: '',
+            attack: '',
+        }
+        showFeatures(templateObj);
+    }
 }

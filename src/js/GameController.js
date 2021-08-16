@@ -102,8 +102,9 @@ export default class GameController {
         const { turn, position } = char;
         let { activePos } = gameState;
 
-        char.showCharacter();
+        
         if (turn === 'AI') {
+            char.showCharacter()
             return;
         }
 
@@ -113,11 +114,14 @@ export default class GameController {
         }
         if (activePos === position) {
             activePos = null;
+            char.hideCharacter();
         } else {
             activePos = position;
+            char.showCharacter();
         }
 
         if (gameState.isCellHolded) {
+            char.showCharacter();
             this.gamePlay.selectCell(index, 'yellow');
             activePos = position;
             gameState.isCellHolded = false;
