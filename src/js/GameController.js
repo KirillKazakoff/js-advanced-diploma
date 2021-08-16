@@ -9,8 +9,8 @@ export default class GameController {
     }
 
     init() {
-        // auxController.onFirstInit();
-        this.initTest();
+        auxController.onFirstInit();
+        // this.initTest();
 
         this.gamePlay.addLoadGameListener(() => auxController.onLoadClick());
         this.gamePlay.addSaveGameListener(() => auxController.onSaveGameClick());
