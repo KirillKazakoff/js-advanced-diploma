@@ -24,6 +24,7 @@ const gamePlay = {
     drawUi(theme) {
         this.container = document.querySelector('#game-container');
 
+        this.container.innerHTML = this.container.innerHTML;
         this.menuGameEl = this.container.querySelector('.menu-icon');
         this.newGameEl = this.container.querySelector('[data-id=action-restart]');
         this.saveGameEl = this.container.querySelector('[data-id=action-save]');
@@ -38,6 +39,7 @@ const gamePlay = {
         this.saveGameEl.addEventListener('click', (event) => this.onSaveGameClick(event));
         this.loadGameEl.addEventListener('click', (event) => this.onLoadGameClick(event));
 
+        console.log(this.newGameListeners);
         this.pickTheme(theme);
         this.boardEl.style['grid-template-columns'] = `repeat(${this.boardSize}, 1fr)`;
         for (let i = 0; i < this.boardSize ** 2; i += 1) {

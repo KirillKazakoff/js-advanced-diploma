@@ -23,7 +23,21 @@ body {
 
 .menu {
     display: flex;
-    width: 300px;
+    min-width: 300px;
+}
+
+.menu-icon:hover {
+    content: '';
+    left: 0;
+    top: 0;
+    display: block;
+    border: 4px;
+    border-radius: 50px;
+
+    border-color: #ff0;
+    border-style: solid;
+
+    opacity: 0.9;
 }
 
 .menu-icon {
@@ -50,6 +64,7 @@ body {
     font-weight: 400;
     color: #212529;
     background-color: #f8f9fa;
+
     text-align: center;
     padding: 5px;
     font-size: 25px;
@@ -59,7 +74,7 @@ body {
 }
 
 .btn:nth-child(n + 2) {
-    margin-top: 20px;
+    margin-top:40px;
 }
 
 
@@ -73,20 +88,26 @@ body {
     align-items: center;
     justify-content: center;
     flex-direction: column;
-    top: -200px;
+    top: -170px;
+    padding-right: 15px;
 }
 
 .board {
     display: grid;
     grid-template-columns: repeat(8, 1fr);
-    /* column-gap: 1px;
-    row-gap: 1px; */
+    /* column-gap: 2px;
+    row-gap:5px; */
 }
+
+/* .card-container {
+    
+    width: 80%;
+} */
 
 .card {
     position: relative;
     background: url('../img/characters/charTemplate.png');
-    width: 20%;
+    width: 350px;
     height: 500px;
     background-position: right;
     background-size: contain;
@@ -94,13 +115,12 @@ body {
 }
 
 .player-card {
-    margin-right: auto;
+    float: left;
     bottom: 400px;
 }
 
 .AI-card {
-    display: inline-block;
-    width: 88%;
+    float: right;
 }
 
 
@@ -129,38 +149,38 @@ body {
     display: block;
 }
 
-.cell.selected::before {
+
+.cell::before {
+    width: var(--cell-size);
+    height: var(--cell-size);
+}
+
+.selected::before {
     content: '';
     display: block;
     border: 4px;
     border-radius: 32px;
     box-sizing: border-box;
-    width: var(--cell-size);
-    height: var(--cell-size);
+    
     opacity: 0.9;
     position: absolute;
 }
 
-.cell.selected-yellow::before {
+.selected-yellow::before {
     border-color: #ff0;
     border-style: solid;
 }
 
-.cell.selected-green::before {
+.selected-green::before {
     border-color: #0f0;
     border-style: dashed;
 }
 
-.cell.selected-red::before {
+.selected-red::before {
     border-color: #f00;
     border-style: dashed;
 }
 
-.skills {
-    color: #f8f9fa;
-    display: flex;
-    justify-content: center;
-}
 
 .board.prairie {
     --map-tile-top-left-url: url('../img/prairie/map-tile-top-left.png');
