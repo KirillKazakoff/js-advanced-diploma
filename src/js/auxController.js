@@ -33,19 +33,10 @@ function endGame() {
 }
 
 function refreshTeams() {
-    teamAI = new TeamLogicAI(gamePlay.teams.getTeam('AI'));
-    teamPl = new TeamLogicAI(gamePlay.teams.getTeam('player'));
+    gamePlay.refreshTeams();
+    teamAI = gamePlay.teamAI;
+    teamPl = gamePlay.teamPl;
 }
-
-function initTeams() {
-    const charsPl = generators.generateChars(1, 2, 'player');
-    const charsAI = generators.generateChars(1, 2, 'AI');
-
-    gamePlay.teams = new TeamCommon(charsPl, charsAI);
-    gamePlay.redrawPositions(gamePlay.teams.characters);
-    refreshTeams();
-}
-
 
 
 export function turnAI() {
@@ -66,15 +57,22 @@ export function turnAI() {
     toNextLevel();
 }
 
+
+
+function initTeams() {
+    const charsPl = generators.generateChars(1, 2, 'player');
+    const charsAI = generators.generateChars(1, 2, 'AI');
+
+    gamePlay.teams = new TeamCommon(charsPl, charsAI);
+    gamePlay.redrawPositions(gamePlay.teams.characters);
+    refreshTeams();
+}
+
 export function onFirstInit() {
     gameState.toNextLevel();
     gamePlay.drawUi(gameState.theme);
     initTeams();
 }
-
-
-
-
 
 export function onSaveGameClick() {
     const { characters } = gamePlay.teams;
@@ -87,7 +85,7 @@ export function onNewGameClick() {
     initTeams();
 }
 
-export function onLoadGameClick() {
+export function onLoadClick() {
     const loadedChars = gameState.load();
     const classifiedChars = generators.recreateLoadedChars(loadedChars);
     console.log(classifiedChars);
@@ -101,13 +99,5 @@ export function onLoadGameClick() {
         gamePlay.selectCell(gameState.activePos);
     }
     refreshTeams();
-}
-
-export function onMenuClick(event) {
-    const { target } = event;
-    const menu = target.parentElement;
-    const btnList = menu.querySelector('.menu-buttons');
-
-    btnList.classList.toggle('buttons-active');
 }
 

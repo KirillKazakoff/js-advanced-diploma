@@ -1,6 +1,8 @@
 /* eslint-disable no-restricted-globals */
 /* eslint-disable no-restricted-syntax */
 import { calcHealthLevel, calcTileType, calcPossiblePositions } from './utilsSec';
+import TeamLogicAI from './TeamLogicAI';
+import Card from './Card';
 
 const gamePlay = {
     boardSize: 8,
@@ -8,6 +10,11 @@ const gamePlay = {
     boardEl: null,
     cells: [],
     teams: [],
+    
+    teamAI: [],
+    teamPl: [],
+    cardAI: new Card('AI'),
+    cardPl: new Card('player'),
     isRangeButton: false,
 
     cellClickListeners: [],
@@ -20,6 +27,12 @@ const gamePlay = {
     newGameListeners: [],
     saveGameListeners: [],
     loadGameListeners: [],
+
+    refreshTeams() {
+        this.teamAI = new TeamLogicAI(gamePlay.teams.getTeam('AI'));
+        this.teamPl = new TeamLogicAI(gamePlay.teams.getTeam('player'));
+        
+    },
 
     drawUi(theme) {
         this.container = document.querySelector('#game-container');
@@ -39,7 +52,6 @@ const gamePlay = {
         this.saveGameEl.addEventListener('click', (event) => this.onSaveGameClick(event));
         this.loadGameEl.addEventListener('click', (event) => this.onLoadGameClick(event));
 
-        console.log(this.newGameListeners);
         this.pickTheme(theme);
         this.boardEl.style['grid-template-columns'] = `repeat(${this.boardSize}, 1fr)`;
         for (let i = 0; i < this.boardSize ** 2; i += 1) {

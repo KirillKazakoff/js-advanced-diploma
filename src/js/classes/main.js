@@ -40,8 +40,9 @@ export default class Character {
     }
 
     hideCharacter() {
+        const turn = this.turn;
         const templateObj = {
-            turn: 'player',
+            turn: turn,
             type: 'generic',
             health: '',
             mana: '',

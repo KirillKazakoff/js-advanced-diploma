@@ -21,3 +21,4 @@ export default function showFeatures(char) {
     healthView.textContent = health;
     attackView.textContent = attack;
 }
+
