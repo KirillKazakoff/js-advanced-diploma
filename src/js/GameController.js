@@ -80,7 +80,7 @@ export default class GameController {
             return;
         }
 
-        if (char.turn !== 'player' && typeof activePos === 'number') {
+        if (char.turn !== 'PL' && typeof activePos === 'number') {
             const positions = this.getAttackRange(activePos);
 
             if (positions.some((position) => position === index) && underControl) {
@@ -97,14 +97,14 @@ export default class GameController {
     }
 
     onPlayerCharClick(index) {
-        const { teams } = this.gamePlay;
+        const { teams, cardAI, cardPL } = this.gamePlay;
         const char = teams.getTeamChar(index);
         const { turn, position } = char;
         let { activePos } = gameState;
 
         
         if (turn === 'AI') {
-            char.showCharacter()
+            cardAI.showCharacter(char);
             return;
         }
 
@@ -114,14 +114,14 @@ export default class GameController {
         }
         if (activePos === position) {
             activePos = null;
-            char.hideCharacter();
+            cardPL.showGeneric();
         } else {
             activePos = position;
-            char.showCharacter();
+            cardPL.showCharacter(char);
         }
 
         if (gameState.isCellHolded) {
-            char.showCharacter();
+            cardPL.showCharacter(char);
             this.gamePlay.selectCell(index, 'yellow');
             activePos = position;
             gameState.isCellHolded = false;

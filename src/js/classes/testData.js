@@ -14,8 +14,8 @@ second.position = 7;
 third.position = 6;
 fourth.position = 13;
 
-first.turn = 'player';
-second.turn = 'player';
+first.turn = 'PL';
+second.turn = 'PL';
 third.turn = 'AI';
 fourth.turn = 'AI';
 

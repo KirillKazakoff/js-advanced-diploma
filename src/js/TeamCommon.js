@@ -30,8 +30,8 @@ export default class TeamCommon {
 
         const target = this.getTeamChar(position);
         target.health -= attacker.attack;
-        target.showCharacter();
-
+        target.getCard().showCharacter(target);
+       
         let deletedPosition = null;
         if (target.health <= 0) {
             this.deleteChar(target);

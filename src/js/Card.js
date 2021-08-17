@@ -1,4 +1,3 @@
-
 export default class Card {
     constructor(turn) {
         this.content = document.querySelector(`.${turn}-card`);
@@ -7,20 +6,29 @@ export default class Card {
         this.health = this.content.querySelector('.health');
         this.attack = this.content.querySelector('.attack');
     }
-                    
-    showCharacter(char) {
+
+    initSpecials(char) {
         let { type, health, mana, attack } = char;
-        
+    
         this.char.className = `character ${type} char-in-card`;
         this.mana.textContent = mana;
         this.health.textContent = health;
         this.attack.textContent = attack;
+    }       
+                    
+    showCharacter(char) {
+        char.health > 0 ? this.initSpecials(char) : this.showGeneric();
     }
 
     showGeneric() {
-        this.char.className = 'character generic char-in-card';
-        this.mana.textContent = '';
-        this.health.textContent = '';
-        this.attack.textContent = '';
+        const genericChar = {
+            type: 'generic',
+            health: '',
+            mana: '',
+            attack: '',
+        }
+        this.initSpecials(genericChar);
     }
 }
+
+

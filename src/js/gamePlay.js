@@ -12,9 +12,9 @@ const gamePlay = {
     teams: [],
     
     teamAI: [],
-    teamPl: [],
+    teamPL: [],
     cardAI: new Card('AI'),
-    cardPl: new Card('player'),
+    cardPL: new Card('PL'),
     isRangeButton: false,
 
     cellClickListeners: [],
@@ -30,14 +30,24 @@ const gamePlay = {
 
     refreshTeams() {
         this.teamAI = new TeamLogicAI(gamePlay.teams.getTeam('AI'));
-        this.teamPl = new TeamLogicAI(gamePlay.teams.getTeam('player'));
-        
+        this.teamPL = new TeamLogicAI(gamePlay.teams.getTeam('PL'));  
     },
+
+    refreshCards() {
+        this.cardAI = new Card('AI');
+        this.cardPL = new Card('PL');
+    },
+
+    clearListeners() {
+        this.container.innerHTML = this.container.innerHTML;
+    },
+
 
     drawUi(theme) {
         this.container = document.querySelector('#game-container');
-
         this.container.innerHTML = this.container.innerHTML;
+
+        this.refreshCards();
         this.menuGameEl = this.container.querySelector('.menu-icon');
         this.newGameEl = this.container.querySelector('[data-id=action-restart]');
         this.saveGameEl = this.container.querySelector('[data-id=action-save]');

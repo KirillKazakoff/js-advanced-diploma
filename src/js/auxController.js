@@ -5,20 +5,20 @@ import TeamCommon from './TeamCommon';
 import * as generators from './generators';
 
 let teamAI;
-let teamPl;
+let teamPL;
 
 function toNextLevel() {
     gameState.toNextLevel();
     gamePlay.pickTheme(gameState.theme);
-    teamPl.levelUp();
+    teamPL.levelUp();
 
     const { amount, level } = generators.genPlayerReinforceProps();
-    const reinforcement = generators.generateChars(level, amount, 'player');
-    teamPl.addChars(reinforcement);
-    teamPl.characters = generators.getPositionedChars(teamPl.characters);
+    const reinforcement = generators.generateChars(level, amount, 'PL');
+    teamPL.addChars(reinforcement);
+    teamPL.characters = generators.getPositionedChars(teamPL.characters);
 
-    teamAI = new TeamLogicAI(generators.generateChars(level + 1, teamPl.amount, 'AI'));
-    gamePlay.teams = new TeamCommon(teamAI.characters, teamPl.characters);
+    teamAI = new TeamLogicAI(generators.generateChars(level + 1, teamPL.amount, 'AI'));
+    gamePlay.teams = new TeamCommon(teamAI.characters, teamPL.characters);
 
     gamePlay.clearAllDataset();
     gamePlay.redrawPositions(gamePlay.teams.characters);
@@ -35,7 +35,7 @@ function endGame() {
 function refreshTeams() {
     gamePlay.refreshTeams();
     teamAI = gamePlay.teamAI;
-    teamPl = gamePlay.teamPl;
+    teamPL = gamePlay.teamPL;
 }
 
 
@@ -44,11 +44,11 @@ export function turnAI() {
     refreshTeams();
 
     if (teamAI.amount) {
-        return teamAI.makeDecisionAI(teamPl).then(() => {
+        return teamAI.makeDecisionAI(teamPL).then(() => {
             gameState.underControl = true;
             refreshTeams();
 
-            if (!teamPl.amount) {
+            if (!teamPL.amount) {
                 endGame();
             }
             return;
@@ -60,7 +60,7 @@ export function turnAI() {
 
 
 function initTeams() {
-    const charsPl = generators.generateChars(1, 2, 'player');
+    const charsPl = generators.generateChars(1, 2, 'PL');
     const charsAI = generators.generateChars(1, 2, 'AI');
 
     gamePlay.teams = new TeamCommon(charsPl, charsAI);

@@ -1,4 +1,5 @@
 import showFeatures from "../cards";
+import gamePlay from "../gamePlay";
 
 export default class Character {
     constructor(level, type = 'generic') {
@@ -35,19 +36,7 @@ export default class Character {
         }
     }
 
-    showCharacter() {
-        showFeatures(this);
-    }
-
-    hideCharacter() {
-        const turn = this.turn;
-        const templateObj = {
-            turn: turn,
-            type: 'generic',
-            health: '',
-            mana: '',
-            attack: '',
-        }
-        showFeatures(templateObj);
+    getCard() {
+        return gamePlay[`card${this.turn}`];
     }
 }
