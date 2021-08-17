@@ -5,6 +5,7 @@ export default class Card {
         this.mana = this.content.querySelector('.mana');
         this.health = this.content.querySelector('.health');
         this.attack = this.content.querySelector('.attack');
+        console.log('hello');
     }
                     
 
