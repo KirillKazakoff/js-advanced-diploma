@@ -92,12 +92,58 @@ body {
 
 .card {
     position: relative;
-    background: url('../img/charTemplates/Hearthstone_Custom.png');
     width: 350px;
     height: 480px;
     background-position: right;
     background-size: contain;
     background-repeat: no-repeat;
+}
+
+.card-generic {
+    background-image: url('../img/charTemplates/Neutral.png');
+}
+
+.card-bowman {
+    background-image: url('../img/charTemplates/Bowman.png');
+}
+
+.card-swordsman {
+    background-image: url('../img/charTemplates/Swordsman.png');
+}
+
+.card-magician {
+    background-image: url('../img/charTemplates/Magician.png');
+}
+
+.card-daemon {
+    background-image: url('../img/charTemplates/Daemon.png');
+}
+
+.card-undead {
+    background-image: url('../img/charTemplates/Undead.png');
+}
+
+.card-vampire {
+    background-image: url('../img/charTemplates/Vampire.png');
+}
+
+
+.gem {
+    display: block;
+    position: absolute;
+    background-position: right;
+    background-size: contain;
+    background-repeat: no-repeat;
+    width: 100%;
+    height: 100%;
+}
+
+.no-gem {
+    display: block;
+}
+
+.common {
+    background-image: url('../img/gems/CommonGem.png');
 }
 
 .PL-card {

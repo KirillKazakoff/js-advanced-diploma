@@ -10,9 +10,11 @@ export default class Character {
         this.level = level;
         this.health = 5;
         this.type = type;
+        this.gem = 'common';
 
         this.turn = null;
         this.position = null;
+        
     }
 
     levelUp() {
