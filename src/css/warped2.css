@@ -1,0 +1,26 @@
+/* .warped {
+    position: relative;
+    top: 265px;
+    left: 50px;
+
+    font-size: 30px;
+    color: aliceblue;
+    display: flex;
+    width: 300px;
+    height: 100px;
+}
+
+.warped span {
+    display: block;
+    position: relative;
+    transform-origin: 50% 100%;
+}
+
+.w0 {
+    color: red;
+}
+
+.space {
+    width: 5px;
+}
+ */

@@ -85,7 +85,7 @@ export function onNewGameClick() {
     initTeams();
 }
 
-export function onLoadClick() {
+export function onLoadGameClick() {
     const loadedChars = gameState.load();
     const classifiedChars = generators.recreateLoadedChars(loadedChars);
     console.log(classifiedChars);

@@ -12,8 +12,6 @@ body {
     font-size: 16px;
 }
 
-
-
 .controls {
     width: 200px;
     margin-bottom: 30px;
@@ -33,10 +31,8 @@ body {
     display: block;
     border: 4px;
     border-radius: 50px;
-
     border-color: #ff0;
     border-style: solid;
-
     opacity: 0.9;
 }
 
@@ -64,7 +60,6 @@ body {
     font-weight: 400;
     color: #212529;
     background-color: #f8f9fa;
-
     text-align: center;
     padding: 5px;
     font-size: 25px;
@@ -73,13 +68,9 @@ body {
     border: none;
 }
 
-.btn:nth-child(n + 2) {
-    margin-top:40px;
+.btn:nth-child(n+2) {
+    margin-top: 40px;
 }
-
-
-
-
 
 .board-container {
     width: 100%;
@@ -99,18 +90,11 @@ body {
     row-gap:5px; */
 }
 
-/* .card-container {
-    
-    width: 80%;
-} */
-
-
-
 .card {
     position: relative;
     background: url('../img/charTemplates/Hearthstone_Custom.png');
     width: 350px;
-    height: 500px;
+    height: 480px;
     background-position: right;
     background-size: contain;
     background-repeat: no-repeat;
@@ -124,8 +108,6 @@ body {
 .AI-card {
     float: right;
 }
-
-
 
 .skill {
     width: 75px;
@@ -151,7 +133,6 @@ body {
     display: block;
 }
 
-
 .cell::before {
     width: var(--cell-size);
     height: var(--cell-size);
@@ -163,7 +144,6 @@ body {
     border: 4px;
     border-radius: 32px;
     box-sizing: border-box;
-    
     opacity: 0.9;
     position: absolute;
 }
@@ -182,8 +162,6 @@ body {
     border-color: #f00;
     border-style: dashed;
 }
-
-
 
 .board.prairie {
     --map-tile-top-left-url: url('../img/prairie/map-tile-top-left.png');
@@ -285,13 +263,6 @@ body {
     background-position: center;
 }
 
-
-
-
-
-
-
-
 .char-in-card {
     width: 150px;
     height: 150px;
@@ -301,51 +272,38 @@ body {
 
 .specials {
     -webkit-text-stroke: 2.5px #000;
-    width: 50px;
-
     text-align: center;
     position: absolute;
     color: white;
     font-size: 45px;
     display: block;
+    width: 50px;
 }
 
-
-  
 .mana {
-    top: 45px;
-    left: 30px;
+    top: 9%;
+    left: 12%;
 }
 
 .health {
-    bottom: 20px;
-    right: 18px;
+    bottom: 5%;
+    right: 5%;
 }
 
 .attack {
-    bottom: 22px;
-    left: 34px;
+    bottom: 5%;
+    left: 13%;
 }
 
-.charName {
-    bottom: 100px;
-    left: 50px;
-}
-
-.skillName {
+.skill-name {
     bottom: 50px;
     left: 50px;
 }
 
-.skillDesc {
+.skill-desc {
     bottom: 50px;
     left: 50px;
 }
-
-
-
-
-
 
 .character.generic {
     background-image: url('../img/characters/generic.png');
