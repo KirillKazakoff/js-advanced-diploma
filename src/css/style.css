@@ -20,6 +20,7 @@ body {
 }
 
 .menu {
+    margin-left: 20px;
     display: flex;
     min-width: 300px;
 }
@@ -153,17 +154,6 @@ body {
 
 .AI-card {
     float: right;
-}
-
-.skill {
-    width: 75px;
-    height: 75px;
-    background-position: center;
-    background-size: cover;
-}
-
-.magician.fireshot {
-    background: url('../img/skills/fireShot.png');
 }
 
 .tooltip {
@@ -316,6 +306,28 @@ body {
     margin-top: 80px;
 }
 
+.skills-menu {
+    position: absolute;
+    width: 40%;
+    z-index: -1;
+    height: 130%;
+    top: -75px;
+
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+}
+
+.skills-AI {
+    left: -80px;
+    background-image: url('../img/interface/Skills-AI.png');
+}
+
+.skills-PL {
+    right: -100px;
+    background-image: url('../img/interface/Skills-PL.png');
+}
+
 .specials {
     -webkit-text-stroke: 2.5px #000;
     text-align: center;
@@ -339,16 +351,6 @@ body {
 .attack {
     bottom: 5%;
     left: 13%;
-}
-
-.skill-name {
-    bottom: 50px;
-    left: 50px;
-}
-
-.skill-desc {
-    bottom: 50px;
-    left: 50px;
 }
 
 .character.generic {
