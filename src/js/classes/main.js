@@ -1,4 +1,3 @@
-import showFeatures from "../cards";
 import gamePlay from "../gamePlay";
 
 export default class Character {

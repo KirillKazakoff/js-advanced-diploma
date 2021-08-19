@@ -17,7 +17,8 @@ const gamePlay = {
     cardPL: new Card('PL'),
     isRangeButton: false,
 
-    cellClickListeners: [],
+    cellRightClickListeners: [],
+    cellLeftClickListeners: [],
     cellUpListeners: [],
     cellDownListeners: [],
     cellEnterListeners: [],
@@ -69,7 +70,9 @@ const gamePlay = {
             cellEl.classList.add('cell', 'map-tile', `map-tile-${calcTileType(i, this.boardSize)}`);
             cellEl.addEventListener('mouseenter', (event) => this.onCellEnter(event));
             cellEl.addEventListener('mouseleave', (event) => this.onCellLeave(event));
-            cellEl.addEventListener('click', (event) => this.onCellClick(event));
+
+            cellEl.addEventListener('click', (event) => this.onCellLeftClick(event));
+            cellEl.addEventListener('contextmenu', (event) => this.onCellRightClick(event));
 
             cellEl.addEventListener('mousedown', (event) => this.onCellDown(event));
             cellEl.addEventListener('mouseup', (event) => this.onCellUp(event));
@@ -128,8 +131,12 @@ const gamePlay = {
         this.cellLeaveListeners.push(callback);
     },
 
-    addCellClickListener(callback) {
-        this.cellClickListeners.push(callback);
+    addCellLeftClickListener(callback) {
+        this.cellLeftClickListeners.push(callback);
+    },
+
+    addCellRightClickListener(callback) {
+        this.cellRightClickListeners.push(callback);
     },
 
     addCellDownListener(callback) {
@@ -145,9 +152,6 @@ const gamePlay = {
     },
 
 
-
-
-
     
     onCellEnter(event) {
         event.preventDefault();
@@ -161,9 +165,15 @@ const gamePlay = {
         this.cellLeaveListeners.forEach((listener) => listener(index));
     },
 
-    onCellClick(event) {
+    onCellLeftClick(event) {
         const index = this.cells.indexOf(event.currentTarget);
-        this.cellClickListeners.forEach((listener) => listener(index));
+        this.cellLeftClickListeners.forEach((listener) => listener(index));
+    },
+
+    onCellRightClick(event) {
+        event.preventDefault();
+        const index = this.cells.indexOf(event.currentTarget);
+        this.cellRightClickListeners.forEach((listener) => listener(index));
     },
 
     onCellDown(event) {

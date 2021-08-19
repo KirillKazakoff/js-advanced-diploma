@@ -9,4 +9,8 @@ export default class Bowman extends Character {
         this.attackRange = 2;
         this.upFromScratch();
     }
+
+    shot(target) {
+        
+    }
 }

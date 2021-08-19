@@ -20,10 +20,10 @@ export default class GameController {
         this.gamePlay.addCellDownListener((index) => this.onCellDown(index));
         this.gamePlay.addCellEnterListener((index) => this.onCellEnter(index));
         this.gamePlay.addCellLeaveListener((index) => this.onCellLeave(index));
-        this.gamePlay.addCellClickListener((index) => this.onCellClick(index));
+        this.gamePlay.addCellLeftClickListener((index) => this.onCellLeftClick(index));
+        this.gamePlay.addCellRightClickListener((index) => this.onCellRightClick(index));
         this.gamePlay.addCellUpListener(() => this.onCellUp());
     }
-
 
     onCellEnter(index) {
         const { activePos } = gameState;
@@ -57,11 +57,27 @@ export default class GameController {
         }
     }
 
-    onCellClick(index) {
+    onCellRightClick(index) {
         const { activePos, underControl } = gameState;
         const { teams } = this.gamePlay;
         const char = teams.getTeamChar(index);
 
+        if (char.turn === 'AI' && typeof activePos === 'number') {
+            const positions = this.getAttackRange(activePos);
+
+            if (positions.some((position) => position === index) && underControl) {
+                gameState.underControl = false;
+                teams.attackChar(index).then(() => {
+                    auxController.turnAI();
+                });
+            }
+        }
+    }
+
+    onCellLeftClick(index) {
+        const { activePos, underControl } = gameState;
+        const { teams } = this.gamePlay;
+        const char = teams.getTeamChar(index);
 
         if (!char && typeof activePos === 'number' && underControl) {
             const positions = this.getMoveRange(activePos);
@@ -80,15 +96,8 @@ export default class GameController {
             return;
         }
 
-        if (char.turn !== 'PL' && typeof activePos === 'number') {
-            const positions = this.getAttackRange(activePos);
-
-            if (positions.some((position) => position === index) && underControl) {
-                gameState.underControl = false;
-                teams.attackChar(index).then(() => {
-                    auxController.turnAI();
-                });
-            }
+        if (char.turn === 'AI' && typeof activePos === 'number') {
+            
         }
 
         if (char) {
