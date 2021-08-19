@@ -1,4 +1,5 @@
 import gamePlay from "../gamePlay";
+import gameState from "../gameState";
 
 export default class Character {
     constructor(level, type = 'generic') {
@@ -12,8 +13,7 @@ export default class Character {
         this.gem = 'common';
 
         this.turn = null;
-        this.position = null;
-        
+        this.position = null;     
     }
 
     levelUp() {
@@ -40,4 +40,38 @@ export default class Character {
     getCard() {
         return gamePlay[`card${this.turn}`];
     }
+
+    moveTo(position) {
+        gameState.activePos = this.position;
+        const { teams } = gamePlay;
+
+        gamePlay.clearDataset(this.position);
+        teams.deleteChar(this);
+
+        this.position = position;
+        teams.characters.push(this);
+        gamePlay.redrawPositions(teams.characters);
+    }
+
+    async fight(position) {
+        gameState.activePos = this.position;
+        await gamePlay.showDamage(position, this.attack);
+        const { teams } = gamePlay;
+
+        const target = teams.getTeamChar(position);
+        target.health -= this.attack;
+        target.getCard().showCharacter(target); 
+
+        let deletedPosition = null;
+        if (target.health <= 0) {            
+            teams.deleteChar(target);
+            gamePlay.clearDataset(position);
+            gamePlay.deselectCell(position);
+            deletedPosition = position;
+        }
+        gamePlay.redrawPositions(gamePlay.teams.characters);
+
+        return deletedPosition;
+    }
+
 }

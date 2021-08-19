@@ -61,13 +61,14 @@ export default class GameController {
         const { activePos, underControl } = gameState;
         const { teams } = this.gamePlay;
         const char = teams.getTeamChar(index);
+        const activeChar = teams.getTeamChar(activePos);
 
         if (char.turn === 'AI' && typeof activePos === 'number') {
             const positions = this.getAttackRange(activePos);
 
             if (positions.some((position) => position === index) && underControl) {
                 gameState.underControl = false;
-                teams.attackChar(index).then(() => {
+                activeChar.fight(index).then(() => {
                     auxController.turnAI();
                 });
             }
@@ -78,12 +79,13 @@ export default class GameController {
         const { activePos, underControl } = gameState;
         const { teams } = this.gamePlay;
         const char = teams.getTeamChar(index);
+        const activeChar = teams.getTeamChar(activePos);
 
         if (!char && typeof activePos === 'number' && underControl) {
             const positions = this.getMoveRange(activePos);
 
             if (positions.some((position) => position === index)) {
-                teams.moveActiveChar(index);
+                activeChar.moveTo(index);
                 this.gamePlay.redrawPositions(teams.characters);
 
                 this.gamePlay.deselectCell(index);
@@ -104,6 +106,37 @@ export default class GameController {
             this.onPlayerCharClick(index);
         }
     }
+
+    // onCellLeftClick(index) {
+    //     const { activePos, underControl } = gameState;
+    //     const { teams } = this.gamePlay;
+    //     const char = teams.getTeamChar(index);
+
+    //     if (!char && typeof activePos === 'number' && underControl) {
+    //         const positions = this.getMoveRange(activePos);
+
+    //         if (positions.some((position) => position === index)) {
+    //             teams.moveActiveChar(index);
+    //             this.gamePlay.redrawPositions(teams.characters);
+
+    //             this.gamePlay.deselectCell(index);
+    //             this.gamePlay.selectCell(index, 'yellow');
+    //             this.gamePlay.deselectCell(activePos);
+
+    //             gameState.activePos = index;
+    //             auxController.turnAI();
+    //         }
+    //         return;
+    //     }
+
+    //     if (char.turn === 'AI' && typeof activePos === 'number') {
+            
+    //     }
+
+    //     if (char) {
+    //         this.onPlayerCharClick(index);
+    //     }
+    // }
 
     onPlayerCharClick(index) {
         const { teams, cardAI, cardPL } = this.gamePlay;

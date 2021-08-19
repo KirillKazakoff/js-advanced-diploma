@@ -2,10 +2,14 @@ import gamePlay from './gamePlay';
 import gameState from './gameState';
 import TeamCommon from './TeamCommon';
 import {
-    getMoveRange, getHighestPropChar, getLowestPropChar, setify, attackFinally, runTo
+    getHighestPropChar, getLowestPropChar, setify,
 } from './auxTeam';
 
 export default class TeamLogicAI extends TeamCommon {
+    getMoveRange(position) {
+        return gamePlay.getPositions('moveRange', position).positions;
+    }
+
     getAttackPairs() {
         return this.getCharsPositions().reduce((total, position) => {
             total.push(gamePlay.getPositions('attackRange', position).positions);
@@ -79,7 +83,7 @@ export default class TeamLogicAI extends TeamCommon {
 
 
     getAcceptableZone(enemy, position) {
-        const moveRange = getMoveRange(position);
+        const moveRange = this.getMoveRange(position);
         const friendChars = this.getCharsPositions();
         const enemyChars = enemy.getCharsPositions();
 
@@ -113,7 +117,7 @@ export default class TeamLogicAI extends TeamCommon {
     static async giveControlAI(callback) {
         const playerState = gameState.activePos;
         const result = await callback(playerState);
-        
+
         gameState.activePos = playerState;
         if (result === playerState) {
             gameState.activePos = null;
@@ -124,13 +128,13 @@ export default class TeamLogicAI extends TeamCommon {
         if (positions[0]) {
             const victimsArr = [];
             const friendChars = this.getCharsPositions();
-
             let prevPos = charPos;
             positions.push(charPos);
 
             positions.forEach((position) => {
-                gameState.activePos = prevPos;
-                this.moveActiveChar(position);
+                const char = this.getTeamChar(prevPos);
+                char.moveTo(position);
+
                 const victim = this.getBestVictim(enemy);
                 const attacker = this.getBestAttacker(victim, enemy).position;
 
@@ -167,7 +171,8 @@ export default class TeamLogicAI extends TeamCommon {
     moveToFight(victim) {
         if (victim) {
             const { attackerFuture, attackerNow } = victim;
-            runTo(attackerNow, attackerFuture);
+            const attacker = this.getTeamChar(attackerNow);
+            attacker.moveTo(attackerFuture);
             return victim;
         }
         return false;
@@ -203,6 +208,7 @@ export default class TeamLogicAI extends TeamCommon {
         return TeamLogicAI.giveControlAI(() => {
             if (charsInWz.length === 1) {
                 const charPos = charsInWz[0];
+                const char = this.getTeamChar(charPos);
                 const resVictim = this.safeCheck(charPos, enemy);
 
                 if (resVictim) {
@@ -212,7 +218,7 @@ export default class TeamLogicAI extends TeamCommon {
 
                 const clearPos = this.getClearZone(charPos, enemy);
                 if (clearPos) {
-                    runTo(charPos, clearPos[0]);
+                    char.moveTo(clearPos[0]);
                     return;
                 }
 
@@ -230,7 +236,7 @@ export default class TeamLogicAI extends TeamCommon {
                 if (this.explore(enemy, this.dangerCheck)) {
                     return;
                 }
-                return attackFinally(attacker.position, victim.position);
+                return attacker.fight(victim.position)
             }
 
             if (!charsInWz) {
@@ -240,32 +246,77 @@ export default class TeamLogicAI extends TeamCommon {
                 const attackerPos = getHighestPropChar('attack', this.characters).position;
                 const clearPos = this.getClearZone(attackerPos, enemy);
 
+                const attacker = this.getTeamChar(attackerPos);
                 if (clearPos) {
-                    runTo(attackerPos, clearPos[0]);
+                    attacker.moveTo(clearPos[0]);
                     return;
                 }
 
                 const randomPos = this.getAcceptableZone(enemy, attackerPos)[0];
-                runTo(attackerPos, randomPos);
+                attacker.moveTo(randomPos);
                 return;
             }
 
             if (charsInWz && !enemiesInWz) {
                 const chars = this.getChars(charsInWz);
                 const weakestPos = getLowestPropChar('health', chars).position;
+                const weakestChar = this.getTeamChar(weakestPos);
                 const clearPos = this.getClearZone(weakestPos, enemy);
 
                 if (this.explore(enemy, this.dangerCheck)) {
                     return;
                 }
                 if (clearPos) {
-                    runTo(weakestPos, clearPos[0]);
+                    weakestChar.moveTo(clearPos[0]);
                     return;
                 }
 
                 const randomPos = this.getAcceptableZone(enemy, weakestPos)[0];
-                runTo(weakestPos, randomPos);
+                weakestChar.moveTo(randomPos);
             }
         });
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
