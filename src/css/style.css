@@ -87,47 +87,71 @@ body {
 .board {
     display: grid;
     grid-template-columns: repeat(8, 1fr);
-    /* column-gap: 2px;
-    row-gap:5px; */
+    column-gap: 2px;
+    row-gap: 2px;
+}
+
+.card-wrapper {
+    position: relative;
 }
 
 .card {
     position: relative;
     width: 350px;
     height: 480px;
+    z-index: 1;
     background-position: right;
     background-size: contain;
     background-repeat: no-repeat;
 }
 
+.PL-card {
+    float: left;
+    bottom: 400px;
+}
+
+.AI-card {
+    float: right;
+}
+
+.skills-menu {
+    position: absolute;
+    width: 40%;
+    z-index: 0;
+    height: 80%;
+    top: 45px;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+}
+
 .card-generic {
-    background-image: url('../img/charTemplates/Neutral.png');
+    background-image: url('../img/cardTemplates/Neutral.png');
 }
 
 .card-bowman {
-    background-image: url('../img/charTemplates/Bowman.png');
+    background-image: url('../img/cardTemplates/Bowman.png');
 }
 
 .card-swordsman {
-    background-image: url('../img/charTemplates/Swordsman.png');
+    background-image: url('../img/cardTemplates/Swordsman.png');
 }
 
 .card-magician {
-    background-image: url('../img/charTemplates/Magician.png');
+    background-image: url('../img/cardTemplates/Magician.png');
 }
 
 .card-daemon {
-    background-image: url('../img/charTemplates/Daemon.png');
+    background-image: url('../img/cardTemplates/Daemon.png');
 }
 
 .card-undead {
-    background-image: url('../img/charTemplates/Undead.png');
+    background-image: url('../img/cardTemplates/Undead.png');
 }
 
 .card-vampire {
-    background-image: url('../img/charTemplates/Vampire.png');
+    background-image: url('../img/cardTemplates/Vampire.png');
 }
-
 
 .gem {
     display: block;
@@ -147,27 +171,6 @@ body {
     background-image: url('../img/gems/CommonGem.png');
 }
 
-.PL-card {
-    float: left;
-    bottom: 400px;
-}
-
-.AI-card {
-    float: right;
-}
-
-.tooltip {
-    display: none;
-    z-index: 100;
-    position: absolute;
-    background: black;
-    padding: 2px;
-    color: #fff;
-}
-
-.tooltip-active {
-    display: block;
-}
 
 .cell::before {
     width: var(--cell-size);
@@ -306,27 +309,17 @@ body {
     margin-top: 80px;
 }
 
-.skills-menu {
-    position: absolute;
-    width: 40%;
-    z-index: -1;
-    height: 130%;
-    top: -75px;
-
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-position: center;
-}
-
 .skills-AI {
-    left: -80px;
-    background-image: url('../img/interface/Skills-AI.png');
+    left: -85px;
+    background-image: url('../img/interface/Skills-AI2.png');
 }
 
 .skills-PL {
-    right: -100px;
-    background-image: url('../img/interface/Skills-PL.png');
+    right: -103px;
+    background-image: url('../img/interface/Skills-PL2.png');
 }
+
+.skill {}
 
 .specials {
     -webkit-text-stroke: 2.5px #000;

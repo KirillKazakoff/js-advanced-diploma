@@ -1,5 +1,6 @@
 import gamePlay from "../gamePlay";
 import gameState from "../gameState";
+import { calcPossiblePositions } from "../utilsSec";
 
 export default class Character {
     constructor(level, type = 'generic') {
@@ -74,4 +75,11 @@ export default class Character {
         return deletedPosition;
     }
 
+    getHtml() {
+        return gamePlay.cells.find((cell, index) => index === this.position);
+    }
+
+    getPositions(rangeParam) {
+        return calcPossiblePositions(rangeParam, this.position);
+    }
 }

@@ -1,0 +1,27 @@
+.arrow-trace {
+    top: 0;
+    left: 0;
+    position: absolute;
+    background-position: top center;
+    background-image: url('../img/animationSkills/Arrow-trace.png');
+    background-repeat: no-repeat;
+    background-size: 700px 50px;
+    
+    height: 50px;
+    width: 1000px;
+
+    transform-origin: left bottom;
+}
+
+.arrow {
+    background-repeat: no-repeat;
+    position: absolute;
+    background-position: center;
+    background-image: url('../img/animationSkills/Arrow.png');
+    width: 100px;
+    height: 50px;
+}
+
+.effect-stop {
+    display: none;
+}

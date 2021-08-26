@@ -1,5 +1,4 @@
 import gameState from './gameState';
-import gamePlay from './gamePlay';
 
 export default class TeamCommon {
     constructor(...teams) {
@@ -13,37 +12,6 @@ export default class TeamCommon {
     getCharsPositions() {
         return this.characters.map((char) => char.position);
     }
-
-    moveActiveChar(position) {
-        gamePlay.clearDataset(gameState.activePos);
-        const activeChar = this.getTeamChar(gameState.activePos);
-        this.deleteChar(activeChar);
-
-        activeChar.position = position;
-        this.characters.push(activeChar);
-        gamePlay.redrawPositions(gamePlay.teams.characters);
-    }
-
-    async attackChar(position) {
-        const attacker = this.getTeamChar(gameState.activePos);
-        await gamePlay.showDamage(position, attacker.attack);
-
-        const target = this.getTeamChar(position);
-        target.health -= attacker.attack;
-        target.getCard().showCharacter(target);
-       
-        let deletedPosition = null;
-        if (target.health <= 0) {
-            this.deleteChar(target);
-            gamePlay.clearDataset(position);
-            gamePlay.deselectCell(position);
-            deletedPosition = position;
-        }
-        gamePlay.redrawPositions(gamePlay.teams.characters);
-
-        return deletedPosition;
-    }
-
 
     getTeamChar(position) {
         const searchRes = this.characters.find((character) => character.position === position);
