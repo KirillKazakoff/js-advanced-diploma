@@ -1,6 +1,6 @@
 import gamePlay from "../gamePlay";
 import gameState from "../gameState";
-import { calcPossiblePositions } from "../../lib/utils/utils";
+import { getPositions } from "../../app/lib/utils/utils";
 
 export default class Character {
     constructor(level, type = 'generic') {
@@ -80,6 +80,6 @@ export default class Character {
     }
 
     getPositions(rangeParam) {
-        return calcPossiblePositions(rangeParam, this.position);
+        return getPositions(rangeParam, this.position);
     }
 }

@@ -1,11 +1,33 @@
-import gameState from './gameState';
-import TeamCommon from './TeamCommon';
-import { getPositions } from '../app/lib/utils/utils';
-import {
-    getHighestPropChar, getLowestPropChar, setify,
-} from './auxTeam';
+import gameState from '../gameState/gameState';
 
-export default class TeamLogicAI extends TeamCommon {
+import { setify, getLowestPropChar, getHighestPropChar } from '../lib/utils/utils';
+import getPositions from '../lib/utils/positions.utl';
+
+export default class Team {
+    constructor(heroes) {
+        this.heroes = heroes;
+    } 
+
+    getCharsPositions() {
+        return this.heroes.map((char) => char.position);
+    }
+
+    getTeamChar(position) {
+        const searchRes = this.heroes.find((character) => character.position === position);
+        return searchRes ? searchRes : false;
+    }
+
+    getChars(positions) {
+        return positions.reduce((total, position) => {
+            const char = this.getTeamChar(position);
+            total.push(char);
+            return total;
+        }, []);
+    }
+
+
+    
+
     getAttackPairs() {
         return this.getCharsPositions().reduce((total, position) => {
             total.push(getPositions('attackRange', position).positions);

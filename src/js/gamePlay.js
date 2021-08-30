@@ -1,6 +1,6 @@
 /* eslint-disable no-restricted-globals */
 /* eslint-disable no-restricted-syntax */
-import { calcHealthLevel, calcTileType, calcPossiblePositions } from '../lib/engine/utils';
+import { calcHealthLevel, calcTileType, calcPossiblePositions } from './utilsSec';
 import TeamLogicAI from './TeamLogicAI';
 import Card from './Card';
 
