@@ -1,0 +1,33 @@
+import { calcTileType } from "../../lib/utils/utils";
+
+const boardCellTmp = (cellType, percentage, position) => ({
+    block: 'li',
+    cls: `board__cell ${cellType}`,
+    content: '',
+    style: {
+        'width': percentage,
+        'padding-bottom': percentage,
+    },
+    attrs: {
+        'data-id': position,
+    },
+});
+
+const boardTmp = (boardSize, auxClass) => ({
+    block: 'ul',
+    cls: `board ${auxClass}`,
+    content: genCells(boardSize),
+})
+
+function genCells(boardSize) {
+    const cellSize = `${100 / this.boardSize}%`;
+    const cells = [];
+
+    for (let i = 0; i < boardSize ** 2; i++) {
+        const cls = calcTileType(i, boardSize);
+        cells.push(boardCellTmp(cls, cellSize, i));
+    }
+    return cells;
+}
+
+export default boardTmp;

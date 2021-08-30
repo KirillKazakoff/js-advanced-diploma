@@ -1,4 +1,6 @@
 /* eslint-disable no-restricted-globals */
+import gameState from "../../js/gameState";
+
 export function calcTileType(index, boardSize) {
     const allCells = boardSize ** 2;
 
@@ -77,8 +79,8 @@ export function calcAnimationDegree(attackerCoords, victimCoords) {
 }
 
 export function calcPossiblePositions(cellAmount, start) {
-    const { boardSize } = this;
-
+    const { boardSize } = gameState;
+    
     const positions = new Set();
     const toRight = [];
     const toLeft = [];

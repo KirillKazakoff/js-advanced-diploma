@@ -1,4 +1,4 @@
-import { calcAnimationDegree } from "../utilsSec";
+import { calcAnimationDegree } from "../../lib/utils/utils";
 
 test('a4 b3 c5 arccos = 36.87', () => {
     const attackerCoords = {

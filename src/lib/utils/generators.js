@@ -1,10 +1,9 @@
-import gamePlay from './gamePlay';
 import gameState from './gameState';
 
 import { getRandomInt } from '../lib/utils/utils';
 import {
-    Bowman, Swordsman, Magician, Daemon, Vampire, Undead,
-} from './classes/importAll';
+    Bowman, Magician, Swordsman, Daemon, Vampire, Undead
+} from '../../components/character/heroes/heroes';
 
 function* characterGenerator(allowedTypes, maxLevel) {
     while (true) {
@@ -18,7 +17,7 @@ function* characterGenerator(allowedTypes, maxLevel) {
 
 function positionGenerator() {
     const positions = [];
-    const { boardSize } = gamePlay;
+    const { boardSize } = gameState;
 
     return function localFunc(character) {
         const getRandomPosition = () => {
@@ -66,7 +65,6 @@ export function generateChars(maxLevel, characterCount, turn) {
 
     return getPositionedChars(team);
 }
-
 
 export function genPlayerReinforceProps() {
     const { theme } = gameState;

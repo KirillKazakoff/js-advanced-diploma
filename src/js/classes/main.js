@@ -1,6 +1,6 @@
 import gamePlay from "../gamePlay";
 import gameState from "../gameState";
-import { calcPossiblePositions } from "../utilsSec";
+import { calcPossiblePositions } from "../../lib/utils/utils";
 
 export default class Character {
     constructor(level, type = 'generic') {

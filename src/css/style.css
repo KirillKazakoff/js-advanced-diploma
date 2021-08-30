@@ -319,8 +319,6 @@ body {
     background-image: url('../img/interface/Skills-PL2.png');
 }
 
-.skill {}
-
 .specials {
     -webkit-text-stroke: 2.5px #000;
     text-align: center;
@@ -402,6 +400,10 @@ body {
 .health-level-indicator-critical {
     background: #f00;
 }
+
+
+
+
 
 .damage {
     position: relative;

@@ -1,4 +1,4 @@
-import { calcTileType } from "../utilsSec";
+import { calcTileType } from "../../lib/utils/utils";
 
 const boardSize = 8;
 

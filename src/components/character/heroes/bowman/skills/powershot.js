@@ -1,19 +1,16 @@
-import { getCellCoords, calcAnimationDegree } from "../lib/utils/utils";
+import './powershot.css';
+import powershotT from "./powershot.tmp";
+import engine from "../../../../../lib/engine/engine";
 
-const gameContainer = document.querySelector('#game-container');
+import { getCellCoords, calcAnimationDegree } from "../lib/utils";
 
-export default function setShotAnimation(attacker, victim) {
+export default function powershot(attacker, victim) {
+    const container = attacker.getHtml();
     const attackerCoords = getCellCoords(attacker);
     const victimCoords = getCellCoords(victim);
 
-    const arrowTrace = document.createElement('div');
-    arrowTrace.className = 'arrow-trace';
-
-    const { top: attackerTop, left: attackerLeft } = attackerCoords;
-    arrowTrace.style.left = `${attackerLeft}px`;
-    arrowTrace.style.top = `${attackerTop}px`;
-
-    gameContainer.append(arrowTrace);
+    const skillHtml = engine(powershotT(attackerCoords));
+    container.insertAdjacentHTML('beforeEnd', skillHtml);
 
     //calc degree
     const degree = calcAnimationDegree(attackerCoords, victimCoords);
@@ -86,7 +83,7 @@ export default function setShotAnimation(attacker, victim) {
 
 // import { getCellCoords, calcAnimationDegree } from "./utilsSec";
 
-// const gameContainer = document.querySelector('#game-container');
+// const container = document.querySelector('#game-container');
 
 // export default function setShotAnimation(attacker, victim) {
 //     return new Promise((resolve) => {
@@ -100,7 +97,7 @@ export default function setShotAnimation(attacker, victim) {
 //         arrowTrace.style.left = `${attackerLeft}px`;
 //         arrowTrace.style.top = `${attackerTop}px`;
 
-//         gameContainer.append(arrowTrace);
+//         container.append(arrowTrace);
 
 //         //calc degree
 //         const degree = calcAnimationDegree(attackerCoords, victimCoords);

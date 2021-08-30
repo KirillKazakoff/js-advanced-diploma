@@ -1,6 +1,6 @@
 /* eslint-disable no-restricted-globals */
 /* eslint-disable no-restricted-syntax */
-import { calcHealthLevel, calcTileType, calcPossiblePositions } from './utilsSec';
+import { calcHealthLevel, calcTileType, calcPossiblePositions } from '../lib/engine/utils';
 import TeamLogicAI from './TeamLogicAI';
 import Card from './Card';
 
@@ -100,7 +100,8 @@ const gamePlay = {
             healthEl.classList.add('health-level');
 
             const healthIndicatorEl = document.createElement('div');
-            healthIndicatorEl.classList.add('health-level-indicator', `health-level-indicator-${calcHealthLevel(positionedChar.health)}`);
+            const healthLevel = calcHealthLevel(positionedChar.health);
+            healthIndicatorEl.classList.add('health-level-indicator', `health-level-indicator-${healthLevel}`);
             healthIndicatorEl.style.width = `${positionedChar.health * 10}%`;
             healthEl.appendChild(healthIndicatorEl);
 
