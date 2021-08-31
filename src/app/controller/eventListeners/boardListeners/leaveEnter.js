@@ -1,3 +1,5 @@
+import state from "../../../state/state";
+
 export function onCellLeave(cell) {
     if (cell.className.includes('green') || cell.className.includes('red')) {
         this.board.deselectCell(index);

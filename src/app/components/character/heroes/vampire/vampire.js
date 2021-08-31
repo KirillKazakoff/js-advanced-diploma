@@ -1,4 +1,5 @@
 import Character from "../../character";
+import './vampire.css';
 
 export default class Vampire extends Character {
     constructor(level) {

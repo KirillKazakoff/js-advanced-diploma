@@ -1,5 +1,7 @@
+import state from "../../../state/state";
+
 export default function onLoadGameClick() {
-    const { state, characters, board } = this;
+    const {  characters, board } = this;
 
     const loadedChars = state.load();
     const classifiedChars = recreateLoadedChars(loadedChars);
@@ -7,7 +9,7 @@ export default function onLoadGameClick() {
     board.setTheme(state.theme);
     characters.heroes = classifiedChars;
     board.renderChars(classifiedChars);
-
+    
     const { activePos } = state;
     if (activePos) {
         board.selectCell(state.activePos);

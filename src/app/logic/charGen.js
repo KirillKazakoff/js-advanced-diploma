@@ -1,10 +1,10 @@
-import gameState from '../../gameState/gameState';
+import state from '../state/state';
 
 import { getRandomInt } from '../lib/utils/utils';
 
 import {
     Bowman, Magician, Swordsman, Daemon, Vampire, Undead
-} from '../../components/character/heroes/heroes';
+} from '../components/character/heroes/heroes';
 
 function* characterGenerator(allowedTypes, maxLevel) {
     while (true) {
@@ -18,7 +18,7 @@ function* characterGenerator(allowedTypes, maxLevel) {
 
 function positionGenerator() {
     const positions = [];
-    const { boardSize } = gameState;
+    const { boardSize } = state;
 
     return function localFunc(character) {
         const getRandomPosition = () => {
@@ -68,7 +68,7 @@ export function generateChars(maxLevel, characterCount, turn) {
 }
 
 export function genPlayerReinforceProps() {
-    const { theme } = gameState;
+    const { theme } = state;
     let amount = null;
     let level = null;
 
@@ -91,45 +91,4 @@ export function genPlayerReinforceProps() {
         break;
     }
     return { amount, level };
-}
-
-export function recreateLoadedChars(chars) {  
-    return chars.map((char) => {
-        let classedChar;
-        const { level } = char;
-
-        switch (char.type) {
-            case 'vampire':
-                classedChar = new Vampire(level);
-                break;
-
-            case 'undead':
-                classedChar = new Undead(level);
-                break;
-
-            case 'daemon':
-                classedChar = new Daemon(level);
-                break;
-
-            case 'bowman':
-                classedChar = new Bowman(level);
-                break;
-
-            case 'magician':
-                classedChar = new Magician(level);
-                break;
-
-            case 'swordsman':
-                classedChar = new Swordsman(level);
-                break;
-
-            default:
-                break;
-        }
-
-        for (let prop in char) {
-            classedChar[prop] = char[prop];
-        }
-        return classedChar;
-    })
 }

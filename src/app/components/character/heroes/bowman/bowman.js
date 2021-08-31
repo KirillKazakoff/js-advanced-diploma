@@ -1,5 +1,7 @@
+import './bowman.css';
 import Character from '../../character';
 import powershot from './skills/powershot';
+
 
 export default class Bowman extends Character {
     constructor(level) {

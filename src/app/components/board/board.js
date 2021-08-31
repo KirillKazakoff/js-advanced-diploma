@@ -7,7 +7,7 @@ import engine from "../../lib/engine/engine";
 
 export default class Board {
     constructor() {
-        this.container = document.querySelector('.board');
+        this.container = document.querySelector('.board-container');
     }
 
     renderBoard(theme, boardSize) {
@@ -70,5 +70,3 @@ export default class Board {
         }
     }
 };
-
-export default board;

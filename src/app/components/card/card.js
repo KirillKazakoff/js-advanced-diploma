@@ -1,39 +1,42 @@
 import './card.css';
-import './aux/charName.css';
+import './charName/charName.css';
 
 import cardT from "./card.tmp";
 import engine from "../../lib/engine/engine";
-import showCharName from "./aux/showCharName";
+import showCharName from "./charName/showCharName";
 
 import genericChar from '../character/heroes/generic/generic';
 
 export default class Card {
     constructor(turn) {
         this.turn = turn;
-        this.content = document.querySelector(`.${turn}-card`);
+        this.container = document.querySelector(`.interface-${turn}`);
         this.renderCard();
         
-        this.char = this.content.querySelector('.character');
-        this.mana = this.content.querySelector('.mana');
-        this.health = this.content.querySelector('.health');
-        this.attack = this.content.querySelector('.attack');
-        this.name = this.content.querySelector('.char-name');
-        this.gem = this.content.querySelector('.gem');
+        this.card = this.container.querySelector('.card');
+        this.char = this.container.querySelector('.char-in-card');
+        this.mana = this.container.querySelector('.mana');
+        this.health = this.container.querySelector('.health');
+        this.attack = this.container.querySelector('.attack');
+        this.name = this.container.querySelector('.char-name');
+        this.gem = this.container.querySelector('.gem');
 
         this.showGeneric();
     }
 
     renderCard() {
+        console.log(this.container.className);
         const html = engine(cardT(genericChar));
-        this.content.insertAdjacentHTML('afterbegin', html);
+        this.container.insertAdjacentHTML('afterbegin', html);
+        console.log(this.container.className);
     }
 
     initSpecials(char) {
         let { type, health, mana, attack, gem } = char;
 
-        this.content.className = `card card-${type} ${this.turn}-card`;
+        this.card.className = `card card-${type} ${this.turn}-card`;
 
-        this.char.className = `character ${type} char-in-card`;
+        this.char.className = `char-in-card ${type}`;
         this.gem.className = `gem ${gem}`;
         this.mana.textContent = mana;
         this.health.textContent = health;

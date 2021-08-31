@@ -1,4 +1,5 @@
 import Character from "../../character";
+import './undead.css';
 
 export default class Undead extends Character {
     constructor(level) {

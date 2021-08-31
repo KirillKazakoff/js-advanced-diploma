@@ -1,4 +1,22 @@
+.interface{
+    position: relative;
+}
+
+.interface-PL {
+    float: left;
+    bottom: 400px;
+}
+
+.interface-AI {
+    float: right;
+}
+
 .char-in-card {
+    position: absolute;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+
     width: 150px;
     height: 150px;
     margin-left: 105px;
@@ -20,12 +38,10 @@
 }
 
 .common {
-    background-image: url('../img/gems/CommonGem.png');
+    background-image: url('./gem/CommonGem.png');
 }
 
-.card-wrapper {
-    position: relative;
-}
+
 
 .card {
     position: relative;
@@ -37,16 +53,39 @@
     background-repeat: no-repeat;
 }
 
-.PL-card {
-    float: left;
-    bottom: 400px;
+
+
+
+
+.card-generic {
+    background-image: url('./cardTemplate/Neutral.png');
 }
 
-.AI-card {
-    float: right;
+.card-bowman {
+    background-image: url('./cardTemplate/Bowman.png');
 }
 
-.skills-menu {
+.card-swordsman {
+    background-image: url('./cardTemplate/Swordsman.png');
+}
+
+.card-magician {
+    background-image: url('./cardTemplate/Magician.png');
+}
+
+.card-daemon {
+    background-image: url('./cardTemplate/Daemon.png');
+}
+
+.card-undead {
+    background-image: url('./cardTemplate/Undead.png');
+}
+
+.card-vampire {
+    background-image: url('./cardTemplate/Vampire.png');
+}
+
+/* .skills-menu {
     position: absolute;
     width: 40%;
     z-index: 0;
@@ -55,36 +94,8 @@
     background-repeat: no-repeat;
     background-position: center;
     background-size: cover;
-}
-
-.card-generic {
-    background-image: url('../img/cardTemplates/Neutral.png');
-}
-
-.card-bowman {
-    background-image: url('../img/cardTemplates/Bowman.png');
-}
-
-.card-swordsman {
-    background-image: url('../img/cardTemplates/Swordsman.png');
-}
-
-.card-magician {
-    background-image: url('../img/cardTemplates/Magician.png');
-}
-
-.card-daemon {
-    background-image: url('../img/cardTemplates/Daemon.png');
-}
-
-.card-undead {
-    background-image: url('../img/cardTemplates/Undead.png');
-}
-
-.card-vampire {
-    background-image: url('../img/cardTemplates/Vampire.png');
-}
-
+} */
+/* 
 .skills-AI {
     left: -85px;
     background-image: url('../img/interface/Skills-AI2.png');
@@ -93,7 +104,7 @@
 .skills-PL {
     right: -103px;
     background-image: url('../img/interface/Skills-PL2.png');
-}
+} */
 
 .specials {
     -webkit-text-stroke: 2.5px #000;

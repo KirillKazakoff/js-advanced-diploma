@@ -1,13 +1,11 @@
-export function showCharName(str) {
-    const spans = this.content.querySelector('.char-name').children;
+export default function showCharName(str) {
+    const spans = this.name.children;
     const pairs = getHtmlIndexes(str);
     
     Array.from(spans).forEach((span) => span.textContent = '');
 
-    pairs.forEach((pair) => {
-        const [index, value] = pair;
+    pairs.forEach(([index, value]) => {
         const span = spans[index];
-
         span.className = value === ' ' ? 'space' : `w${index}`;
         
         spans[index].textContent = value;

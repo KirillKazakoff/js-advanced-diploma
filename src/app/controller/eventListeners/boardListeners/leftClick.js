@@ -1,3 +1,5 @@
+import state from "../../../state/state";
+
 export function onCellLeftClick(event) {
     const { position } = event.target.closest('li').dataset;
     const { activePos, underControl } = state;

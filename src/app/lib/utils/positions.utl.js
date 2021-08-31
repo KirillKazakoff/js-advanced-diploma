@@ -1,7 +1,7 @@
-import gameState from "../../gameState/gameState";
+import state from "../../state/state";
 
 export default function getPositions(cellAmount, start) {
-    const { boardSize } = gameState;
+    const { boardSize } = state;
     const positions = new Set();
     const toRight = [];
     const toLeft = [];

@@ -1,42 +1,16 @@
-import gameState from '../gameState/gameState';
-
+import state from '../state/state';
 import { setify, getLowestPropChar, getHighestPropChar } from '../lib/utils/utils';
 import getPositions from '../lib/utils/positions.utl';
 
-export default class Team {
-    constructor(heroes) {
-        this.heroes = heroes;
-    } 
-
-    getCharsPositions() {
-        return this.heroes.map((char) => char.position);
-    }
-
-    getTeamChar(position) {
-        const searchRes = this.heroes.find((character) => character.position === position);
-        return searchRes ? searchRes : false;
-    }
-
-    getChars(positions) {
-        return positions.reduce((total, position) => {
-            const char = this.getTeamChar(position);
-            total.push(char);
-            return total;
-        }, []);
-    }
-
-
-    
-
-    getAttackPairs() {
+    function getAttackPairs() {
         return this.getCharsPositions().reduce((total, position) => {
             total.push(getPositions('attackRange', position).positions);
             return total;
         }, []);
     }
 
-    getPairsInWarZone(enemy) {
-        const attackPositions = this.getAttackPairs();
+    function getPairsInWarZone(enemy) {
+        const attackPositions = getAttackPairs();
         const defencePositions = enemy.getCharsPositions();
 
         return defencePositions.reduce((total, defPosition) => {
@@ -49,8 +23,8 @@ export default class Team {
         }, []);
     }
 
-    getAttackPos(enemy) {
-        const allPositions = this.getPairsInWarZone(enemy);
+    function getAttackPos(enemy) {
+        const allPositions = getPairsInWarZone(enemy);
         const enemyPositions = allPositions.map((posArray) => posArray[1]);
 
         if (typeof enemyPositions[0] !== 'number') {
@@ -60,7 +34,7 @@ export default class Team {
         return setify(enemyPositions);
     }
 
-    getAttackRange() {
+    function getAttackRange() {
         return this.getCharsPositions().reduce((total, position) => {
             const { positions } = getPositions('attackRange', position);
             total.push(...positions);
@@ -68,9 +42,9 @@ export default class Team {
         }, []);
     }
 
-    getBestVictim(enemy) {
+    function getBestVictim(enemy) {
         try {
-            const victimsPos = this.getAttackPos(enemy);
+            const victimsPos = getAttackPos(enemy);
             const victims = enemy.getChars(victimsPos);
             return getLowestPropChar('health', victims);
         } catch {
@@ -78,8 +52,8 @@ export default class Team {
         }
     }
 
-    getBestAttacker(victim, enemy) {
-        const pairs = this.getPairsInWarZone(enemy);
+    function getBestAttacker(victim, enemy) {
+        const pairs = getPairsInWarZone(enemy);
         const attackers = pairs.reduce((total, pair) => {
             pair.some((position) => {
                 const condition = position === victim.position;
@@ -100,7 +74,7 @@ export default class Team {
 
 
 
-    getAcceptableZone(enemy, position) {
+    function getAcceptableZone(enemy, position) {
         const moveRange = getPositions('moveRange', position).positions;
         const friendChars = this.getCharsPositions();
         const enemyChars = enemy.getCharsPositions();
@@ -115,8 +89,8 @@ export default class Team {
         return acceptablePos;
     }
 
-    getClearZone(position, enemy) {
-        const acceptablePos = this.getAcceptableZone(enemy, position);
+    function getClearZone(position, enemy) {
+        const acceptablePos = getAcceptableZone(enemy, position);
         const dangerousPos = enemy.getAttackRange();
 
         const clearPos = acceptablePos.reduce((total, acPosition) => {
@@ -132,17 +106,17 @@ export default class Team {
         return clearPos;
     }
 
-    static async giveControlAI(callback) {
-        const playerState = gameState.activePos;
+    async function giveControlAI(callback) {
+        const playerState = state.activePos;
         const result = await callback(playerState);
 
-        gameState.activePos = playerState;
+        state.activePos = playerState;
         if (result === playerState) {
-            gameState.activePos = null;
+            state.activePos = null;
         }
     }
 
-    checkBestPos(positions, charPos, enemy) {
+    function checkBestPos(positions, charPos, enemy) {
         if (positions[0]) {
             const victimsArr = [];
             const friendChars = this.getCharsPositions();
@@ -153,8 +127,8 @@ export default class Team {
                 const char = this.getTeamChar(prevPos);
                 char.moveTo(position);
 
-                const victim = this.getBestVictim(enemy);
-                const attacker = this.getBestAttacker(victim, enemy).position;
+                const victim = getBestVictim(enemy);
+                const attacker = getBestAttacker(victim, enemy).position;
 
                 if (victim && !friendChars.some((friendPos) => friendPos === attacker)) {
                     const victimInfo = {
@@ -172,21 +146,21 @@ export default class Team {
         return 0;
     }
 
-    safeCheck(charPos, enemy) {
-        const clearPos = this.getClearZone(charPos, enemy);
+    function safeCheck(charPos, enemy) {
+        const clearPos = getClearZone(charPos, enemy);
 
         if (!clearPos) {
             return 0;
         }
-        return this.checkBestPos(clearPos, charPos, enemy);
+        return checkBestPos(clearPos, charPos, enemy);
     }
 
-    dangerCheck(charPos, enemy) {
-        const acceptablePos = this.getAcceptableZone(enemy, charPos);
-        return this.checkBestPos(acceptablePos, charPos, enemy);
+    function dangerCheck(charPos, enemy) {
+        const acceptablePos = getAcceptableZone(enemy, charPos);
+        return checkBestPos(acceptablePos, charPos, enemy);
     }
 
-    moveToFight(victim) {
+    function moveToFight(victim) {
         if (victim) {
             const { attackerFuture, attackerNow } = victim;
             const attacker = this.getTeamChar(attackerNow);
@@ -196,8 +170,8 @@ export default class Team {
         return false;
     }
 
-    explore(enemy, callback) {
-        const victimNow = this.getBestVictim(enemy);
+    function explore(enemy, callback) {
+        const victimNow = getBestVictim(enemy);
 
         const victims = this.getCharsPositions().reduce((total, position) => {
             const victimInfo = callback.call(this, position, enemy);
@@ -209,7 +183,7 @@ export default class Team {
 
         const weakest = getLowestPropChar('health', victims);
         if ((weakest && !victimNow) || (weakest.health < victimNow.health)) {
-            this.moveToFight(weakest);
+            moveToFight(weakest);
             return true;
         }
         return false;
@@ -217,52 +191,52 @@ export default class Team {
 
 
 
-    async makeDecisionAI(enemy) {
-        const charsInWz = enemy.getAttackPos(this);
-        const enemiesInWz = this.getAttackPos(enemy);
-        const victim = this.getBestVictim(enemy);
-        const attacker = this.getBestAttacker(victim, enemy);
+    export default async function makeDecisionAI(enemy) {
+        const charsInWz = getAttackPos(this);
+        const enemiesInWz = getAttackPos(enemy);
+        const victim = getBestVictim(enemy);
+        const attacker = getBestAttacker(victim, enemy);
 
-        return TeamLogicAI.giveControlAI(() => {
+        return giveControlAI(() => {
             if (charsInWz.length === 1) {
                 const charPos = charsInWz[0];
                 const char = this.getTeamChar(charPos);
-                const resVictim = this.safeCheck(charPos, enemy);
+                const resVictim = safeCheck(charPos, enemy);
 
                 if (resVictim) {
-                    this.moveToFight(resVictim);
+                    moveToFight(resVictim);
                     return;
                 }
 
-                const clearPos = this.getClearZone(charPos, enemy);
+                const clearPos = getClearZone(charPos, enemy);
                 if (clearPos) {
                     char.moveTo(clearPos[0]);
                     return;
                 }
 
-                const weakest = this.dangerCheck(charPos, enemy);
+                const weakest = dangerCheck(charPos, enemy);
                 if (weakest.health < victim.health) {
-                    this.moveToFight(weakest);
+                    moveToFight(weakest);
                     return;
                 }
             }
 
             if (enemiesInWz) {
-                if (this.explore(enemy, this.safeCheck)) {
+                if (explore(enemy, safeCheck)) {
                     return;
                 }
-                if (this.explore(enemy, this.dangerCheck)) {
+                if (explore(enemy, dangerCheck)) {
                     return;
                 }
                 return attacker.fight(victim.position);
             }
 
             if (!charsInWz) {
-                if (this.explore(enemy, this.safeCheck)) {
+                if (explore(enemy, safeCheck)) {
                     return;
                 }
-                const attackerPos = getHighestPropChar('attack', this.characters).position;
-                const clearPos = this.getClearZone(attackerPos, enemy);
+                const attackerPos = getHighestPropChar('attack', this.heroes).position;
+                const clearPos = getClearZone(attackerPos, enemy);
 
                 const attacker = this.getTeamChar(attackerPos);
                 if (clearPos) {
@@ -270,7 +244,7 @@ export default class Team {
                     return;
                 }
 
-                const randomPos = this.getAcceptableZone(enemy, attackerPos)[0];
+                const randomPos = getAcceptableZone(enemy, attackerPos)[0];
                 attacker.moveTo(randomPos);
                 return;
             }
@@ -279,9 +253,9 @@ export default class Team {
                 const chars = this.getChars(charsInWz);
                 const weakestPos = getLowestPropChar('health', chars).position;
                 const weakestChar = this.getTeamChar(weakestPos);
-                const clearPos = this.getClearZone(weakestPos, enemy);
+                const clearPos = getClearZone(weakestPos, enemy);
 
-                if (this.explore(enemy, this.dangerCheck)) {
+                if (explore(enemy, dangerCheck)) {
                     return;
                 }
                 if (clearPos) {
@@ -289,12 +263,12 @@ export default class Team {
                     return;
                 }
 
-                const randomPos = this.getAcceptableZone(enemy, weakestPos)[0];
+                const randomPos = getAcceptableZone(enemy, weakestPos)[0];
                 weakestChar.moveTo(randomPos);
             }
         });
     }
-}
+
 
 
 

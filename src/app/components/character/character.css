@@ -1,7 +1,7 @@
 .character {
     display: block;
-    width: var(--cell-size);
-    height: var(--cell-size);
+    width: 100%;
+    padding-bottom: 100%;
     position: absolute;
     z-index: 99;
     background-repeat: no-repeat;
@@ -9,27 +9,23 @@
     background-position: center;
 }
 
-.health-level {
+.health-indicator {
     top: 2px;
     left: 7px;
     position: absolute;
-    width: 50px;
+    width: 100%;
     height: 4px;
     background: #000;
 }
 
-.health-level-indicator {
-    height: 4px;
-}
-
-.health-level-indicator-high {
+.health-indicator-high {
     background: #0f0;
 }
 
-.health-level-indicator-normal {
+.health-indicator-normal {
     background: #ff0;
 }
 
-.health-level-indicator-critical {
+.health-indicator-critical {
     background: #f00;
 }

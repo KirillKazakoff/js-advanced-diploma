@@ -5,8 +5,8 @@ const boardCellTmp = (cellType, percentage, position) => ({
     cls: `board__cell ${cellType}`,
     content: '',
     style: {
-        'width': percentage,
-        'padding-bottom': percentage,
+        'width': `${percentage}`,
+        'padding-bottom': `${percentage}`,
     },
     attrs: {
         'data-id': position,
@@ -20,7 +20,7 @@ const boardTmp = (boardSize, auxClass) => ({
 })
 
 function genCells(boardSize) {
-    const cellSize = `${100 / this.boardSize}%`;
+    const cellSize = `${100 / boardSize}%`;
     const cells = [];
 
     for (let i = 0; i < boardSize ** 2; i++) {

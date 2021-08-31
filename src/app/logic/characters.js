@@ -1,10 +1,9 @@
 import initTest from './initTest';
-import gameState from '../../../js/gameState';
+import state from '../state/state';
 import { generateChars, genPlayerReinforceProps, getPositionedChars } from './charGen';
-import Team from '../team';
 
 export default class Characters {
-    constructor(...teams) {
+    constructor(teams) {
         if (Array.isArray(teams)) {
             this.heroes = teams.reduce((total, team) => {
                 team.forEach((char) => total.push(char));
@@ -12,14 +11,14 @@ export default class Characters {
             }, []);
         } else {
             this.init();
-            this.refreshTeams();
+            // this.refreshTeams();
         };
     }
 
     init() {
-        this.teamPL = new Team(generateChars(1, 2, 'PL'));
-        this.teamAI = new Team(generateChars(1, 2, 'AI'));
-        this.heroes = [...this.teamPL, ...this.teamAI];
+        const teamAI = generateChars(1, 2, 'PL');
+        const teamPL = generateChars(1, 2, 'AI');
+        this.heroes = [...teamPL, ...teamAI];
     }
 
     toNextLevel() {
@@ -34,8 +33,8 @@ export default class Characters {
     }
 
     // refreshTeams() {
-    //     this.teamAI = newthis.getTeam('AI');
-    //     this.teamPL = this.getTeam('PL');
+    //     this.teamPL = new Team(this.getTeam('PL'));
+    //     this.teamAI = new Team(this.getTeam('AI'));
     // }
 
     getCharsPositions() {
@@ -69,8 +68,8 @@ export default class Characters {
         );
         this.heroes.splice(index, 1);
 
-        if (gameState.activePos === delChar.position) {
-            gameState.activePos = null;
+        if (state.activePos === delChar.position) {
+            state.activePos = null;
         }
     }
 
@@ -106,7 +105,7 @@ export default class Characters {
 
     levelUp() {
         this.heroes.forEach((character) => {
-            gameState.gamePoints += +character.health.toFixed();
+            state.gamePoints += +character.health.toFixed();
             character.levelUp();
         });
     }

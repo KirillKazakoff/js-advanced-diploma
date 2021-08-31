@@ -3,7 +3,7 @@ import { onCellUp, onCellDown, onRangeSwitch } from "./rangeSwitch";
 import { onCellLeftClick } from "./leftClick";
 
 
-export function addBoardListeners() {
+export default function addBoardListeners() {
     document.addEventListener('keydown', (event) => onRangeSwitch.call(this, event));
     this.container.addEventListener('mousedown', (event) => onCellDown.call(this, event));
     this.container.addEventListener('mouseup', () => onCellUp.call(this));

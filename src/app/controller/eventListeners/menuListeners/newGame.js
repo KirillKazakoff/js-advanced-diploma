@@ -1,7 +1,9 @@
+import state from "../../../state/state";
+
 export default function onNewGameClick() {
-    this.gameState.newGameStart();
+    state.newGameStart();
 
     this.initCharacters();
-    this.board.setTheme(this.gameState.theme);
+    this.board.setTheme(state.theme);
     this.board.renderChars(this.characters.heroes);
 }

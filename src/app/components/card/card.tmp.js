@@ -1,8 +1,8 @@
-import charNameT from "./aux/charName.tmp";
+import charNameT from "./charName/charName.tmp";
 
 const cardCharT = (type) => ({
     block: 'div',
-    cls: `character ${type} char-in-card`,
+    cls: `char-in-card ${type}`,
     content: '',
 });
 
@@ -14,20 +14,20 @@ const cardGemT = (gem) => ({
 
 const cardManaT = (mana) => ({
     block: 'div',
-    cls: `specials ${mana}`,
-    content: '',
+    cls: `specials mana`,
+    content: mana,
 });
 
 const cardHealthT = (health) => ({
     block: 'div',
-    cls: `specials ${health}`,
-    content: '',
+    cls: `specials health`,
+    content: health,
 });
 
 const cardAttackT = (attack) => ({
     block: 'div',
-    cls: `specials ${health}`,
-    content: '', 
+    cls: `specials attack`,
+    content: attack
 });
 
 const cardT = (char) => ({
@@ -36,13 +36,13 @@ const cardT = (char) => ({
     content: getCardContent(char),
 });
 
-function getCardContent(char) {
-    const char = cardCharT(char.type);
-    const gem = cardGemT(char.gem);
-    const mana = cardManaT(char.mana);
-    const health = cardHealthT(char.health);
-    const attack = cardAttackT(char.attack);
-    const charName = charNameT(char.type);
+function getCardContent(charObj) {
+    const char = cardCharT(charObj.type);
+    const gem = cardGemT(charObj.gem);
+    const mana = cardManaT(charObj.mana);
+    const health = cardHealthT(charObj.health);
+    const attack = cardAttackT(charObj.attack);
+    const charName = charNameT(charObj.type);
 
     return [char, gem, mana, health, attack, charName];
 };

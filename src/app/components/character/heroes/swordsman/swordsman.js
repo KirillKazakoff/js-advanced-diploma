@@ -1,4 +1,5 @@
 import Character from "../../character";
+import './swordsman.css';
 
 export default class Swordsman extends Character {
     constructor(level) {

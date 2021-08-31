@@ -1,3 +1,5 @@
+import state from "../../../state/state";
+
 export default function onSaveGameClick() {
-    this.state.save(this.characters.heroes);
+    state.save(this.characters.heroes);
 }

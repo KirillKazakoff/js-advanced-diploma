@@ -1,8 +1,8 @@
 import './powershot.css';
 import powershotT from "./powershot.tmp";
-import engine from "../../../../../lib/engine/engine";
+import engine from '../../../../../lib/engine/engine';
 
-import { getCellCoords, calcAnimationDegree } from "../lib/utils";
+import { getCellCoords, getRotationDegree } from '../../../../../lib/utils/animations.utl';
 
 export default function powershot(attacker, victim) {
     const container = attacker.getHtml();
@@ -13,7 +13,7 @@ export default function powershot(attacker, victim) {
     container.insertAdjacentHTML('beforeEnd', skillHtml);
 
     //calc degree
-    const degree = calcAnimationDegree(attackerCoords, victimCoords);
+    const degree = getRotationDegree(attackerCoords, victimCoords);
 
     const animation = arrowTrace.animate([
         { transform: `rotate(${degree}deg) scaleX(0)` },

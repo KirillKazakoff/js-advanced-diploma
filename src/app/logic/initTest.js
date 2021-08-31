@@ -1,7 +1,7 @@
-import Characters from '../../logic/characters';
+import Characters from './characters';
 import {
     Magician, Vampire, Daemon, Bowman, Swordsman, Undead
-} from '../../components/character/heroes/heroes';;
+} from '../components/character/heroes/heroes';;
 
 const first = new Bowman(5);
 const second = new Swordsman(5);

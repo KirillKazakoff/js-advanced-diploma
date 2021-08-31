@@ -1,25 +1,25 @@
 import state from '../state/state';
 
+import Menu from '../components/menu/menu';
+import Card from '../components/card/card';
 import Characters from '../logic/characters';
 import Board from '../components/board/board';
-import Card from '../components/card/card';
-import { addBoardListeners } from './eventListeners/boardListeners/boardListeners';
 
-export default class Controller{
+import addBoardListeners from './eventListeners/boardListeners/boardListeners';
+import addMenuListeners from './eventListeners/menuListeners/menuListeners';
+
+export default class Controller {
     constructor() {
         this.container = document.querySelector('.game-container');
     }
 
     init() {
-        this.initState();
+        state.toNextLevel();
+        this.menu = new Menu();
+
         this.initCards();
         this.initCharacters();
         this.initBoard();
-    }
-
-    initState() {
-        this.state = state;
-        this.state.toNextLevel();
     }
 
     initCards() {
@@ -37,13 +37,10 @@ export default class Controller{
         this.board.renderChars(this.characters.heroes);
     }
 
-    
+
     addListeners() {
         addBoardListeners.call(this);
-        // this.gamePlay.addMenuListener(auxController.onMenuClick);
-        // this.gamePlay.addLoadGameListener(() => auxController.onLoadGameClick());
-        // this.gamePlay.addSaveGameListener(() => auxController.onSaveGameClick());
-        // this.gamePlay.addNewGameListener(() => auxController.onNewGameClick());
+        addMenuListeners.call(this);
     }
 
     toNextLevel() {
@@ -62,14 +59,16 @@ export default class Controller{
 
     turnAI() {
         state.underControl = false;
-        this.characters.refreshTeams();
+        const { characters } = this;
 
-        if (this.characters.teamAI.amount) {
-            return teamAI.makeDecisionAI(this.characters.teamPL).then(() => {
+        characters.refreshTeams();
+
+        if (characters.teamAI.amount) {
+            return characters.teamAI.makeDecisionAI(characters.teamPL).then(() => {
                 state.underControl = true;
-                this.characters.refreshTeams();
+                characters.refreshTeams();
 
-                if (!this.characters.teamPL.amount) {
+                if (characters.teamPL.amount) {
                     endGame();
                 }
                 return;

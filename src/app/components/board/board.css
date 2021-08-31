@@ -1,3 +1,19 @@
+.board {
+    margin-left: auto;
+    margin-right: auto;
+    width: 30%;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.board__cell {
+    position: relative;
+    width: 12%;
+    /* padding-bottom: 12%; */
+    background-size: cover;
+    list-style-type: none;
+}
+
 .board-container {
     width: 100%;
     position: relative;
@@ -7,13 +23,6 @@
     flex-direction: column;
     top: -170px;
     padding-right: 15px;
-}
-
-.board {
-    display: grid;
-    grid-template-columns: repeat(8, 1fr);
-    column-gap: 2px;
-    row-gap: 2px;
 }
 
 .board.prairie {
@@ -64,43 +73,39 @@
     --map-center-url: url('./img/mountain/map-center.png');
 }
 
-.map {
-    width: var(--cell-size);
-    height: var(--cell-size);
+
+.top {
+    background-image: var(--map-top-url);
 }
 
-.map-top {
-    background: var(--map-top-url);
+.top-left {
+    background-image: var(--map-top-left-url);
 }
 
-.map-top-left {
-    background: var(--map-top-left-url);
+.top-right {
+    background-image: var(--map-top-right-url);
 }
 
-.map-top-right {
-    background: var(--map-top-right-url);
+.bottom-left {
+    background-image: var(--map-bottom-left-url);
 }
 
-.map-bottom-left {
-    background: var(--map-bottom-left-url);
+.bottom-right {
+    background-image: var(--map-bottom-right-url);
 }
 
-.map-bottom-right {
-    background: var(--map-bottom-right-url);
+.bottom {
+    background-image: var(--map-bottom-url);
 }
 
-.map-bottom {
-    background: var(--map-bottom-url);
+.left {
+    background-image: var(--map-left-url);
 }
 
-.map-left {
-    background: var(--map-left-url);
+.right {
+    background-image: var(--map-right-url);
 }
 
-.map-right {
-    background: var(--map-right-url);
-}
-
-.map-center {
-    background: var(--map-center-url);
+.center {
+    background-image: var(--map-center-url);
 }

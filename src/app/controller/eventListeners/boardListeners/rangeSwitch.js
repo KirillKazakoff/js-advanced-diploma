@@ -1,3 +1,5 @@
+import state from "../../../state/state";
+
 export function onRangeSwitch(event) {
     if (event.key === 'r') {
         this.isRangeButton = !this.isRangeButton;
@@ -8,7 +10,7 @@ export function onCellDown(event) {
     const { position } = event.target.closest('li').dataset;
 
     this.timer = setTimeout(() => {
-        const { isRangeButton, characters, state } = this;
+        const { isRangeButton, characters } = this;
         const char = characters.getTeamChar(position);
 
         if (char) {
@@ -21,7 +23,7 @@ export function onCellDown(event) {
 
 export function onCellUp() {
     clearTimeout(this.timer);
-    const { board, state } = this;
+    const { board } = this;
 
     if (state.underControl) {
         board.deselectAllCells();

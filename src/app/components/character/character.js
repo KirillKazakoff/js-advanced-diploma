@@ -1,4 +1,5 @@
-import { getPositions } from "../../lib/utils/utils";
+import './character.css';
+import getPositions from "../../lib/utils/positions.utl";
 import { showDamage } from "./commonAnimations/commonAnimations";
 
 export default class Character {

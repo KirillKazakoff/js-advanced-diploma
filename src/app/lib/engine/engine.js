@@ -22,20 +22,19 @@ export default function engine(node) {
     let htmlAttrs = '';
     let htmlStyle = '';
 
-    const element = document.createElement(block);
-    [].concat(cls).filter(Boolean).forEach((cls) => element.classList.add(cls));
-
     if (attrs) {
         Object.entries(attrs).forEach(([key, value]) => {
             htmlAttrs += `${key}="${value}"`;
         });
     }
 
-    if (Array.isArray(style)) {
-        style.forEach((s) => htmlStyle += `${s};`);
+    if (style) {
+        let str = ''
+        Object.entries(style).forEach(([key, value]) => {
+            str += `${key}: ${value}; `;
+        });
+        htmlStyle = `style="${str}"`;
     }
-
-    if (style) htmlStyle = style;
 
     const htmlContent = engine(content);
     const htmlElement = generateHtml(block, cls, htmlContent, htmlAttrs, htmlStyle);
@@ -44,5 +43,5 @@ export default function engine(node) {
 }
 
 function generateHtml(block, cls, content, attrs, style) {
-    return `<${block} ${attrs} class="${cls}" style=${style}>${content}</${block}>`;
+    return `<${block} ${attrs} class="${cls}"${style}>${content}</${block}>`;
 }
