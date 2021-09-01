@@ -68,7 +68,7 @@ export default class Controller {
         teamPL.addChars(reinforcement);
 
         teamAI.addChars(generateChars(level + 1, teamPL.amount, 'AI'));
-        teamAI.heroes = getPositionedChars(teamAI.heroes);
+        teamPL.heroes = getPositionedChars(teamPL.heroes);
 
         board.setTheme(state.theme);
         board.clearAllDataset();
