@@ -3,13 +3,18 @@ import state from '../state/state';
 import Menu from '../components/menu/menu';
 import Card from '../components/card/card';
 import Characters from '../logic/characters';
+import Team from '../logic/team';
 import Board from '../components/board/board';
 
 import addBoardListeners from './eventListeners/boardListeners/boardListeners';
 import addMenuListeners from './eventListeners/menuListeners/menuListeners';
 
+import { generateChars, genPlayerReinforceProps, getPositionedChars } from '../logic/charGen';
+import { initTestAI, initTestPL, initAI, initPL } from '../logic/initTest';
+
 export default class Controller {
     constructor() {
+        this.isRangeButton = false;
         this.container = document.querySelector('.game-container');
     }
 
@@ -20,6 +25,8 @@ export default class Controller {
         this.initCards();
         this.initCharacters();
         this.initBoard();
+
+        this.addListeners();
     }
 
     initCards() {
@@ -28,13 +35,17 @@ export default class Controller {
     }
 
     initCharacters() {
-        this.characters = new Characters();
+        // const charsAI = generateChars(1, 2, 'AI');
+        // const charsPL = generateChars(1, 2, 'PL');
+        this.teamAI = new Team(initTestAI);
+        this.teamPL = new Team(initTestPL);
+        this.characters = new Characters(this.teamAI.heroes, this.teamPL.heroes);
     }
 
     initBoard() {
         this.board = new Board();
         this.board.renderBoard(state.theme, state.boardSize);
-        this.board.renderChars(this.characters.heroes);
+        this.board.renderChars([...this.teamAI.heroes, ...this.teamPL.heroes]);
     }
 
 
@@ -43,12 +54,26 @@ export default class Controller {
         addMenuListeners.call(this);
     }
 
+    updateCharacters() {
+        this.characters.heroes = [...this.teamAI.heroes, ...this.teamPL.heroes]
+    }
+
     toNextLevel() {
-        this.state.toNextLevel();
-        this.characters.toNextLevel();
-        this.board.setTheme(state.theme);
-        this.board.clearAllDataset();
-        this.board.renderChars(this.characters.heroes);
+        const { board, teamAI, teamPL } = this;
+        state.toNextLevel();
+        teamPL.levelUp();
+
+        const { amount, level } = genPlayerReinforceProps();
+        const reinforcement = generateChars(level, amount, 'PL');
+        teamPL.addChars(reinforcement);
+
+        teamAI.addChars(generateChars(level + 1, teamPL.amount, 'AI'));
+        teamAI.heroes = getPositionedChars(teamAI.heroes);
+
+        board.setTheme(state.theme);
+        board.clearAllDataset();
+        board.renderChars([...teamAI.heroes, ...teamPL.heroes]);
+        this.updateCharacters();
     }
 
     endGame() {
@@ -57,24 +82,32 @@ export default class Controller {
         this.board.clearListeners();
     }
 
+    checkActivePos() {
+        if (!state.activePos) {
+            this.board.deselectAllCells();
+        }
+    }
+
     turnAI() {
+        console.log(this.characters);
         state.underControl = false;
-        const { characters } = this;
+        const { teamAI, teamPL } = this;
 
-        characters.refreshTeams();
-
-        if (characters.teamAI.amount) {
-            return characters.teamAI.makeDecisionAI(characters.teamPL).then(() => {
+        if (teamAI.amount) {
+            return teamAI.makeDecisionAI(teamPL).then(() => {
                 state.underControl = true;
-                characters.refreshTeams();
+                this.updateCharacters();
+                this.checkActivePos();
 
-                if (characters.teamPL.amount) {
-                    endGame();
+                this.board.renderChars(this.characters.heroes);
+
+                if (!teamPL.amount) {
+                    this.endGame();
                 }
                 return;
             });
         }
-        toNextLevel();
+        this.toNextLevel();
     }
 
 }

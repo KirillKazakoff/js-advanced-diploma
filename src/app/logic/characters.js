@@ -1,41 +1,13 @@
-import initTest from './initTest';
 import state from '../state/state';
-import { generateChars, genPlayerReinforceProps, getPositionedChars } from './charGen';
 
 export default class Characters {
-    constructor(teams) {
-        if (Array.isArray(teams)) {
-            this.heroes = teams.reduce((total, team) => {
-                team.forEach((char) => total.push(char));
-                return total;
-            }, []);
-        } else {
-            this.init();
-            // this.refreshTeams();
-        };
+    constructor(...teams) {
+        this.heroes = teams.reduce((total, team) => {
+            team.forEach((char) => total.push(char));
+            return total;
+        }, []);
+        this.getAmount();
     }
-
-    init() {
-        const teamAI = generateChars(1, 2, 'PL');
-        const teamPL = generateChars(1, 2, 'AI');
-        this.heroes = [...teamPL, ...teamAI];
-    }
-
-    toNextLevel() {
-        this.levelUp();
-
-        const { amount, level } = genPlayerReinforceProps();
-        const reinforcement = generateChars(level, amount, 'PL');
-        this.addChars(reinforcement);
-
-        const teamAI = new Characters(generateChars(level + 1, this.amount, 'AI'));
-        this.addChars(teamAI.heroes);
-    }
-
-    // refreshTeams() {
-    //     this.teamPL = new Team(this.getTeam('PL'));
-    //     this.teamAI = new Team(this.getTeam('AI'));
-    // }
 
     getCharsPositions() {
         return this.heroes.map((char) => char.position);
@@ -71,6 +43,7 @@ export default class Characters {
         if (state.activePos === delChar.position) {
             state.activePos = null;
         }
+        this.getAmount();
     }
 
     moveChar(char, position) {
@@ -83,8 +56,8 @@ export default class Characters {
         await attacker.fight(target);
         let isKilled = false;
 
-        if (target.health <= 0) {            
-            teams.deleteChar(target);
+        if (target.health <= 0) {
+            this.deleteChar(target);
             isKilled = true;
         }
         return isKilled;
@@ -99,7 +72,7 @@ export default class Characters {
     }
 
     addChars(characters) {
-        characters.forEach((character) => this.characters.push(character));
+        characters.forEach((character) => this.heroes.push(character));
         this.getAmount();
     }
 

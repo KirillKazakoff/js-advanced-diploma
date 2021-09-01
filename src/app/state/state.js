@@ -19,7 +19,7 @@ function* levelGen() {
 let generator = levelGen();
 
 const state = {
-    boardSize: 8,
+    boardSize: 5,
     
     theme: null,
     gamePoints: 0,

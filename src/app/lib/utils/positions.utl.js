@@ -1,5 +1,9 @@
 import state from "../../state/state";
 
+function getCell(position) {
+    return document.querySelector(`[data-position="${position}"]`);
+}
+
 export default function getPositions(cellAmount, start) {
     const { boardSize } = state;
     const positions = new Set();
@@ -15,7 +19,9 @@ export default function getPositions(cellAmount, start) {
     const calcToRight = () => {
         for (let i = 0; i < cellAmount + 1; i += 1) {
             const calcExp = start + i;
-            const cell = this.cells[calcExp];
+            // const cell = this.cells[calcExp];
+            const cell = getCell(calcExp);
+
 
             positions.add(calcExp);
             toRight.push(calcExp);
@@ -28,7 +34,8 @@ export default function getPositions(cellAmount, start) {
     const calcToLeft = () => {
         for (let i = 0; i < cellAmount + 1; i += 1) {
             const calcExp = start - i;
-            const cell = this.cells[calcExp];
+            // const cell = this.cells[calcExp];
+            const cell = getCell(calcExp);
 
             positions.add(calcExp);
             toLeft.push(calcExp);
@@ -41,7 +48,8 @@ export default function getPositions(cellAmount, start) {
     const calcToTop = () => {
         for (let i = 0; i < cellAmount + 1; i += 1) {
             const calcExp = start - i * boardSize;
-            const cell = this.cells[calcExp];
+            // const cell = this.cells[calcExp];
+            const cell = getCell(calcExp);
 
             positions.add(calcExp);
             toTop.push(calcExp);
@@ -54,7 +62,8 @@ export default function getPositions(cellAmount, start) {
     const calcToBottom = () => {
         for (let i = 0; i < cellAmount + 1; i += 1) {
             const calcExp = start + i * boardSize;
-            const cell = this.cells[calcExp];
+            // const cell = this.cells[calcExp];
+            const cell = getCell(calcExp);
 
             positions.add(calcExp);
             toBottom.push(calcExp);
@@ -65,7 +74,10 @@ export default function getPositions(cellAmount, start) {
     };
 
     const calcToMainDiagTop = () => {
-        if (this.cells[start].className.includes('right')) {
+        // if (this.cells[start].className.includes('right')) {
+        //     return;
+        // }
+        if (getCell(start).className.includes('right')) {
             return;
         }
 
@@ -75,7 +87,8 @@ export default function getPositions(cellAmount, start) {
                 return;
             }
 
-            const cell = this.cells[calcExp];
+            // const cell = this.cells[calcExp];
+            const cell = getCell(calcExp);
             positions.add(calcExp);
             toMainDt.push(calcExp);
             if (!cell.className.includes('center')) {
@@ -85,7 +98,10 @@ export default function getPositions(cellAmount, start) {
     };
 
     const calcToMainDiagBottom = () => {
-        if (this.cells[start].className.includes('left')) {
+        // if (this.cells[start].className.includes('left')) {
+        //     return;
+        // }
+        if (getCell(start).className.includes('left')) {
             return;
         }
 
@@ -95,7 +111,8 @@ export default function getPositions(cellAmount, start) {
                 return;
             }
 
-            const cell = this.cells[calcExp];
+            // const cell = this.cells[calcExp];
+            const cell = getCell(calcExp);
             positions.add(calcExp);
             toMainDb.push(calcExp);
             if (!cell.className.includes('center')) {
@@ -105,7 +122,10 @@ export default function getPositions(cellAmount, start) {
     };
 
     const calcToAuxDiagTop = () => {
-        if (this.cells[start].className.includes('left')) {
+        // if (this.cells[start].className.includes('left')) {
+        //     return;
+        // }
+        if (getCell(start).className.includes('left')) {
             return;
         }
 
@@ -115,7 +135,8 @@ export default function getPositions(cellAmount, start) {
                 return;
             }
 
-            const cell = this.cells[calcExp];
+            // const cell = this.cells[calcExp];
+            const cell = getCell(calcExp);
             positions.add(calcExp);
             toAuxDt.push(calcExp);
             if (!cell.className.includes('center')) {
@@ -125,7 +146,10 @@ export default function getPositions(cellAmount, start) {
     };
 
     const calcToAuxDiagBottom = () => {
-        if (this.cells[start].className.includes('right')) {
+        // if (this.cells[start].className.includes('right')) {
+        //     return;
+        // }
+        if (getCell(start).className.includes('right')) {
             return;
         }
 
@@ -135,7 +159,8 @@ export default function getPositions(cellAmount, start) {
                 return;
             }
 
-            const cell = this.cells[calcExp];
+            // const cell = this.cells[calcExp];
+            const cell = getCell(calcExp);
             positions.add(calcExp);
             toAuxDb.push(calcExp);
             if (!cell.className.includes('center')) {

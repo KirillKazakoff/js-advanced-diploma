@@ -1,5 +1,5 @@
 .damage {
-    position: relative;
+    position: absolute;
     width: var(--cell-size);
     text-align: center;
     z-index: 999;

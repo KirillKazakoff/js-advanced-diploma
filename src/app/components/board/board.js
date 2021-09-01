@@ -26,7 +26,7 @@ export default class Board {
 
         for (const positionedChar of positionedChars) {
             const charHtml = engine(characterT(positionedChar));
-            this.cells[positionedChar.position].innerHTML = charHtml;
+            this.cells[positionedChar.position].insertAdjacentHTML('afterbegin', charHtml);
         }
     }
 
@@ -42,7 +42,7 @@ export default class Board {
         this.boardEl.style.cursor = cursor;
     }
 
-    selectCell(index, color = 'yellow') {
+    selectCell(index, color) {
         this.cells[index].classList.add('selected', `selected-${color}`);
     }
 
@@ -68,5 +68,13 @@ export default class Board {
             this.clearDataset(i);
             this.deselectCell(i);
         }
+    }
+
+    getMoveRange(position) {
+        return getPositions.call(this, 'moveRange', position).positions;
+    }
+
+    getAttackRange(position) {
+        return getPositions.call(this, 'attackRange', position).positions
     }
 };

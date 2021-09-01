@@ -54,3 +54,4 @@ export function getLowestPropChar(prop, chars) {
 export function setify(iterable) {
     return [...new Set(iterable)];
 }
+

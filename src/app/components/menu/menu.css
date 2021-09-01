@@ -17,7 +17,7 @@
 }
 
 .menu-icon {
-    background: url('../img/characters/generic.png');
+    background: url('../character/heroes/generic/generic.png');
     background-size: cover;
     width: 100px;
     height: 100px;
@@ -36,6 +36,7 @@
 }
 
 .btn {
+    width: 100%;
     font-family: 'MyFont';
     font-weight: 400;
     color: #212529;
@@ -48,6 +49,6 @@
     border: none;
 }
 
-.btn:nth-child(n+2) {
-    margin-top: 40px;
+.menu-button:nth-child(n+2) {
+    margin-top: 20px;
 }

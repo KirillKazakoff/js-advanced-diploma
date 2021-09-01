@@ -9,7 +9,7 @@ const boardCellTmp = (cellType, percentage, position) => ({
         'padding-bottom': `${percentage}`,
     },
     attrs: {
-        'data-id': position,
+        'data-position': position,
     },
 });
 

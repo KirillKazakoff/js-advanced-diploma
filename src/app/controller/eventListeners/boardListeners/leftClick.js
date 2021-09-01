@@ -1,8 +1,14 @@
 import state from "../../../state/state";
 
 export function onCellLeftClick(event) {
-    const { position } = event.target.closest('li').dataset;
-    const { activePos, underControl } = state;
+    let position;
+    try {
+         position = +event.target.closest('li').dataset.position;    
+    } catch (error) {
+        return;
+    }
+    
+    let { activePos, underControl } = state;
 
     const { characters, board, cardAI, cardPL } = this;
 
@@ -13,10 +19,11 @@ export function onCellLeftClick(event) {
         const positions = activeChar.getMoveRange();
 
         if (positions.some((position) => position === cellPos)) {
-            characters.moveChar(activeChar, cellPos);
+            activeChar.moveTo(cellPos);
+            // characters.moveChar(activeChar, cellPos);
             board.clearDataset(activePos);
 
-            board.renderChars(characters.characters);
+            board.renderChars(characters.heroes);
 
             board.deselectCell(cellPos);
             board.selectCell(cellPos, 'yellow');
@@ -33,12 +40,15 @@ export function onCellLeftClick(event) {
 
         if (positions.some((position) => position === char.position) && underControl) {
             state.underControl = false;
-            characters.fight(activeChar, char).then((isKilled) => {
-                if (isKilled) {
+
+            activeChar.fight(char).then((killed) => {
+                if (killed) {
                     board.clearDataset(char.position);
                     board.deselectCell(char.position);
+                    this.teamAI.deleteChar(killed);
+                    this.updateCharacters();
                 }
-                board.renderChars(characters.characters)
+                board.renderChars(characters.heroes)
                 cardAI.showCharacter(char);
                 this.turnAI();
             });;
@@ -46,12 +56,12 @@ export function onCellLeftClick(event) {
     }
 
     const onPlayerCharClick = (char) => {
-        if (turn === 'AI') {
+        if (char.turn === 'AI') {
             cardAI.showCharacter(char);
             return;
         }
 
-        board.selectCell(position);
+        board.selectCell(position, 'yellow');
         if (typeof activePos === 'number') {
             board.deselectCell(activePos);
         }

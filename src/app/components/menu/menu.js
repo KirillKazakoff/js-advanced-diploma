@@ -1,3 +1,4 @@
+import './menu.css';
 import engine from "../../lib/engine/engine";
 import menuT from "./menu.tmp";
 
@@ -11,9 +12,9 @@ export default class Menu {
         const html = engine(menuT);  
         this.container.innerHTML = html;
 
-        this.menu = this.container.querySelector('.menu');
-        this.restart = this.container.querySelector('.restart');
-        this.save = this.container.querySelector('.save');
-        this.load = this.container.querySelector('.load');
+        this.menu = this.container.querySelector('.menu-icon');
+        this.restart = this.container.querySelector('.btn-restart');
+        this.save = this.container.querySelector('.btn-save');
+        this.load = this.container.querySelector('.btn-load');
     }
 }

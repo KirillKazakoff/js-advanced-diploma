@@ -4,8 +4,8 @@ import onSaveGameClick from "./saveGame"
 import onNewGameClick from "./newGame";
 
 export default function addMenuListeners() {
-    this.menu.menu.addEventListener('click', onMenuClick);
-    this.menu.load.addEventListener('click', onLoadGameClick);
-    this.menu.save.addEventListener('click', onSaveGameClick);
-    this.menu.restart.addEventListener('click', onNewGameClick);
+    this.menu.menu.addEventListener('click', (event) => onMenuClick.call(this, event));
+    this.menu.load.addEventListener('click', (event) => onLoadGameClick.call(this, event));
+    this.menu.save.addEventListener('click', (event) => onSaveGameClick.call(this, event));
+    this.menu.restart.addEventListener('click', (event) => onNewGameClick.call(this, event));
 }

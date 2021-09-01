@@ -1,36 +1,36 @@
 const btnRestart = {
     block: 'button',
-    cls: 'btn btn__restart',
+    cls: 'btn btn-restart',
     content: 'New Game',
 }
 
 const btnSave = {
     block: 'button',
-    cls: 'btn btn__save',
+    cls: 'btn btn-save',
     content: 'Save Game',
 }
 
 const btnLoad = {
     block: 'button',
-    cls: 'btn btn__load',
+    cls: 'btn btn-load',
     content: 'Load Game',
 }
 
 const menuButton = (btnT) => ({
     block: 'li',
-    cls: 'menu__button',
+    cls: 'menu-button',
     content: btnT,
 })
 
 const menuButtons = {
     block: 'ul',
-    cls: 'menu__buttons',
+    cls: 'menu-buttons',
     content: [btnRestart, btnSave, btnLoad].map(menuButton),
 }
 
 const menuIcon = {
     block: 'div',
-    cls: 'menu__icon',
+    cls: 'menu-icon',
     content: '',
 }
 
@@ -44,15 +44,3 @@ export default menuT;
 
 
 
-// const menuButtons = {
-//     block: 'ul',
-//     cls: 'menu__buttons',
-//     content: genButtons(),
-// }
-
-// function genButtons() {
-//     const restart = menuButton(btnRestart);
-//     const save = menuButton(btnSave);
-//     const load = menuButton(btnLoad);
-//     return [restart, save, load];       
-// }

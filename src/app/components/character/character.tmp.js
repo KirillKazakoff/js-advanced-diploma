@@ -2,7 +2,13 @@ import getHpLevel from "./aux/getHpLevel";
 
 const charHealthIndicatorT = (health) => ({
     block: 'div',
-    cls: `health-indicator health-indicator-${getHpLevel(health)}`,
+    cls: 'health-indicator',
+    content: charHealthLevelT(health),
+})
+
+const charHealthLevelT = (health) => ({
+    block: 'div',
+    cls: `health-level health-level-${getHpLevel(health)}`,
     style: {
         'width': `${health * 10}%`,   
     },

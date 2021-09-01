@@ -1,5 +1,5 @@
 import './character.css';
-import getPositions from "../../lib/utils/positions.utl";
+import getPositions from '../../lib/utils/positions.utl';
 import { showDamage } from "./commonAnimations/commonAnimations";
 
 export default class Character {
@@ -46,23 +46,18 @@ export default class Character {
     async fight(target) {
         await showDamage(target.position, this.attack);
         target.health -= this.attack;
+
+        if (target.health <= 0) {
+            return target;
+        }
+        return false;
     }
-
-    getHtml() {
-        return document.querySelector(`[data-position]=${position}`)
-    }
-
-
 
     getMoveRange() {
-        return this.getPositions('moveRange').positions;
+        return getPositions(this.moveRange, this.position).positions;
     }
 
     getAttackRange() {
-        return this.getPositions('attackRange').positions
-    }
-
-    getPositions(rangeParam) {
-        return getPositions(rangeParam, this.position);
+        return getPositions(this.attackRange, this.position).positions;
     }
 }

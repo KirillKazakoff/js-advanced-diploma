@@ -1,7 +1,10 @@
 import state from "../../../state/state";
+import { 
+    Vampire, Undead, Daemon, Swordsman, Bowman, Magician,
+} from "../../../components/character/heroes/heroes";
 
 export default function onLoadGameClick() {
-    const {  characters, board } = this;
+    const { characters, teamAI, teamPL, board, cardPL } = this;
 
     const loadedChars = state.load();
     const classifiedChars = recreateLoadedChars(loadedChars);
@@ -10,11 +13,17 @@ export default function onLoadGameClick() {
     characters.heroes = classifiedChars;
     board.renderChars(classifiedChars);
     
+    board.deselectAllCells();
+
     const { activePos } = state;
-    if (activePos) {
-        board.selectCell(state.activePos);
+    if (typeof activePos === 'number') {
+        board.selectCell(activePos, 'yellow');
+        const char = characters.getTeamChar(activePos);
+        cardPL.showCharacter(char);
     }
-    refreshTeams();
+
+    teamAI.heroes = characters.getTeam('AI');
+    teamPL.heroes = characters.getTeam('PL');
 }
 
 function recreateLoadedChars(chars) {

@@ -5,13 +5,13 @@ import { onCellLeftClick } from "./leftClick";
 
 export default function addBoardListeners() {
     document.addEventListener('keydown', (event) => onRangeSwitch.call(this, event));
-    this.container.addEventListener('mousedown', (event) => onCellDown.call(this, event));
-    this.container.addEventListener('mouseup', () => onCellUp.call(this));
+    this.board.boardEl.addEventListener('mousedown', (event) => onCellDown.call(this, event));
+    this.board.boardEl.addEventListener('mouseup', () => onCellUp.call(this));
 
     this.board.cells.forEach((cell, i) => {
         cell.addEventListener('mouseenter', () => onCellEnter.call(this, i));
-        cell.addEventListener('mouseleave', () => onCellLeave.call(this, cell));
+        cell.addEventListener('mouseleave', () => onCellLeave.call(this, i));
     })
 
-    this.container.addEventListener('click', (event) => onCellLeftClick.call(this, event));
+    this.board.boardEl.addEventListener('click', (event) => onCellLeftClick.call(this, event));
 }

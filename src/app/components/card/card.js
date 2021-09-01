@@ -25,10 +25,8 @@ export default class Card {
     }
 
     renderCard() {
-        console.log(this.container.className);
         const html = engine(cardT(genericChar));
         this.container.insertAdjacentHTML('afterbegin', html);
-        console.log(this.container.className);
     }
 
     initSpecials(char) {

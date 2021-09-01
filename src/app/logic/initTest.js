@@ -1,26 +1,29 @@
-import Characters from './characters';
+import { generateChars } from './charGen';
+
 import {
     Magician, Vampire, Daemon, Bowman, Swordsman, Undead
 } from '../components/character/heroes/heroes';;
 
 const first = new Bowman(5);
-const second = new Swordsman(5);
+const second = new Swordsman(10);
 const third = new Vampire(4);
 const fourth = new Daemon(4);
 
 first.position = 0;
-second.position = 7;
-third.position = 6;
-fourth.position = 13;
+second.position = 1;
+third.position = 3;
+fourth.position = 14;
 
 first.turn = 'PL';
 second.turn = 'PL';
 third.turn = 'AI';
 fourth.turn = 'AI';
 
-const initTest = () => new Characters([
-    first, second, third, fourth,
-]);
+const initTestAI = [third];
+const initTestPL = [first, second];
 
-export default initTest;
+const initAI = generateChars(1, 2, 'AI');
+const initPL = generateChars(1, 2, 'PL');
+
+export { initTestAI, initTestPL, initAI, initPL };
 
