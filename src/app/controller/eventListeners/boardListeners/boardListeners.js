@@ -1,6 +1,6 @@
-import { onCellLeave, onCellEnter } from "./leaveEnter";
+import { onCellLeave, onCellEnter } from "./leaveEnterCell";
 import { onCellUp, onCellDown, onRangeSwitch } from "./rangeSwitch";
-import { onCellLeftClick } from "./leftClick";
+import { onCellLeftClick } from "./leftClickCell";
 
 
 export default function addBoardListeners() {

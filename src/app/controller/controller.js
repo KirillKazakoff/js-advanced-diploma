@@ -6,6 +6,7 @@ import Characters from '../logic/characters';
 import Team from '../logic/team';
 import Board from '../components/board/board';
 
+import addInterfaceListeners from './eventListeners/interfaceListeners/interfaceListeners';
 import addBoardListeners from './eventListeners/boardListeners/boardListeners';
 import addMenuListeners from './eventListeners/menuListeners/menuListeners';
 
@@ -51,8 +52,9 @@ export default class Controller {
 
 
     addListeners() {
-        addBoardListeners.call(this);
         addMenuListeners.call(this);
+        addInterfaceListeners.call(this);
+        addBoardListeners.call(this);
     }
 
     updateCharacters() {
@@ -89,7 +91,7 @@ export default class Controller {
     }
 
     checkActivePos() {
-        if (!state.activePos) {
+        if (typeof state.activePos !== 'number') {
             this.board.deselectAllCells();
         }
     }

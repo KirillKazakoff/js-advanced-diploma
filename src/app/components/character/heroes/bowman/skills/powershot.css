@@ -1,13 +1,15 @@
 .powershot {
-    top: 0;
-    left: 0;
+    /* top: 25px; */
+    top: 0px;
+    left: 30px;
     position: absolute;
-    background-position: top center;
+    z-index: 1000;
+    background-position: bottom center;
     background-image: url('./powershot.png');
     background-repeat: no-repeat;
     background-size: 700px 50px;
     
-    height: 50px;
+    height: 30px;
     width: 1000px;
 
     transform-origin: left bottom;

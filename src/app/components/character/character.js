@@ -15,7 +15,8 @@ export default class Character {
 
         this.turn = null;
         this.position = null;   
-        this.isActive = false;  
+        // this.isActive = false;  
+        this.activeSkill = false;
     }
 
     levelUp() {
@@ -53,6 +54,10 @@ export default class Character {
         return false;
     }
 
+    getCell() {
+        return document.querySelector(`[data-position="${this.position}"]`);
+    }
+
     getMoveRange() {
         return getPositions(this.moveRange, this.position).positions;
     }
@@ -60,4 +65,6 @@ export default class Character {
     getAttackRange() {
         return getPositions(this.attackRange, this.position).positions;
     }
+
+    
 }

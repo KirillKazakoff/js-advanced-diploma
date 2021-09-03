@@ -1,6 +1,6 @@
 import state from "../../state/state";
 
-function getCell(position) {
+export function getCell(position) {
     return document.querySelector(`[data-position="${position}"]`);
 }
 

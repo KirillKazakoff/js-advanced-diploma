@@ -9,7 +9,6 @@ export function onCellLeftClick(event) {
     }
     
     let { activePos, underControl } = state;
-
     const { characters, board, interfaceAI, interfacePL } = this;
 
     const char = characters.getTeamChar(position);
@@ -34,24 +33,37 @@ export function onCellLeftClick(event) {
         return;
     }
 
-    const onEnemyClick = (char) => {
+    const onEnemyKill = (killed) => {
+        board.clearDataset(char.position);
+        board.deselectCell(char.position);
+        this.teamAI.deleteChar(killed);
+        this.updateCharacters();
+    }
+
+    const onEnemyClick = async (char) => {
         const positions = activeChar.getAttackRange();
 
         if (positions.some((position) => position === char.position) && underControl) {
             state.underControl = false;
 
-            activeChar.fight(char).then((killed) => {
-                if (killed) {
-                    board.clearDataset(char.position);
-                    board.deselectCell(char.position);
-                    this.teamAI.deleteChar(killed);
-                    this.updateCharacters();
+            const promise = new Promise(async (resolve) => {
+                if (activeChar.skillActive) {
+                    activeChar.shot(char).then((results) => {
+                        if (results[0]) onEnemyKill(results[0]);
+                        resolve();
+                    })
+                } else {
+                    const killed = await activeChar.fight(char);
+                    if (killed) onEnemyKill(killed);
+                    resolve();
                 }
+            })
 
+            promise.then(() => {
                 board.renderChars(characters.heroes)
                 interfaceAI.update();
                 this.turnAI();
-            });;
+            })
         }
     }
 

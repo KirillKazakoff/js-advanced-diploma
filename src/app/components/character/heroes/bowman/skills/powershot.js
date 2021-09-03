@@ -2,33 +2,37 @@ import './powershot.css';
 import powershotT from "./powershot.tmp";
 import engine from '../../../../../lib/engine/engine';
 
-import { getCellCoords, getRotationDegree } from '../../../../../lib/utils/animations.utl';
+import { getRotationDegree } from '../../../../../lib/utils/animations.utl';
 
-export default function powershot(attacker, victim) {
-    const container = attacker.getHtml();
-    const attackerCoords = getCellCoords(attacker);
-    const victimCoords = getCellCoords(victim);
+export default function powershot(attacker, victim, duration) {
+    return new Promise((resolve) => {
+        const container = attacker.getCell();
+        const html = engine(powershotT(attacker));
+        container.insertAdjacentHTML('beforeEnd', html);
 
-    const skillHtml = engine(powershotT(attackerCoords));
-    container.insertAdjacentHTML('beforeEnd', skillHtml);
+        const powershot = container.querySelector('.powershot');
+        const degree = getRotationDegree(attacker, victim);
 
-    //calc degree
-    const degree = getRotationDegree(attackerCoords, victimCoords);
+        if (degree === 0) powershot.style.top = '35px';
+        if (degree === 225) powershot.style.left = '70px';
+        if (degree === 270) powershot.style.left = '70px';
+        if (degree === 315) powershot.style.left = '100px';
 
-    const animation = arrowTrace.animate([
-        { transform: `rotate(${degree}deg) scaleX(0)` },
-        { transform: `rotate(${degree}deg) scaleX(10)` },
-    ], {
-        duration: 1500,
-        iterations: 1,
-        easing: 'ease',
-    });
+        const animation = powershot.animate([
+            { transform: `rotate(${degree}deg) scaleX(0)` },
+            { transform: `rotate(${degree}deg) scaleX(10)` },
+        ], {
+            duration: duration,
+            iterations: 1,
+            // easing: 'cubic-bezier(0.2, 0.4, 0.4, 0.9)',
+            easing: 'ease'
+        });
 
-    animation.addEventListener('finish', () => {
-        arrowTrace.className = 'effect-stop';
+        animation.addEventListener('finish', () => {
+            powershot.remove();
+            resolve();
+        })
     })
-    animation.pause();
-    return animation;
 }
 
 
@@ -80,60 +84,45 @@ export default function powershot(attacker, victim) {
 
 
 
+// import './powershot.css';
+// import powershotT from "./powershot.tmp";
+// import engine from '../../../../../lib/engine/engine';
 
-// import { getCellCoords, calcAnimationDegree } from "./utilsSec";
+// import { getRotationDegree } from '../../../../../lib/utils/animations.utl';
 
-// const container = document.querySelector('#game-container');
-
-// export default function setShotAnimation(attacker, victim) {
+// export default function powershot(attacker, victim, duration) {
 //     return new Promise((resolve) => {
-//         const attackerCoords = getCellCoords(attacker);
-//         const victimCoords = getCellCoords(victim);
+//         const container = attacker.getCell();
+//         const html = engine(powershotT(attacker));
+//         container.insertAdjacentHTML('beforeEnd', html);
 
-//         const arrowTrace = document.createElement('div');
-//         arrowTrace.className = 'arrow-trace';
+//         const powershot = container.querySelector('.powershot');
+//         const degree = getRotationDegree(attacker, victim);
 
-//         const { top: attackerTop, left: attackerLeft } = attackerCoords;
-//         arrowTrace.style.left = `${attackerLeft}px`;
-//         arrowTrace.style.top = `${attackerTop}px`;
+//         if (degree === 0) powershot.style.top = '35px';
+//         if (degree === 225) powershot.style.left = '70px';
+//         if (degree === 270) powershot.style.left = '70px';
+//         if (degree === 315) powershot.style.left = '100px';
 
-//         container.append(arrowTrace);
-
-//         //calc degree
-//         const degree = calcAnimationDegree(attackerCoords, victimCoords);
-
-//         const animation = arrowTrace.animate([
+//         const animation = powershot.animate([
 //             { transform: `rotate(${degree}deg) scaleX(0)` },
 //             { transform: `rotate(${degree}deg) scaleX(10)` },
 //         ], {
-//             duration: 1500,
+//             duration: duration,
 //             iterations: 1,
-//             easing: 'ease',
+//             // easing: 'cubic-bezier(0.2, 0.4, 0.4, 0.9)',
+//             easing: 'ease'
 //         });
-
-//         animation.addEventListener('begin', () => {
-//             console.log('hello');
-//         })
 
 //         animation.addEventListener('finish', () => {
-//             arrowTrace.style.left = `${attackerLeft}px`;
-//             arrowTrace.style.top = `${attackerTop}px`;
+//             container.remove(powershot);
 //             resolve();
-//         });
-
-//         arrowTrace.addEventListener('animationstart', () => {
-//             console.log('hell');
 //         })
+
 //         animation.pause();
+//         return animation;
 //     })
-
 // }
-
-
-
-
-
-
 
 
 

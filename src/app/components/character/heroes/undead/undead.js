@@ -8,8 +8,8 @@ export default class Undead extends Character {
         this.mana = 8;
         this.moveRange = 4;
         this.attackRange = 1;
-        
-        this.skills = ['powershot', 'powershot', 'powershot', 'powershot'];
+
+        this.skills = [];
         this.upFromScratch();
     }
 }

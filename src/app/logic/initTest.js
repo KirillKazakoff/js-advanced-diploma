@@ -8,8 +8,8 @@ function initTestAI() {
     const third = new Vampire(4);
     const fourth = new Daemon(4);
 
-    third.position = 3;
-    fourth.position = 14;
+    third.position = 7;
+    fourth.position = 21;
 
     third.turn = 'AI';
     fourth.turn = 'AI';
@@ -21,7 +21,7 @@ function initTestPL() {
     const first = new Bowman(5);
     const second = new Swordsman(10);
 
-    first.position = 0;
+    first.position = 15;
     second.position = 1;
 
     first.turn = 'PL';
