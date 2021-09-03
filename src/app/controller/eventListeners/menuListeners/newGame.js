@@ -1,9 +1,14 @@
 import state from "../../../state/state";
 
 export default function onNewGameClick() {
+    const { board, interfacePL, interfaceAI } = this;
     state.newGameStart();
 
     this.initCharacters();
-    this.board.setTheme(state.theme);
-    this.board.renderChars(this.characters.heroes);
+    board.setTheme(state.theme);
+    board.renderChars(this.characters.heroes);
+    board.deselectAllCells();
+    
+    interfaceAI.card.renderGeneric();
+    interfacePL.card.renderGeneric();
 }

@@ -1,19 +1,11 @@
 import state from '../state/state';
 import { setify, getLowestPropChar, getHighestPropChar } from '../lib/utils/utils';
 import Characters from './characters';
-import getPositions from '../lib/utils/positions.utl';
-
-// import gameState from './gameState';
-// import TeamCommon from './TeamCommon';
-// import { getPositions } from '../app/lib/utils/utils';
-// import {
-//     getHighestPropChar, getLowestPropChar, setify,
-// } from './auxTeam';
 
 export default class Team extends Characters {
     getAttackPairs() {
         const pairs = this.heroes.reduce((total, char) => {
-            total.push(getPositions(char.attackRange, char.position).positions);
+            total.push(char.getAttackRange());
             return total;
         }, []);
 
@@ -49,7 +41,7 @@ export default class Team extends Characters {
 
     getAttackRange() {
         return this.heroes.reduce((total, char) => {
-            const { positions } = getPositions(char.attackRange, char.position);
+            const positions = char.getAttackRange();
             total.push(...positions);
             return total;
         }, []);
@@ -91,7 +83,7 @@ export default class Team extends Characters {
 
     getAcceptableZone(enemy, position) {
         const char = this.getTeamChar(position);
-        const moveRange = getPositions(char.moveRange, char.position).positions;
+        const moveRange = char.getMoveRange();
 
         const friendChars = this.getCharsPositions();
         const enemyChars = enemy.getCharsPositions();
@@ -293,88 +285,4 @@ export default class Team extends Characters {
         });
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 

@@ -4,7 +4,7 @@ import {
 } from "../../../components/character/heroes/heroes";
 
 export default function onLoadGameClick() {
-    const { characters, teamAI, teamPL, board, cardPL } = this;
+    const { characters, teamAI, teamPL, board, interfacePL } = this;
 
     const loadedChars = state.load();
     const classifiedChars = recreateLoadedChars(loadedChars);
@@ -19,7 +19,7 @@ export default function onLoadGameClick() {
     if (typeof activePos === 'number') {
         board.selectCell(activePos, 'yellow');
         const char = characters.getTeamChar(activePos);
-        cardPL.showCharacter(char);
+        interfacePL.card.renderChar(char);
     }
 
     teamAI.heroes = characters.getTeam('AI');

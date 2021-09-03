@@ -11,6 +11,7 @@ export default class Bowman extends Character {
         this.moveRange = 2;
         this.attackRange = 2;
 
+        this.skills = ['powershot', 'powershot', 'powershot', 'powershot'];
         this.shotAttack = 5;
         this.upFromScratch();
     }

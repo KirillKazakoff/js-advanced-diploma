@@ -1,5 +1,5 @@
 export default function showCharName(str) {
-    const spans = this.name.children;
+    const spans = this.card.querySelector('.char-name').children;
     const pairs = getHtmlIndexes(str);
     
     Array.from(spans).forEach((span) => span.textContent = '');

@@ -1,7 +1,7 @@
 import state from '../state/state';
 
 import Menu from '../components/menu/menu';
-import Card from '../components/card/card';
+import Interface from '../components/interface/interface';
 import Characters from '../logic/characters';
 import Team from '../logic/team';
 import Board from '../components/board/board';
@@ -20,25 +20,26 @@ export default class Controller {
 
     init() {
         state.toNextLevel();
-        this.menu = new Menu();
 
-        this.initCards();
+        this.menu = new Menu();
+        this.initInterfaces();
         this.initCharacters();
         this.initBoard();
 
         this.addListeners();
     }
 
-    initCards() {
-        this.cardAI = new Card('AI');
-        this.cardPL = new Card('PL');
+    initInterfaces() {
+        this.interfaceAI = new Interface('AI');
+        this.interfacePL = new Interface('PL');
     }
 
     initCharacters() {
         // const charsAI = generateChars(1, 2, 'AI');
         // const charsPL = generateChars(1, 2, 'PL');
-        this.teamAI = new Team(initTestAI);
-        this.teamPL = new Team(initTestPL);
+        this.teamAI = new Team(initTestAI());
+        this.teamPL = new Team(initTestPL());
+
         this.characters = new Characters(this.teamAI.heroes, this.teamPL.heroes);
     }
 
@@ -56,6 +57,11 @@ export default class Controller {
 
     updateCharacters() {
         this.characters.heroes = [...this.teamAI.heroes, ...this.teamPL.heroes]
+    }
+
+    updateInterfaces() {
+        this.interfaceAI.update();
+        this.interfacePL.update();
     }
 
     toNextLevel() {
@@ -89,7 +95,6 @@ export default class Controller {
     }
 
     turnAI() {
-        console.log(this.characters);
         state.underControl = false;
         const { teamAI, teamPL } = this;
 
@@ -97,6 +102,7 @@ export default class Controller {
             return teamAI.makeDecisionAI(teamPL).then(() => {
                 state.underControl = true;
                 this.updateCharacters();
+                this.updateInterfaces();
                 this.checkActivePos();
 
                 this.board.renderChars(this.characters.heroes);

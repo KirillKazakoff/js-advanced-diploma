@@ -8,6 +8,7 @@ export default class Swordsman extends Character {
         this.mana = 4;
         this.moveRange = 4;
         this.attackRange = 1;
+        this.skills = ['powershot', 'powershot', 'powershot', 'powershot'];
         this.upFromScratch();
     }
 }

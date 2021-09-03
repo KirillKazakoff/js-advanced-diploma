@@ -13,6 +13,10 @@
     transform-origin: left bottom;
 }
 
+.powershot-pic {
+    background-image: url('./powershot-pic.png');
+}
+
 .effect-stop {
     display: none;
 }

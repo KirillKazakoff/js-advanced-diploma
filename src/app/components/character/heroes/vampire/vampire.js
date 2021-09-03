@@ -8,6 +8,8 @@ export default class Vampire extends Character {
         this.mana = 6;
         this.attackRange = 2;
         this.moveRange = 2;
+
+        this.skills = ['powershot', 'powershot', 'powershot', 'powershot'];
         this.upFromScratch();
     }
 }

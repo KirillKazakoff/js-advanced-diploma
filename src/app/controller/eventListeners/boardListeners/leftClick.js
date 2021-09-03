@@ -10,7 +10,7 @@ export function onCellLeftClick(event) {
     
     let { activePos, underControl } = state;
 
-    const { characters, board, cardAI, cardPL } = this;
+    const { characters, board, interfaceAI, interfacePL } = this;
 
     const char = characters.getTeamChar(position);
     const activeChar = characters.getTeamChar(activePos);
@@ -20,7 +20,6 @@ export function onCellLeftClick(event) {
 
         if (positions.some((position) => position === cellPos)) {
             activeChar.moveTo(cellPos);
-            // characters.moveChar(activeChar, cellPos);
             board.clearDataset(activePos);
 
             board.renderChars(characters.heroes);
@@ -48,8 +47,9 @@ export function onCellLeftClick(event) {
                     this.teamAI.deleteChar(killed);
                     this.updateCharacters();
                 }
+
                 board.renderChars(characters.heroes)
-                cardAI.showCharacter(char);
+                interfaceAI.update();
                 this.turnAI();
             });;
         }
@@ -57,7 +57,7 @@ export function onCellLeftClick(event) {
 
     const onPlayerCharClick = (char) => {
         if (char.turn === 'AI') {
-            cardAI.showCharacter(char);
+            interfaceAI.renderInterface(char);
             return;
         }
 
@@ -67,14 +67,14 @@ export function onCellLeftClick(event) {
         }
         if (activePos === position) {
             activePos = null;
-            cardPL.showGeneric();
+            interfacePL.renderGeneric();
         } else {
             activePos = position;
-            cardPL.showCharacter(char);
+            interfacePL.renderInterface(char);
         }
 
         if (state.isCellHolded) {
-            cardPL.showCharacter(char);
+            interfacePL.renderInterface(char);
             board.selectCell(position, 'yellow');
             activePos = position;
             state.isCellHolded = false;

@@ -1,16 +1,3 @@
-.interface{
-    position: relative;
-}
-
-.interface-PL {
-    float: left;
-    bottom: 400px;
-}
-
-.interface-AI {
-    float: right;
-}
-
 .char-in-card {
     position: absolute;
     background-repeat: no-repeat;
@@ -42,7 +29,6 @@
 }
 
 
-
 .card {
     position: relative;
     width: 350px;
@@ -52,9 +38,6 @@
     background-size: contain;
     background-repeat: no-repeat;
 }
-
-
-
 
 
 .card-generic {
@@ -84,27 +67,6 @@
 .card-vampire {
     background-image: url('./cardTemplate/Vampire.png');
 }
-
-/* .skills-menu {
-    position: absolute;
-    width: 40%;
-    z-index: 0;
-    height: 80%;
-    top: 45px;
-    background-repeat: no-repeat;
-    background-position: center;
-    background-size: cover;
-} */
-/* 
-.skills-AI {
-    left: -85px;
-    background-image: url('../img/interface/Skills-AI2.png');
-}
-
-.skills-PL {
-    right: -103px;
-    background-image: url('../img/interface/Skills-PL2.png');
-} */
 
 .specials {
     -webkit-text-stroke: 2.5px #000;

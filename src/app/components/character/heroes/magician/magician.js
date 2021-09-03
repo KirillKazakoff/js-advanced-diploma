@@ -8,7 +8,8 @@ export default class Magician extends Character {
         this.mana = 8;
         this.moveRange = 1;
         this.attackRange = 4;
-
+        this.skills = ['powershot', 'powershot', 'powershot', 'powershot'];
+        
         this.upFromScratch();
     }
 }
