@@ -3,11 +3,11 @@ import state from "../../../state/state";
 export function onCellLeftClick(event) {
     let position;
     try {
-         position = +event.target.closest('li').dataset.position;    
+        position = +event.target.closest('li').dataset.position;
     } catch (error) {
         return;
     }
-    
+
     let { activePos, underControl } = state;
     const { characters, board, interfaceAI, interfacePL } = this;
 
@@ -45,18 +45,17 @@ export function onCellLeftClick(event) {
 
         if (positions.some((position) => position === char.position) && underControl) {
             state.underControl = false;
+            const { skillActive } = activeChar;
 
             const promise = new Promise(async (resolve) => {
-                if (activeChar.skillActive) {
-                    activeChar.shot(char).then((results) => {
-                        if (results[0]) onEnemyKill(results[0]);
-                        resolve();
-                    })
+                if (skillActive) {
+                    const killed = await activeChar[skillActive](char);
+                    if (killed[0]) onEnemyKill();
                 } else {
                     const killed = await activeChar.fight(char);
                     if (killed) onEnemyKill(killed);
-                    resolve();
                 }
+                resolve();
             })
 
             promise.then(() => {

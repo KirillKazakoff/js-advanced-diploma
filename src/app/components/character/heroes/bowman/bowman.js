@@ -16,7 +16,7 @@ export default class Bowman extends Character {
         this.upFromScratch();
     }
 
-    async shot(target) {
+    async powershot(target) {
         return new Promise((resolve) => {
             this.attack = this.shotAttack;
             const duration = 1200;    
@@ -29,7 +29,6 @@ export default class Bowman extends Character {
             })
 
             return Promise.all([fightPromise, powershot(this, target, duration)]).then((killed) => {
-                    console.log(killed);
                     resolve(killed);
                 });
         })

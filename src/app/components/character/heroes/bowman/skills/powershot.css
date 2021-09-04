@@ -1,7 +1,7 @@
 .powershot {
     /* top: 25px; */
     top: 0px;
-    left: 30px;
+    left: 10px;
     position: absolute;
     z-index: 1000;
     background-position: bottom center;

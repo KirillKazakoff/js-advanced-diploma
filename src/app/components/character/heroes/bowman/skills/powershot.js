@@ -14,9 +14,10 @@ export default function powershot(attacker, victim, duration) {
         const degree = getRotationDegree(attacker, victim);
 
         if (degree === 0) powershot.style.top = '35px';
-        if (degree === 225) powershot.style.left = '70px';
-        if (degree === 270) powershot.style.left = '70px';
-        if (degree === 315) powershot.style.left = '100px';
+        if (degree === 135) powershot.style.top = '-20px'
+        if (degree === 180) powershot.style.top = '-30px';
+        if (degree === 225 || degree === 270) powershot.style.left = '70px';
+        if (degree === 315) powershot.style.left = '90px';
 
         const animation = powershot.animate([
             { transform: `rotate(${degree}deg) scaleX(0)` },
@@ -24,8 +25,8 @@ export default function powershot(attacker, victim, duration) {
         ], {
             duration: duration,
             iterations: 1,
-            // easing: 'cubic-bezier(0.2, 0.4, 0.4, 0.9)',
-            easing: 'ease'
+            easing: 'cubic-bezier(0.5, 0.1, 0.4, 0.9)',
+            // easing: 'ease'
         });
 
         animation.addEventListener('finish', () => {

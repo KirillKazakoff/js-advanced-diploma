@@ -5,5 +5,6 @@ export default function onLeftClick(e) {
         const skill = e.target.classList[1].split('-')[0];
         card.char.skillActive = skill;
 
+        e.target.classList.add('selected', 'selected-yellow');
     }
 }

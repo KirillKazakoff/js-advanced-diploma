@@ -24,9 +24,21 @@
 }
 
 .skill {
+    position: relative;
     background-size: cover;
     width: 45%;
     padding-bottom: 45%;
+}
+
+.skills .skill::before {
+    left: -1px;
+    top: 1px;
+    border-radius: 0px;
+}
+
+.skill::before {
+    width: 103%;
+    padding-bottom: 88.5%;
 }
 
 .skillbox-AI .skill {
